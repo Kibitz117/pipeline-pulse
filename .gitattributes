@@ -1,0 +1,10 @@
+# Preserve source evidence byte-for-byte across platforms; database integrity
+# checks compare these files with their archived SHA-256 values.
+data/raw/** -text -diff
+data/curated/*.csv -text
+sessions/design/*.gz -text -diff
+
+*.bin -text
+*.jpg -text
+*.xlsx -text
+*.zip -text

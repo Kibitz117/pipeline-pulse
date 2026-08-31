@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pipeline-pulse"
+version = "0.1.0"
+description = "Point-in-time natural-gas pipeline intelligence for investors"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "duckdb==1.5.5",
+    "pendulum==3.2.0",
+    "pytz==2026.3",
+]
+
+[project.scripts]
+pipeline-pulse = "pipeline_pulse.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pipeline_pulse"]

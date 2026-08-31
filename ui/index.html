@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pipeline Pulse · TGP System Monitor</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <aside class="app-sidebar" aria-label="Primary navigation">
+      <button class="sidebar-brand" data-nav-page="overview" type="button">
+        <span class="brand-mark" aria-hidden="true">PP</span>
+        <span>Pipeline Pulse</span>
+      </button>
+      <nav class="sidebar-nav">
+        <button class="sidebar-link active" data-nav-page="overview" type="button"><i>↯</i><span>Market overview</span></button>
+        <button class="sidebar-link" data-nav-page="changes" type="button"><i>●</i><span>Changes &amp; alerts</span></button>
+        <button class="sidebar-link" data-nav-page="insights" type="button"><i>▤</i><span>Scenarios</span></button>
+        <button class="sidebar-link" data-nav-page="learn" type="button"><i>?</i><span>Gas market guide</span></button>
+        <button class="sidebar-link" data-nav-view="map" type="button"><i>◇</i><span>Impact map</span></button>
+        <p class="sidebar-section">Research</p>
+        <button class="sidebar-link" data-nav-view="impacts" type="button"><i>▦</i><span>Data explorer</span></button>
+        <button class="sidebar-link" data-nav-view="capacity" type="button"><i>⇄</i><span>Operating capacity</span></button>
+        <button class="sidebar-link" data-nav-view="revisions" type="button"><i>↗</i><span>Revision tracker</span></button>
+        <button class="sidebar-link" data-nav-view="notices" type="button"><i>≡</i><span>Notice history</span></button>
+      </nav>
+      <div class="sidebar-footer">
+        <button data-nav-page="learn" type="button">Definitions</button>
+        <span>Public-source TGP monitor</span>
+      </div>
+    </aside>
+
+    <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">TGP monitoring</p>
+        <h1>Tennessee Gas Pipeline</h1>
+      </div>
+    </header>
+
+    <div class="boundary-note">
+      Research aid—not investment advice. Capacity is operator-reported transportation availability, not physical flow. Scenarios remain conditional until market data confirms them.
+    </div>
+
+    <nav class="mobile-nav" aria-label="Workspace navigation">
+      <button class="mobile-nav-link active" data-nav-page="overview" type="button">Overview</button>
+      <button class="mobile-nav-link" data-nav-page="changes" type="button">Changes</button>
+      <button class="mobile-nav-link" data-nav-page="insights" type="button">Scenarios</button>
+      <button class="mobile-nav-link" data-nav-page="learn" type="button">Guide</button>
+      <button class="mobile-nav-link" data-nav-view="map" type="button">Map</button>
+      <button class="mobile-nav-link" data-nav-view="impacts" type="button">Data</button>
+    </nav>
+
+    <main id="live">
+      <section class="hero" data-page-section="overview">
+        <div>
+          <p id="vintage-eyebrow" class="eyebrow">Latest TGP outage forecast</p>
+          <h2 id="report-date">Loading…</h2>
+          <p id="report-subtitle" class="muted">Loading the latest operator forecast.</p>
+          <p id="vintage-state" class="vintage-state">Current operator forecast</p>
+        </div>
+        <div class="hero-actions">
+          <button id="return-latest" class="secondary-button" type="button" hidden>Return to latest</button>
+          <a id="latest-source" class="source-button" href="#" target="_blank" rel="noreferrer">
+            Open KM notice ↗
+          </a>
+        </div>
+      </section>
+
+      <section id="insights" class="research-brief" data-page-section="overview" aria-labelledby="brief-headline">
+        <article class="brief-primary">
+          <div class="brief-heading">
+            <div>
+              <p class="eyebrow">Current market assessment</p>
+              <span id="memo-status" class="analysis-badge">Loading evidence…</span>
+            </div>
+          </div>
+          <h2 id="brief-headline">Building the current TGP picture…</h2>
+          <p id="brief-summary" class="brief-summary">Connecting maintenance to transport conditions and the broader gas balance.</p>
+          <div class="why-card">
+            <strong>Why it may matter</strong>
+            <p id="brief-why">Reviewing the latest notices, forecasts, and operating capacity.</p>
+          </div>
+          <details class="method-note">
+            <summary>Method and limitations</summary>
+            <p>Numbers and alerts come from deterministic queries. The model may explain relationships and propose watch scenarios, but it cannot change a value or promote a hypothesis to fact.</p>
+          </details>
+        </article>
+        <aside class="signal-panel">
+          <p class="eyebrow">Current TGP inputs</p>
+          <div id="system-signals" class="system-signals">
+            <p class="empty-context">Loading the latest TGP and EIA observations…</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="balance-bridge" data-page-section="overview" aria-labelledby="balance-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Aggregate TGP outlook</p>
+            <h2 id="balance-heading">Reading the full maintenance calendar…</h2>
+          </div>
+          <span class="scenario-label">Current read → supporting evidence</span>
+        </div>
+        <p id="balance-summary" class="balance-summary">Translating pipeline capacity into system-level relevance…</p>
+        <div id="market-state-metrics" class="market-state-metrics" aria-label="TGP outlook summary"></div>
+        <article class="impact-timeline-card" aria-labelledby="impact-timeline-title">
+          <div class="timeline-heading">
+            <div>
+              <p class="eyebrow">30-day constraint calendar</p>
+              <h3 id="impact-timeline-title">Where current schedules would exceed planned capacity</h3>
+            </div>
+            <div class="timeline-legend" aria-label="Chart legend">
+              <span><i class="planned"></i>Largest planned reduction</span>
+              <span><i class="gap"></i>Unchanged-schedule gap</span>
+              <span><i class="demand"></i>Leading anchor HDD/CDD</span>
+            </div>
+          </div>
+          <div id="impact-timeline" class="impact-timeline" aria-label="Daily TGP market-impact timeline"></div>
+          <div id="impact-day-detail" class="impact-day-detail">
+            <p class="empty-context">Loading the daily constraint calendar…</p>
+          </div>
+        </article>
+        <div id="balance-cards" class="balance-cards context-cards"></div>
+        <article id="trade-picture" class="trade-picture" aria-labelledby="trade-picture-heading">
+          <p class="empty-context">Building the tradable-market evidence path…</p>
+        </article>
+        <p id="balance-limit" class="balance-limit"></p>
+      </section>
+
+      <section id="changes" class="change-center" data-page-section="changes" aria-labelledby="changes-heading" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">New since the prior update</p>
+            <h2 id="changes-heading">What could change the market read</h2>
+          </div>
+          <span id="alert-summary" class="change-summary">Checking for new operator updates…</span>
+        </div>
+        <p class="change-intro">These are the operator changes most likely to alter transportation availability or scheduling pressure. Their price relevance still depends on location, rerouting, demand, and regional basis confirmation.</p>
+        <div id="alert-feed" class="alert-feed">
+          <p class="empty-context">Comparing the latest notices and capacity postings with the prior update…</p>
+        </div>
+        <details class="change-method">
+          <summary>Why these operator changes surfaced</summary>
+          <p>The screen filters for operational changes large or urgent enough to merit analyst attention. This is not an estimate of price impact or affected U.S. supply.</p>
+          <ul>
+            <li><strong>Outage forecast:</strong> a revision must change capacity by at least 25,000 Dth/day. Points then reflect absolute size, percentage change, and how soon it takes effect.</li>
+            <li><strong>Operating capacity:</strong> an update surfaces when capacity moves at least 50,000 Dth/day, scheduled utilization crosses 80% or 95%, available capacity moves to or from zero, or availability moves at least 100,000 Dth/day while utilization is 80% or higher.</li>
+            <li><strong>New notice:</strong> points reflect subject matter—maintenance, constraint, emergency, curtailment, or OFO—and time until effective.</li>
+            <li><strong>Same-ID notice revision:</strong> every change to parsed status, prior-notice link, subject, text, effective window, or response requirement surfaces. Its detection time—not the operator’s original post time—controls point-in-time replay.</li>
+          </ul>
+        </details>
+        <details class="data-status">
+          <summary>Data status and source timestamps</summary>
+          <div id="source-freshness" class="source-freshness" aria-label="Source freshness">
+            <p class="empty-context">Checking each source independently…</p>
+          </div>
+        </details>
+      </section>
+
+      <details id="learn" class="market-guide" data-page-section="learn" hidden>
+        <summary class="guide-heading">
+          <div>
+            <p class="eyebrow">Gas market guide</p>
+            <h2 id="guide-heading">From a maintenance notice to market impact</h2>
+          </div>
+          <p>A reduction changes transportation capacity first. It matters for price only when the market cannot comfortably reroute, reschedule, or replace the affected gas.</p>
+          <span class="guide-open-label">Open guide</span>
+        </summary>
+        <div class="guide-tabs" role="tablist" aria-label="Gas market guide sections">
+          <button id="guide-tab-chain" class="active" data-guide-tab="chain" type="button" role="tab" aria-selected="true" aria-controls="guide-panel-chain">Notice → market</button>
+          <button id="guide-tab-scope" data-guide-tab="scope" type="button" role="tab" aria-selected="false" aria-controls="guide-panel-scope">Scope &amp; coverage</button>
+          <button id="guide-tab-measures" data-guide-tab="measures" type="button" role="tab" aria-selected="false" aria-controls="guide-panel-measures">Read the measures</button>
+          <button id="guide-tab-price" data-guide-tab="price" type="button" role="tab" aria-selected="false" aria-controls="guide-panel-price">Price relevance</button>
+        </div>
+
+        <div id="guide-panel-chain" class="guide-panel" data-guide-panel="chain" role="tabpanel" aria-labelledby="guide-tab-chain">
+          <div class="impact-chain">
+            <article><span>1</span><div><strong>Operator reduces capacity</strong><p>The notice identifies where, when, and by how much TGP expects transportation capacity to fall. It is a forecast operating limit—not lost production or measured flow.</p></div></article>
+            <article><span>2</span><div><strong>Transport demand tests the limit</strong><p>Compare the limit with nominations moving in the same direction. If scheduled transport remains above forecast capacity, shippers may need to reschedule, reroute, or reduce deliveries.</p></div></article>
+            <article><span>3</span><div><strong>The region rebalances</strong><p>Alternate pipelines, storage withdrawals, local production, or lower demand can absorb the constraint. If they cannot, gas may become relatively cheaper upstream and scarcer downstream.</p></div></article>
+            <article><span>4</span><div><strong>Prices provide confirmation</strong><p>The nearest regional basis markets should react before Henry Hub. A national benchmark effect requires the constraint to materially change the broader U.S. supply-and-demand balance.</p></div></article>
+          </div>
+          <p class="guide-takeaway"><strong>How to use this screen:</strong> treat a conditional shortfall as a place to investigate, then look for same-cycle nominations, physical-flow or rerouting evidence, regional demand, and basis-price confirmation.</p>
+        </div>
+
+        <div id="guide-panel-scope" class="guide-panel" data-guide-panel="scope" role="tabpanel" aria-labelledby="guide-tab-scope" hidden>
+          <div class="scope-metrics">
+            <article>
+              <span>Current coverage</span>
+              <strong>1 operator · TGP</strong>
+              <p>Maintenance notices, outage forecasts, and operating and scheduled transportation capacity on Tennessee Gas Pipeline.</p>
+            </article>
+            <article>
+              <span>TGP system scale</span>
+              <strong>12.4 Bcf/day</strong>
+              <p>Operator-reported design capacity across an approximately 11,800-mile interstate network.</p>
+            </article>
+            <article>
+              <span>National scale reference</span>
+              <strong>≈11% capacity-equivalent</strong>
+              <p>TGP design capacity divided by May 2026 U.S. dry-gas production of 110.3 Bcf/day. This is not throughput or market share.</p>
+            </article>
+          </div>
+
+          <div class="coverage-map">
+            <article>
+              <p class="eyebrow">What TGP can illuminate</p>
+              <h3>Regional deliverability</h3>
+              <p>TGP links producing areas in Louisiana and South Texas and Northeast/Appalachian supply with demand markets including New York, Boston, the Gulf Coast, and Mexico. A constraint can change where gas is deliverable even when national production is unchanged.</p>
+              <ul>
+                <li><strong>Appalachia:</strong> constrained egress can weaken upstream producer-area prices.</li>
+                <li><strong>New York and New England:</strong> constrained deliveries can tighten downstream citygate or regional basis.</li>
+                <li><strong>Southbound and Gulf routes:</strong> direction determines whether the effect is on receipts, Gulf demand, exports, or alternate routing.</li>
+              </ul>
+            </article>
+            <article>
+              <p class="eyebrow">What remains outside the screen</p>
+              <h3>The rest of the gas balance</h3>
+              <p>This monitor does not observe all U.S. supply, demand, storage, LNG, production, or interstate transportation. It also does not yet include measured physical flow or a licensed regional cash-price feed.</p>
+              <ul>
+                <li>Other Appalachia and Northeast corridors such as Transco, Texas Eastern, Columbia, Algonquin, and Iroquois.</li>
+                <li>Weather-driven demand, power burn, LNG feedgas, production revisions, and regional storage operations.</li>
+                <li>Regional cash basis and the current Henry Hub futures curve.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="coverage-rule">
+            <strong>How coverage should expand</strong>
+            <p>Pipeline capacities overlap because the same gas can move through several connected systems. Adding nameplate capacities would double-count molecules, so five operators cannot honestly be labeled “five times the market.” Expansion should instead report which producing basins, demand regions, and constrained corridors have maintenance, scheduling, weather, and price confirmation.</p>
+          </div>
+          <p class="scope-sources">
+            Scale references:
+            <a href="https://s24.q4cdn.com/126708163/files/doc_financials/2024/q4/TGP_2024_Q4_GAAP-FS_Issued.pdf" target="_blank" rel="noreferrer">TGP system disclosure ↗</a>
+            <span>·</span>
+            <a href="https://www.eia.gov/naturalgas/monthly/" target="_blank" rel="noreferrer">EIA Natural Gas Monthly ↗</a>
+            <span>·</span>
+            <a href="https://www.kindermorgan.com/Operations/Natural-Gas/Index" target="_blank" rel="noreferrer">Kinder Morgan route description ↗</a>
+          </p>
+        </div>
+
+        <div id="guide-panel-measures" class="guide-panel" data-guide-panel="measures" role="tabpanel" aria-labelledby="guide-tab-measures" hidden>
+          <div class="measure-grid">
+            <article><strong>Planned reduction</strong><p>How much nominal transportation capacity the outage forecast removes for a station, direction, and period.</p></article>
+            <article><strong>Forecast operating capacity</strong><p>How much capacity TGP expects to provide during the maintenance window.</p></article>
+            <article><strong>Scheduled quantity</strong><p>Net gas nominated and confirmed for transportation in that direction at the captured cycle. It is not a physical-flow meter.</p></article>
+            <article><strong>Available capacity</strong><p>Operating capacity remaining after scheduled quantity. Low availability indicates limited spare room at that posting—not necessarily a curtailment.</p></article>
+            <article><strong>Conditional shortfall</strong><p>The amount by which the captured schedule would exceed forecast capacity if it stayed unchanged through the future event. It is a scenario, not a forecast of lost gas.</p></article>
+            <article><strong>FH / BH and TD1 / TD2</strong><p>Forward-haul and backhaul outage directions are compared with TGP transport directions using the operator’s published default-direction convention.</p></article>
+          </div>
+        </div>
+
+        <div id="guide-panel-price" class="guide-panel" data-guide-panel="price" role="tabpanel" aria-labelledby="guide-tab-price" hidden>
+          <div class="price-channels">
+            <article><span>Most direct</span><strong>Regional basis</strong><p>A binding constraint can separate prices on either side of the bottleneck. Direction and alternate routes determine which location tightens or weakens.</p></article>
+            <article><span>Balance context</span><strong>Storage and demand</strong><p>High inventories or mild demand can cushion a transport problem. Tight inventories, extreme weather, or high power burn can make the same outage more consequential.</p></article>
+            <article><span>Higher bar</span><strong>Henry Hub futures</strong><p>TGP maintenance alone does not establish an NG futures view. The event must be large enough—and difficult enough to reroute—to alter expected U.S. injections, withdrawals, production, or consumption.</p></article>
+          </div>
+          <div class="confirmation-grid">
+            <div><strong>Evidence that strengthens the case</strong><p>Updated nominations still exceed the limit; alternate routes are tight; regional demand is high; basis or flow data moves in the expected direction.</p></div>
+            <div><strong>Evidence that weakens the case</strong><p>TGP revises the work away; schedules fall below the limit; shippers reroute successfully; regional prices and flows show no stress.</p></div>
+          </div>
+        </div>
+      </details>
+
+      <section class="watch-section" data-page-section="insights" aria-labelledby="watch-heading" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Highest-impact scenarios</p>
+            <h2 id="watch-heading">Where the transport setup could tighten</h2>
+          </div>
+          <span class="scenario-label">Needs market confirmation</span>
+        </div>
+        <div id="watch-items" class="watch-grid">
+          <p class="empty-context">Building segment-level watch items…</p>
+        </div>
+        <div class="research-guardrails">
+          <details><summary>What could weaken this view</summary><ul id="counterevidence"></ul></details>
+          <details><summary>What confirmation is missing</summary><ul id="missing-data"></ul></details>
+          <details><summary>Gas-market definitions</summary><dl id="brief-glossary"></dl></details>
+        </div>
+      </section>
+
+      <div id="data" class="workspace" data-page-section="workspace" hidden>
+        <section class="terminal-panel">
+          <nav class="tabs" aria-label="Research views">
+            <button class="tab active" data-view="impacts">Transport scenarios</button>
+            <button class="tab" data-view="constraints">Forecast constraints</button>
+            <button class="tab" data-view="capacity">Operating capacity</button>
+            <button class="tab" data-view="map">Impact map</button>
+            <button class="tab" data-view="revisions">Forecast changes</button>
+            <button class="tab" data-view="notices">Maintenance notices</button>
+          </nav>
+
+          <div id="report-context" class="report-context">
+            <span id="report-coverage">Loading selected report coverage…</span>
+            <span id="report-quality" class="report-quality" hidden></span>
+          </div>
+
+          <div class="toolbar">
+            <label class="search-field">
+              <span class="sr-only">Search</span>
+              <input id="search" type="search" placeholder="Search station, segment, or outage…">
+            </label>
+            <label>
+              <span id="filter-label" class="sr-only">Horizon</span>
+              <select id="filter">
+                <option value="all">All horizons</option>
+                <option value="seven_day">Seven day</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </label>
+            <span id="row-count" class="row-count">—</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead id="table-head"></thead>
+              <tbody id="table-body">
+                <tr><td class="loading-cell">Loading TGP forecast…</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <section id="map-view" class="map-view" hidden>
+            <div class="map-precision-note">
+              <strong>Approximate geography</strong>
+              <span id="map-warning">Locations use county reference points—not exact facility coordinates or a surveyed pipeline route.</span>
+            </div>
+            <div id="map-layer-switch" class="map-layer-switch" role="group" aria-label="Map metric">
+              <span>View</span>
+              <button class="active" data-map-layer="risk" type="button">Transport risk</button>
+              <button data-map-layer="reduction" type="button">All maintenance</button>
+              <button data-map-layer="revision" type="button">Report revision</button>
+              <button data-map-layer="tightness" type="button">Current tightness</button>
+            </div>
+            <div id="map-legend" class="map-legend" aria-label="Map legend"></div>
+            <div class="map-layout">
+              <div class="map-canvas-wrap">
+                <svg id="network-map" class="network-map" viewBox="0 0 900 520" role="img" aria-label="Tennessee Gas Pipeline location and maintenance impact map"></svg>
+                <div class="map-controls" aria-label="Map controls">
+                  <button id="map-zoom-in" type="button" title="Zoom in" aria-label="Zoom in">+</button>
+                  <button id="map-zoom-out" type="button" title="Zoom out" aria-label="Zoom out">−</button>
+                  <button id="map-zoom-reset" type="button" title="Fit current view">Fit</button>
+                  <button id="map-fullscreen" type="button" title="Open map full screen">Full screen</button>
+                </div>
+              </div>
+              <aside id="map-inspector" class="map-inspector">
+                <p class="eyebrow">How to read this</p>
+                <h3>Maintenance impact map</h3>
+                <p>Large circles are approximate segment anchors. Small dots are county location clusters. The full connected topology is supporting source evidence, not the dashboard layer.</p>
+                <dl class="map-glossary">
+                  <div><dt>Large circles</dt><dd>Native segment metric anchors.</dd></div>
+                  <div><dt>Small dots</dt><dd>County location clusters.</dd></div>
+                  <div><dt>Connections</dt><dd>Verify against the cited operator map.</dd></div>
+                </dl>
+              </aside>
+            </div>
+          </section>
+        </section>
+
+        <aside class="history-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">TGP forecast archive</p>
+              <h3>Published outage forecasts</h3>
+            </div>
+            <span id="report-range" class="muted"></span>
+          </div>
+          <p class="history-description">Newest operator update first. Select a report to load the maintenance forecast published in that notice and its change from the preceding report.</p>
+          <div id="report-history" class="report-history"></div>
+          <div class="market-context-panel">
+            <p class="eyebrow">Market context</p>
+            <h3 id="market-context-title">Benchmark, weather &amp; storage</h3>
+            <p id="market-context-cutoff" class="muted"></p>
+            <div id="market-context" class="market-context">
+              <p class="empty-context">Loading Henry Hub, Northeast weather, and EIA storage…</p>
+            </div>
+            <p class="market-context-note">These series describe the surrounding gas regime. They do not prove that a TGP outage moved price, and Henry Hub is not TGP regional basis.</p>
+          </div>
+          <details class="archive-method">
+            <summary>About historical coverage</summary>
+            <p>Reports added through historical backfill reproduce the operator's published archive; their archive date is not the original publication-observation time.</p>
+          </details>
+        </aside>
+      </div>
+    </main>
+    </div>
+
+    <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+    <aside id="detail-drawer" class="detail-drawer" aria-label="Evidence detail" aria-hidden="true">
+      <button id="drawer-close" class="drawer-close" aria-label="Close details">×</button>
+      <div id="drawer-content"></div>
+    </aside>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

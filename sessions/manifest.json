@@ -1,0 +1,693 @@
+{
+  "design_sessions": [
+    {
+      "session_id": "01a04539-3a59-72a3-aa91-e3c1611b33fd",
+      "role": "design_and_implementation",
+      "task": "Design, implement, test, and prepare Pipeline Pulse for submission",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-sol",
+      "started_at_utc": "2026-08-27T21:56:47.215Z",
+      "captured_through_utc": "2026-08-31T14:58:36.699Z",
+      "capture_status": "lossless_snapshot_of_active_session",
+      "code_commit": null,
+      "raw_format": "jsonl.gz",
+      "recovered_jsonl": {
+        "bytes": 176728283,
+        "sha256": "fe7102a756dc91a927a54bc1864fd682544c1796825a0b753aa970345044e816"
+      },
+      "secret_scan": {
+        "status": "passed",
+        "scope": "Plaintext OpenAI, GitHub, AWS, Slack, and PEM private-key formats; encrypted model payloads retained as opaque raw-session data",
+        "reviewed_at_utc": "2026-08-31T14:59:04Z"
+      },
+      "file": {
+        "path": "design/pipeline-pulse-design-build-session.jsonl.gz",
+        "bytes": 82797719,
+        "sha256": "74d5481d1a6df597e5ce951d40b76940dd71e81bc928cbb5a8e52f693c362e8f"
+      }
+    }
+  ],
+  "sessions": [
+    {
+      "agent_run_id": "1d4d43b7-484c-4f9f-b3cb-f7ae4792e938",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "codex-default",
+      "started_at_utc": "2026-08-30T14:58:41.260049Z",
+      "completed_at_utc": "2026-08-30T15:00:20.067376Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "01097b49879a09cb0932415d9cc8efbb63d9cc7dd5c66bde1acf4b5af745bd84",
+      "input_artifact_ids": [
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_point_delivery_capacity:1787941559190690000:af85aeca5742b4ed993c3014ada6f612283a8a047e4e7c76671b8029bcfd3f05",
+        "km_tgp_point_receipt_capacity:1787941570545179000:37ca0a5593065278dad5d89f8a85f0f1116def0c3ba01b8dfeef1c38f40cfb96",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc"
+      ],
+      "validation": {
+        "available_evidence_count": 4,
+        "cited_evidence_count": 4,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260830T145841Z_1d4d43b7-484c-4f9f-b3cb-f7ae4792e938.packet.json",
+          "sha256": "2385377b0bbc303868cfef359c3f3f7e89d061b852022f283c4c21549187a545"
+        },
+        {
+          "path": "insights/20260830T145841Z_1d4d43b7-484c-4f9f-b3cb-f7ae4792e938.prompt.txt",
+          "sha256": "3b0dbc729f903ba01da309dd1d0c0c5efd15cb03da740a0bd395e8a69e5c1c68"
+        },
+        {
+          "path": "insights/20260830T145841Z_1d4d43b7-484c-4f9f-b3cb-f7ae4792e938.schema.json",
+          "sha256": "4a4e0675e4e0b0ebd344aa84c9ad35a69e536530e27be66cbcf98c031b0b4605"
+        },
+        {
+          "path": "insights/20260830T145841Z_1d4d43b7-484c-4f9f-b3cb-f7ae4792e938.events.jsonl",
+          "sha256": "a44acc42dc0f9b72a5f79ec22d2ae31402d33a6f85c309d8b831147f9dab92b9"
+        },
+        {
+          "path": "insights/20260830T145841Z_1d4d43b7-484c-4f9f-b3cb-f7ae4792e938.output.json",
+          "sha256": "471c4d9cdd68cc563e707ace22f682594cf85f84fcdb116bcd84cdfee316159d"
+        },
+        {
+          "path": "insights/20260830T145841Z_1d4d43b7-484c-4f9f-b3cb-f7ae4792e938.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260830T145841Z_1d4d43b7-484c-4f9f-b3cb-f7ae4792e938.validation.json",
+          "sha256": "ca5dca7b39bdd63845c01f8da5245a6528774f5446ce4f572c451584cdc1d1a6"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "f06b4bc4-9968-4630-ac4a-3fd00bed61a9",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-30T15:55:49.449971Z",
+      "completed_at_utc": "2026-08-30T15:56:32.756475Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "4c3320a0880b278701e935370bd24dc79541ff3ed68cedd4d28ade3da348dba3",
+      "input_artifact_ids": [
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d"
+      ],
+      "validation": {
+        "available_evidence_count": 4,
+        "cited_evidence_count": 4,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260830T155549Z_f06b4bc4-9968-4630-ac4a-3fd00bed61a9.packet.json",
+          "sha256": "fafbd7be1876f9c0df8b79e4ef7c166a66f08f62199c90e85ac56a8e7a3f1c35"
+        },
+        {
+          "path": "insights/20260830T155549Z_f06b4bc4-9968-4630-ac4a-3fd00bed61a9.prompt.txt",
+          "sha256": "18bd3ea08bf37e72afbcbd6f54df7e0a7efa5b5421d5aeef7c26fedd65884dda"
+        },
+        {
+          "path": "insights/20260830T155549Z_f06b4bc4-9968-4630-ac4a-3fd00bed61a9.schema.json",
+          "sha256": "4a4e0675e4e0b0ebd344aa84c9ad35a69e536530e27be66cbcf98c031b0b4605"
+        },
+        {
+          "path": "insights/20260830T155549Z_f06b4bc4-9968-4630-ac4a-3fd00bed61a9.events.jsonl",
+          "sha256": "a9d56e14553d5c6c7a0d0ccd420311fc10031b449fea040aae76846211a1c639"
+        },
+        {
+          "path": "insights/20260830T155549Z_f06b4bc4-9968-4630-ac4a-3fd00bed61a9.output.json",
+          "sha256": "65de322ecce8e18d60d5214a18c456213127dafe25b79373558453ee8575d1a3"
+        },
+        {
+          "path": "insights/20260830T155549Z_f06b4bc4-9968-4630-ac4a-3fd00bed61a9.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260830T155549Z_f06b4bc4-9968-4630-ac4a-3fd00bed61a9.validation.json",
+          "sha256": "ca5dca7b39bdd63845c01f8da5245a6528774f5446ce4f572c451584cdc1d1a6"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "58edf34a-1ff3-4aa8-a50b-4722be2fd569",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-30T17:16:11.030489Z",
+      "completed_at_utc": "2026-08-30T17:17:07.717162Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "3d8ae82dbf3c7d66a3c34491d324ff79f646ef2b9985d8caf750e80073de83d3",
+      "input_artifact_ids": [
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d"
+      ],
+      "validation": {
+        "available_evidence_count": 9,
+        "cited_evidence_count": 7,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260830T171611Z_58edf34a-1ff3-4aa8-a50b-4722be2fd569.packet.json",
+          "sha256": "fb8251f878195247bb74e58b426385d1f1d46e7621c4d30753dbc21065e91c74"
+        },
+        {
+          "path": "insights/20260830T171611Z_58edf34a-1ff3-4aa8-a50b-4722be2fd569.prompt.txt",
+          "sha256": "9f04b986e6b5a7a43288c10c69d22ac2ed568bc58027917fc5bf07f6e391c283"
+        },
+        {
+          "path": "insights/20260830T171611Z_58edf34a-1ff3-4aa8-a50b-4722be2fd569.schema.json",
+          "sha256": "4a4e0675e4e0b0ebd344aa84c9ad35a69e536530e27be66cbcf98c031b0b4605"
+        },
+        {
+          "path": "insights/20260830T171611Z_58edf34a-1ff3-4aa8-a50b-4722be2fd569.events.jsonl",
+          "sha256": "fd6c8e728d9be3f0420ea7d96b8c8cb44ebbf17739359119ebddf5f0301e1130"
+        },
+        {
+          "path": "insights/20260830T171611Z_58edf34a-1ff3-4aa8-a50b-4722be2fd569.output.json",
+          "sha256": "0ce55bc183e31fb96d9cf9b83dbb506ea8588a78b8e6f46a3a6cf4d913b07169"
+        },
+        {
+          "path": "insights/20260830T171611Z_58edf34a-1ff3-4aa8-a50b-4722be2fd569.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260830T171611Z_58edf34a-1ff3-4aa8-a50b-4722be2fd569.validation.json",
+          "sha256": "abb6cbe739c3c4c8284bad42cfb6bac5e9b1195bbf4684cfa5cc3a471dcea102"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "6db7bdcb-2805-4046-a294-7ceab5e9a4ee",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-30T17:18:10.981649Z",
+      "completed_at_utc": "2026-08-30T17:18:59.661032Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "3ac47428bccc4df05c6b1090454826df2ce5c8ca39db18ea2b9e00db30b5e83c",
+      "input_artifact_ids": [
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d"
+      ],
+      "validation": {
+        "available_evidence_count": 9,
+        "cited_evidence_count": 8,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260830T171810Z_6db7bdcb-2805-4046-a294-7ceab5e9a4ee.packet.json",
+          "sha256": "46f4efd94435ca3bd1358987f5bdce7e3fc21d3ccdfa29a645fcf15bc4bcb3ec"
+        },
+        {
+          "path": "insights/20260830T171810Z_6db7bdcb-2805-4046-a294-7ceab5e9a4ee.prompt.txt",
+          "sha256": "4d9f3b76876be6667cf973ccbad45d2a30107e1f08c09840faae093332c0642c"
+        },
+        {
+          "path": "insights/20260830T171810Z_6db7bdcb-2805-4046-a294-7ceab5e9a4ee.schema.json",
+          "sha256": "4a4e0675e4e0b0ebd344aa84c9ad35a69e536530e27be66cbcf98c031b0b4605"
+        },
+        {
+          "path": "insights/20260830T171810Z_6db7bdcb-2805-4046-a294-7ceab5e9a4ee.events.jsonl",
+          "sha256": "cda5f644c9e0d083d96e2581b19080f62b7443dcfad1bb5bc51035cfd9013691"
+        },
+        {
+          "path": "insights/20260830T171810Z_6db7bdcb-2805-4046-a294-7ceab5e9a4ee.output.json",
+          "sha256": "3849760debf5794330d1d65e36c2a861a10161fdb6140ac2430510c0ae2505f9"
+        },
+        {
+          "path": "insights/20260830T171810Z_6db7bdcb-2805-4046-a294-7ceab5e9a4ee.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260830T171810Z_6db7bdcb-2805-4046-a294-7ceab5e9a4ee.validation.json",
+          "sha256": "bd14871b6afe8c3e41fc0ab6f53df0143f2c68b658d1f7edfc008c6ddf1bb946"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "d085a214-ed2f-44bc-bb72-02b28dd6c5dd",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-30T18:56:35.506359Z",
+      "completed_at_utc": "2026-08-30T18:57:20.557037Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "8439768a4b18fb7faf7e84d1cd43a5658c400599281b1aea2a7cc68318180225",
+      "input_artifact_ids": [
+        "eia_wngsr:1788115874039669000:c7dd258cb0915a825acbed60129cdeb5e37aaf8e0ebe0021c97414369d461469",
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d"
+      ],
+      "validation": {
+        "available_evidence_count": 10,
+        "cited_evidence_count": 7,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260830T185635Z_d085a214-ed2f-44bc-bb72-02b28dd6c5dd.packet.json",
+          "sha256": "160be276b5d81c06bcd8596f2a88846c75b0d0ceeee56ca5fcea661fc8766e63"
+        },
+        {
+          "path": "insights/20260830T185635Z_d085a214-ed2f-44bc-bb72-02b28dd6c5dd.prompt.txt",
+          "sha256": "d49f3fa05c945437abb4e4cfd5b2e6f4117f0751803b25cef2c1fbdde5045193"
+        },
+        {
+          "path": "insights/20260830T185635Z_d085a214-ed2f-44bc-bb72-02b28dd6c5dd.schema.json",
+          "sha256": "2f71df871135b7c7d71ad9accddb5eeb7d0744e827444af88bf2d0828279e641"
+        },
+        {
+          "path": "insights/20260830T185635Z_d085a214-ed2f-44bc-bb72-02b28dd6c5dd.events.jsonl",
+          "sha256": "6863ac173da798f07f2ba5424634a555d70fd48d2e10066dcb19d52dfe1e38b4"
+        },
+        {
+          "path": "insights/20260830T185635Z_d085a214-ed2f-44bc-bb72-02b28dd6c5dd.output.json",
+          "sha256": "86dd978aeb9d77d1c925431fe187903649df59a0a0d8dfed142790e57df797ba"
+        },
+        {
+          "path": "insights/20260830T185635Z_d085a214-ed2f-44bc-bb72-02b28dd6c5dd.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260830T185635Z_d085a214-ed2f-44bc-bb72-02b28dd6c5dd.validation.json",
+          "sha256": "78ba64a5f9a38d86a24b694fad6ffc21ba7ad98afd66de463743f1e9be8df3b1"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "74dbd9ce-9832-46d6-b63d-8285060066d7",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-30T19:17:25.656562Z",
+      "completed_at_utc": "2026-08-30T19:18:27.063547Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "5e33fc7966ac9fd8ced2e7b7b5b461c8f8621947ca4e117400080de90d46fff8",
+      "input_artifact_ids": [
+        "eia_wngsr:1788115874039669000:c7dd258cb0915a825acbed60129cdeb5e37aaf8e0ebe0021c97414369d461469",
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d"
+      ],
+      "validation": {
+        "available_evidence_count": 10,
+        "cited_evidence_count": 7,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260830T191725Z_74dbd9ce-9832-46d6-b63d-8285060066d7.packet.json",
+          "sha256": "b301cd30f00aceed3cdc838ee78814529bbe607c0566cd0be771e8fed1ec0436"
+        },
+        {
+          "path": "insights/20260830T191725Z_74dbd9ce-9832-46d6-b63d-8285060066d7.prompt.txt",
+          "sha256": "80fae9d83319e06d56678c767c43332680cecfdd5b52f7caf3dc21043f984271"
+        },
+        {
+          "path": "insights/20260830T191725Z_74dbd9ce-9832-46d6-b63d-8285060066d7.schema.json",
+          "sha256": "2f71df871135b7c7d71ad9accddb5eeb7d0744e827444af88bf2d0828279e641"
+        },
+        {
+          "path": "insights/20260830T191725Z_74dbd9ce-9832-46d6-b63d-8285060066d7.events.jsonl",
+          "sha256": "287301633815c2c4a029a6254adc03322e1074acd5dc861debceb710fecff6af"
+        },
+        {
+          "path": "insights/20260830T191725Z_74dbd9ce-9832-46d6-b63d-8285060066d7.output.json",
+          "sha256": "56ff01ce52bcbb4ccc39d90f4c34e3a3cbdfa9dfb52bc9043082c2763f8cab30"
+        },
+        {
+          "path": "insights/20260830T191725Z_74dbd9ce-9832-46d6-b63d-8285060066d7.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260830T191725Z_74dbd9ce-9832-46d6-b63d-8285060066d7.validation.json",
+          "sha256": "78ba64a5f9a38d86a24b694fad6ffc21ba7ad98afd66de463743f1e9be8df3b1"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "b8033e58-3a3e-44f5-8d9f-872fe6f10199",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-31T11:52:31.357513Z",
+      "completed_at_utc": "2026-08-31T11:53:22.123514Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "9a1a9a329a9292904900387df0509bacad9866302e2d8808db558055b9406eef",
+      "input_artifact_ids": [
+        "eia_henry_hub_spot:1788176662042198000:3241dfb4a8883f486cfb073eb5161263d2da2c27ccb423435106659f0cd0bc3e",
+        "eia_wngsr:1788115874039669000:c7dd258cb0915a825acbed60129cdeb5e37aaf8e0ebe0021c97414369d461469",
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d",
+        "nws_hourly_forecast:1788122370067102000:19444418b9956323d9a1392d52f902414446f012ffcbddb1bc46cc1063f2b665",
+        "nws_hourly_forecast:1788122370872528000:237d26e05802c54515f429db6ceec1c9bef428667726e7406f477c81ef7eb2f8"
+      ],
+      "validation": {
+        "available_evidence_count": 13,
+        "cited_evidence_count": 6,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260831T115231Z_b8033e58-3a3e-44f5-8d9f-872fe6f10199.packet.json",
+          "sha256": "630191c7ec9d138d9d9e0d4cdcbe45195952288d6a0b48be0012892222874293"
+        },
+        {
+          "path": "insights/20260831T115231Z_b8033e58-3a3e-44f5-8d9f-872fe6f10199.prompt.txt",
+          "sha256": "5097404aea3db5eb429f167d0bc519785476444795f2b25f30c75543276eba0f"
+        },
+        {
+          "path": "insights/20260831T115231Z_b8033e58-3a3e-44f5-8d9f-872fe6f10199.schema.json",
+          "sha256": "2f71df871135b7c7d71ad9accddb5eeb7d0744e827444af88bf2d0828279e641"
+        },
+        {
+          "path": "insights/20260831T115231Z_b8033e58-3a3e-44f5-8d9f-872fe6f10199.events.jsonl",
+          "sha256": "ac160e9ba49759ad9768ca85187ad3929fd89cc719fadb83157c55bb28bbb1b0"
+        },
+        {
+          "path": "insights/20260831T115231Z_b8033e58-3a3e-44f5-8d9f-872fe6f10199.output.json",
+          "sha256": "486556280cc255de786a8554fcb7135b828ed3a7e5cd62ef51048358d2539e0d"
+        },
+        {
+          "path": "insights/20260831T115231Z_b8033e58-3a3e-44f5-8d9f-872fe6f10199.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260831T115231Z_b8033e58-3a3e-44f5-8d9f-872fe6f10199.validation.json",
+          "sha256": "6a9250033b0c475a917fd133af0328f849b0107cf47a92e482e24ae58e8ed06b"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "5a823758-28f8-4ee2-89ba-c81dfb41c7ee",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-31T11:59:37.300550Z",
+      "completed_at_utc": "2026-08-31T12:00:27.591204Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "e0556d9f1ac050ecc65f8c8b3ed3f868873786abda25d9a142e245effdc542ab",
+      "input_artifact_ids": [
+        "eia_henry_hub_spot:1788176662042198000:3241dfb4a8883f486cfb073eb5161263d2da2c27ccb423435106659f0cd0bc3e",
+        "eia_wngsr:1788115874039669000:c7dd258cb0915a825acbed60129cdeb5e37aaf8e0ebe0021c97414369d461469",
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d",
+        "nws_hourly_forecast:1788122370067102000:19444418b9956323d9a1392d52f902414446f012ffcbddb1bc46cc1063f2b665",
+        "nws_hourly_forecast:1788122370872528000:237d26e05802c54515f429db6ceec1c9bef428667726e7406f477c81ef7eb2f8"
+      ],
+      "validation": {
+        "available_evidence_count": 13,
+        "cited_evidence_count": 8,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260831T115937Z_5a823758-28f8-4ee2-89ba-c81dfb41c7ee.packet.json",
+          "sha256": "3ff4c65c359ef9679a3ce3d84f4a99918a9fd69b1264147f27ebe5eace1401bb"
+        },
+        {
+          "path": "insights/20260831T115937Z_5a823758-28f8-4ee2-89ba-c81dfb41c7ee.prompt.txt",
+          "sha256": "8f083d294f7fb5b1fc04ca5848359ad496dffea0241686a291a433fe4117f8dd"
+        },
+        {
+          "path": "insights/20260831T115937Z_5a823758-28f8-4ee2-89ba-c81dfb41c7ee.schema.json",
+          "sha256": "2f71df871135b7c7d71ad9accddb5eeb7d0744e827444af88bf2d0828279e641"
+        },
+        {
+          "path": "insights/20260831T115937Z_5a823758-28f8-4ee2-89ba-c81dfb41c7ee.events.jsonl",
+          "sha256": "13641db3bc256d3a1e57ede2a97d2619945e3047dae9a4ac8a66489181204fff"
+        },
+        {
+          "path": "insights/20260831T115937Z_5a823758-28f8-4ee2-89ba-c81dfb41c7ee.output.json",
+          "sha256": "fcc52ae9fdda23d4f1f86afc7ea8ff38e9a9032a95369225462b5a273514a22a"
+        },
+        {
+          "path": "insights/20260831T115937Z_5a823758-28f8-4ee2-89ba-c81dfb41c7ee.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260831T115937Z_5a823758-28f8-4ee2-89ba-c81dfb41c7ee.validation.json",
+          "sha256": "8a8050a28974eef8639de5997ef5ac73c42d1f9d366e1dcbff1c641606580f1d"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "294f47f3-de9d-4cc6-8b52-c229cccdd664",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-31T12:36:34.779890Z",
+      "completed_at_utc": "2026-08-31T12:38:01.633615Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "881da3fdc7af479f1fa69c8a4628da4c506cfea68cb554671fd334601158822e",
+      "input_artifact_ids": [
+        "eia_henry_hub_spot:1788176662042198000:3241dfb4a8883f486cfb073eb5161263d2da2c27ccb423435106659f0cd0bc3e",
+        "eia_wngsr:1788115874039669000:c7dd258cb0915a825acbed60129cdeb5e37aaf8e0ebe0021c97414369d461469",
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d",
+        "nws_hourly_forecast:1788122370067102000:19444418b9956323d9a1392d52f902414446f012ffcbddb1bc46cc1063f2b665",
+        "nws_hourly_forecast:1788122370872528000:237d26e05802c54515f429db6ceec1c9bef428667726e7406f477c81ef7eb2f8"
+      ],
+      "validation": {
+        "available_evidence_count": 13,
+        "cited_evidence_count": 11,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260831T123634Z_294f47f3-de9d-4cc6-8b52-c229cccdd664.packet.json",
+          "sha256": "25527edd986b06e82184d1ea317970ad9ca1b1e782c93032ba910fcd652a95a2"
+        },
+        {
+          "path": "insights/20260831T123634Z_294f47f3-de9d-4cc6-8b52-c229cccdd664.prompt.txt",
+          "sha256": "768277269d9bf9ab0cfade64f9cd25ed3f26899fd7a5a715fec2b6adab3b192b"
+        },
+        {
+          "path": "insights/20260831T123634Z_294f47f3-de9d-4cc6-8b52-c229cccdd664.schema.json",
+          "sha256": "2f71df871135b7c7d71ad9accddb5eeb7d0744e827444af88bf2d0828279e641"
+        },
+        {
+          "path": "insights/20260831T123634Z_294f47f3-de9d-4cc6-8b52-c229cccdd664.events.jsonl",
+          "sha256": "6805564d7c7ca1c22481f92ca9c9595382356e8631482e76af6d7b8d49310dd2"
+        },
+        {
+          "path": "insights/20260831T123634Z_294f47f3-de9d-4cc6-8b52-c229cccdd664.output.json",
+          "sha256": "de4bae23bccb4248531770aea52bca3595d6c493c61e9145f518888603f31af5"
+        },
+        {
+          "path": "insights/20260831T123634Z_294f47f3-de9d-4cc6-8b52-c229cccdd664.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260831T123634Z_294f47f3-de9d-4cc6-8b52-c229cccdd664.validation.json",
+          "sha256": "004f1c3788e831bf614d86ce1a95d99747f5393c9ae3041d10b085a2959b9f8d"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "7a59b518-d9ea-487b-9cac-ef4bbe8a64e4",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-31T13:18:25.677650Z",
+      "completed_at_utc": "2026-08-31T13:19:55.901160Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "20d6b3ebf87ee76d7261629bfba61bfbe2ea47977d8cf333d6a69c9b0cee5e37",
+      "input_artifact_ids": [
+        "eia_henry_hub_spot:1788176662042198000:3241dfb4a8883f486cfb073eb5161263d2da2c27ccb423435106659f0cd0bc3e",
+        "eia_wngsr:1788115874039669000:c7dd258cb0915a825acbed60129cdeb5e37aaf8e0ebe0021c97414369d461469",
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d",
+        "nws_hourly_forecast:1788122370067102000:19444418b9956323d9a1392d52f902414446f012ffcbddb1bc46cc1063f2b665",
+        "nws_hourly_forecast:1788122370872528000:237d26e05802c54515f429db6ceec1c9bef428667726e7406f477c81ef7eb2f8"
+      ],
+      "validation": {
+        "available_evidence_count": 13,
+        "cited_evidence_count": 10,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260831T131825Z_7a59b518-d9ea-487b-9cac-ef4bbe8a64e4.packet.json",
+          "sha256": "1b7c9f6e5a53542928485bbeea0ddb29df9f00638ff80b1705e1d815fdf31347"
+        },
+        {
+          "path": "insights/20260831T131825Z_7a59b518-d9ea-487b-9cac-ef4bbe8a64e4.prompt.txt",
+          "sha256": "c266a0bbc6b24d2a7147b39a36b3fd0c05275aeee7b9d30517bed62485c471ef"
+        },
+        {
+          "path": "insights/20260831T131825Z_7a59b518-d9ea-487b-9cac-ef4bbe8a64e4.schema.json",
+          "sha256": "2f71df871135b7c7d71ad9accddb5eeb7d0744e827444af88bf2d0828279e641"
+        },
+        {
+          "path": "insights/20260831T131825Z_7a59b518-d9ea-487b-9cac-ef4bbe8a64e4.events.jsonl",
+          "sha256": "a0e8877de821cb961fc566878d2d8b7c11a920e7db5ad0d2142ed138ad99888a"
+        },
+        {
+          "path": "insights/20260831T131825Z_7a59b518-d9ea-487b-9cac-ef4bbe8a64e4.output.json",
+          "sha256": "18c091eb56449da5e5ec4aa1737d221524339e3f2530768b663aa23ce1de96ce"
+        },
+        {
+          "path": "insights/20260831T131825Z_7a59b518-d9ea-487b-9cac-ef4bbe8a64e4.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260831T131825Z_7a59b518-d9ea-487b-9cac-ef4bbe8a64e4.validation.json",
+          "sha256": "33cf58a688d00dda5c7b9caf6bdd3898c2fac51c210028f6f37e24bde4b311fd"
+        }
+      ]
+    },
+    {
+      "agent_run_id": "0415b9fb-a890-4eae-8077-a8398c60f5ff",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-31T13:23:15.248694Z",
+      "completed_at_utc": "2026-08-31T13:24:25.152930Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "bf02e860773f3d7d02792ee136dcfe654a28effcd8216c331274699e4fd1ee4b",
+      "input_artifact_ids": [
+        "eia_henry_hub_spot:1788176662042198000:3241dfb4a8883f486cfb073eb5161263d2da2c27ccb423435106659f0cd0bc3e",
+        "eia_wngsr:1788115874039669000:c7dd258cb0915a825acbed60129cdeb5e37aaf8e0ebe0021c97414369d461469",
+        "km_tgp_critical:1788110122419257000:5c924dc6c23dab467c649f8808dc8af00af0e929cc7dc5c389521b9eec637518",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788110129332263000:562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3",
+        "km_tgp_notice_detail:1788110156344773000:f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d",
+        "km_tgp_point_delivery_capacity:1788105189193485000:ab287e16d806698fc7024cff3dfeedc28f4f506045abeecd7b539aac36611fc8",
+        "km_tgp_point_receipt_capacity:1788105200950816000:c299101e3d04587624a7616f7c5d654eb383aef97dbc36e6ae8d7cb6aaf99cf6",
+        "km_tgp_segment_capacity:1787941582228921000:9656fa2a506c07d456fb97da8f0437185501849c2416052b63936f2819e69acc",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d",
+        "nws_hourly_forecast:1788122370067102000:19444418b9956323d9a1392d52f902414446f012ffcbddb1bc46cc1063f2b665",
+        "nws_hourly_forecast:1788122370872528000:237d26e05802c54515f429db6ceec1c9bef428667726e7406f477c81ef7eb2f8"
+      ],
+      "validation": {
+        "available_evidence_count": 13,
+        "cited_evidence_count": 10,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260831T132315Z_0415b9fb-a890-4eae-8077-a8398c60f5ff.packet.json",
+          "sha256": "d8e1c46c30fe35c098140c97fcbf8a24c637753948d606f9dab13f2d86d28ba5"
+        },
+        {
+          "path": "insights/20260831T132315Z_0415b9fb-a890-4eae-8077-a8398c60f5ff.prompt.txt",
+          "sha256": "27bb7be3c24ba5e93ad14a003f69f44da78e22821a662635609ad35d1e18fae7"
+        },
+        {
+          "path": "insights/20260831T132315Z_0415b9fb-a890-4eae-8077-a8398c60f5ff.schema.json",
+          "sha256": "2f71df871135b7c7d71ad9accddb5eeb7d0744e827444af88bf2d0828279e641"
+        },
+        {
+          "path": "insights/20260831T132315Z_0415b9fb-a890-4eae-8077-a8398c60f5ff.events.jsonl",
+          "sha256": "b5d2dde7cd7692e4c49886755ffae0b1596c9983f10a2dcc1bc5493ed0233806"
+        },
+        {
+          "path": "insights/20260831T132315Z_0415b9fb-a890-4eae-8077-a8398c60f5ff.output.json",
+          "sha256": "ff0e4d62dcf66de6463eb2621b61372d19c7cad81b0d6e83f46c57139c8b6bb9"
+        },
+        {
+          "path": "insights/20260831T132315Z_0415b9fb-a890-4eae-8077-a8398c60f5ff.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260831T132315Z_0415b9fb-a890-4eae-8077-a8398c60f5ff.validation.json",
+          "sha256": "33cf58a688d00dda5c7b9caf6bdd3898c2fac51c210028f6f37e24bde4b311fd"
+        }
+      ]
+    }
+  ]
+}

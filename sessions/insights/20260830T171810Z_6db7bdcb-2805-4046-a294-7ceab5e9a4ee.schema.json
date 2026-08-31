@@ -1,0 +1,143 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "counterevidence": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "facts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "claim": {
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "claim",
+          "evidence_ids"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "glossary": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "definition": {
+            "type": "string"
+          },
+          "term": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "term",
+          "definition"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "headline": {
+      "type": "string"
+    },
+    "missing_data": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "overall_confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "type": "string"
+    },
+    "plain_english_summary": {
+      "type": "string"
+    },
+    "watch_items": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "type": "string"
+          },
+          "confirmation_needed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "invalidation": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "market_channel": {
+            "type": "string"
+          },
+          "scenario": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "market_channel",
+          "scenario",
+          "confirmation_needed",
+          "invalidation",
+          "confidence",
+          "evidence_ids"
+        ],
+        "type": "object"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "type": "array"
+    },
+    "why_it_matters": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "headline",
+    "plain_english_summary",
+    "why_it_matters",
+    "facts",
+    "watch_items",
+    "counterevidence",
+    "missing_data",
+    "glossary",
+    "overall_confidence"
+  ],
+  "type": "object"
+}

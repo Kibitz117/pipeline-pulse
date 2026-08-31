@@ -1,0 +1,21 @@
+.env
+config/crontab.local
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+data/*.duckdb
+data/*.duckdb.wal
+data/*.lock
+data/raw/**/*
+!data/raw/.gitkeep
+data/curated/**/*
+!data/curated/.gitkeep
+!data/curated/*.csv
+data/logs/*.log
+
+# Freeze the public evidence behind the committed curated snapshot. The mutable
+# local DuckDB, runtime logs, and locks remain untracked.
+!data/raw/**/
+!data/raw/**/*

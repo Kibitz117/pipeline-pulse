@@ -1,0 +1,145 @@
+[policy]
+user_agent_product = "PipelinePulse"
+minimum_request_interval_seconds = 2
+request_timeout_seconds = 180
+retain_unchanged_artifacts = false
+
+[sources.km_tgp_critical]
+kind = "html_notice_index"
+pipeline_code = "TGP"
+url = "https://pipeline2.kindermorgan.com/Notices/Notices.aspx?code=TGP&type=C"
+cadence_seconds = 900
+enabled = true
+
+[sources.km_tgp_critical_full_export]
+kind = "xlsx_notice_index_export"
+pipeline_code = "TGP"
+url = "https://pipeline2.kindermorgan.com/Notices/Notices.aspx?code=TGP&type=C"
+cadence_seconds = 86400
+enabled = true
+
+[sources.km_tgp_planned]
+kind = "html_notice_index"
+pipeline_code = "TGP"
+url = "https://pipeline2.kindermorgan.com/Notices/Notices.aspx?code=TGP&type=P"
+cadence_seconds = 3600
+enabled = false
+
+[sources.km_tgp_notice_detail]
+kind = "html_notice_detail"
+pipeline_code = "TGP"
+url_template = "https://pipeline2.kindermorgan.com/Notices/NoticeDetail.aspx?code=TGP&notc_nbr={notice_id}"
+fetch_on_discovery = true
+backfill_batch_size = 3
+minimum_request_interval_seconds = 2
+enabled = true
+
+[sources.km_tgp_outage_impact]
+kind = "embedded_notice_report"
+pipeline_code = "TGP"
+subject = "TGP Outage Impact Report"
+enabled = true
+
+[sources.km_tgp_point_capacity]
+kind = "html_capacity"
+pipeline_code = "TGP"
+url = "https://pipeline2.kindermorgan.com/Capacity/OpAvailPoint.aspx?code=TGP"
+cadence_seconds = 3600
+cycle_selection = "BEST AVAILABLE"
+point_roles = ["delivery", "receipt"]
+enabled = true
+
+[sources.km_tgp_segment_capacity]
+kind = "html_capacity"
+pipeline_code = "TGP"
+url = "https://pipeline2.kindermorgan.com/Capacity/OpAvailSegment.aspx?code=TGP"
+cadence_seconds = 3600
+cycle_selection = "BEST AVAILABLE"
+enabled = true
+
+[sources.km_tgp_locations]
+kind = "csv_location_reference"
+pipeline_code = "TGP"
+url = "https://pipeline2.kindermorgan.com/LocationDataDownload/LocDataDwnld.aspx?code=TGP"
+cadence_seconds = 86400
+enabled = true
+
+[sources.census_county_gazetteer]
+kind = "zip_county_reference"
+url = "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_Gaz_counties_national.zip"
+cadence_seconds = 31536000
+coordinate_method = "county_internal_point"
+enabled = true
+
+[sources.census_legacy_county_gazetteer]
+kind = "county_coordinate_reference"
+url = "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2021_Gazetteer/2021_Gaz_counties_national.zip"
+schedule = "daily_with_tgp_locations"
+enabled = true
+notes = "Fallback for TGP's historic Connecticut county labels; current Census geographies remain primary."
+
+[sources.census_tgp_state_boundaries]
+kind = "geojson_map_reference"
+service = "Generalized_ACS2025/State_County/MapServer/9"
+scale = "20m"
+cadence_seconds = 31536000
+enabled = true
+
+[sources.eia_wngsr]
+kind = "json_release"
+url = "https://ir.eia.gov/ngs/wngsr.json"
+release_aware = true
+enabled = true
+
+[sources.eia_henry_hub]
+kind = "eia_api"
+series_code = "EIA_HENRY_HUB_SPOT"
+frequency = "daily"
+enabled = false
+
+[sources.eia_henry_hub_spot]
+kind = "public_html_history"
+url = "https://www.eia.gov/dnav/ng/hist/rngwhhdD.htm"
+frequency = "daily_observations_weekly_batch"
+series = "DHHNGSP"
+observation_type = "physical_spot"
+enabled = true
+
+[sources.fred_henry_hub_spot_fallback]
+kind = "public_csv_reference"
+url = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DHHNGSP"
+frequency = "weekly"
+series = "DHHNGSP"
+enabled = false
+
+[sources.yahoo_ng_front_month]
+kind = "optional_public_research_proxy"
+url = "https://query2.finance.yahoo.com/v8/finance/chart/NG%3DF"
+frequency = "manual"
+symbol = "NG=F"
+observation_type = "futures_proxy"
+personal_use_only = true
+enabled = false
+
+[sources.cme_ng_futures]
+kind = "licensed_production_upgrade"
+url = "https://www.cmegroup.com/market-data/real-time-futures-and-options-data-api.html"
+frequency = "intraday"
+license_required = true
+enabled = false
+
+[sources.eia_supply_demand]
+kind = "eia_api"
+frequency = "monthly"
+vintage_aware = true
+enabled = false
+
+[sources.nws_degree_days]
+kind = "nws_hourly_forecast_derived"
+url = "https://api.weather.gov/points/{latitude},{longitude}"
+frequency = "forecast_vintage"
+forecast_days = 7
+base_temperature_f = 65
+anchors = ["New York City", "Boston"]
+observation_type = "weather_forecast"
+enabled = true

@@ -1,0 +1,26 @@
+# Replace this value with the absolute path to your clone before installing:
+#   crontab config/crontab.local
+# First create the local database once from the repository root:
+#   ./.venv/bin/pipeline-pulse scheduled-collect --mode bootstrap
+PIPELINE_PULSE_DIR=/absolute/path/to/pipeline-pulse
+SHELL=/bin/zsh
+PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
+
+# Poll the newest page, fetch three missing details, rotate through three
+# active/recent detail pages for revisions, and refresh CSV every 15 minutes.
+*/15 * * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse scheduled-collect --mode incremental >> data/logs/collector.log 2>&1
+
+# Refresh the complete rolling-history export once per day at 02:17 local time.
+17 2 * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse scheduled-collect --mode full-export >> data/logs/collector.log 2>&1
+
+# Archive best-available delivery, receipt, and segment capacity each hour.
+7 * * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse scheduled-collect --mode capacity >> data/logs/collector.log 2>&1
+
+# Refresh NWS demand weather plus EIA storage and physical Henry Hub spot.
+# Six-hour polling captures forecast vintages; unchanged raw bodies deduplicate by hash.
+42 */6 * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse scheduled-collect --mode context >> data/logs/collector.log 2>&1
+
+# In the untracked config/crontab.local, add CODEX_API_KEY=<your key> above.
+# Twelve minutes after capacity collection, generate a memo only when material
+# evidence changed. With no key, this job is a no-op and collection keeps running.
+12 * * * * if [ -n "$CODEX_API_KEY" ]; then cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse generate-tgp-insights --if-changed >> data/logs/insights.log 2>&1; fi
