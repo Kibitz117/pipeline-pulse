@@ -15,14 +15,23 @@ local Codex login is needed only to generate a new AI memo.
 
 ## Run locally
 
-Requires Python 3.11+ (3.12 recommended).
+Requires [uv](https://docs.astral.sh/uv/getting-started/installation/). On
+macOS, install it with `brew install uv`. The repository pins Python 3.12 for
+local development; uv can provision it if it is not already installed.
 
 ```bash
-python3.12 -m venv .venv
-./.venv/bin/python -m pip install -e .
-./.venv/bin/pipeline-pulse scheduled-collect --mode bootstrap
-./.venv/bin/pipeline-pulse serve
+uv sync --locked
+uv run --locked pipeline-pulse scheduled-collect --mode bootstrap
+uv run --locked pipeline-pulse serve
 ```
+
+`uv sync --locked` selects the pinned Python, creates `.venv`, installs Pipeline
+Pulse, and reproduces the exact dependency graph committed in `uv.lock`. If
+`pyproject.toml` and the lock ever disagree, it fails instead of silently
+resolving a different environment.
+For a pip-only fallback, run `python3.12 -m venv .venv` followed by
+`./.venv/bin/python -m pip install -e .` and use the `.venv/bin/pipeline-pulse`
+executable directly.
 
 The bootstrap is the only first-run data command. It creates
 `data/pipeline_pulse.duckdb`, pulls the complete notice index, all available
@@ -110,16 +119,16 @@ After the bootstrap, use the smaller modes below from the repository root:
 
 ```bash
 # Notices, missing detail backlog, and rotating same-ID revision checks
-./.venv/bin/pipeline-pulse scheduled-collect --mode incremental
+uv run --locked pipeline-pulse scheduled-collect --mode incremental
 
 # Delivery, receipt, and directional-segment operating capacity
-./.venv/bin/pipeline-pulse scheduled-collect --mode capacity
+uv run --locked pipeline-pulse scheduled-collect --mode capacity
 
 # EIA storage, direct-EIA Henry Hub spot, and NWS HDD/CDD
-./.venv/bin/pipeline-pulse scheduled-collect --mode context
+uv run --locked pipeline-pulse scheduled-collect --mode context
 
 # Integrity, source-schema, clock, reconciliation, and coverage gate
-./.venv/bin/pipeline-pulse quality
+uv run --locked pipeline-pulse quality
 ```
 
 Use `scheduled-collect --mode full-export` for the complete notice index and
@@ -134,7 +143,7 @@ Install Codex CLI once if it is not already available:
 
 ```bash
 npm install -g @openai/codex
-./.venv/bin/pipeline-pulse generate-tgp-insights --if-changed
+uv run --locked pipeline-pulse generate-tgp-insights --if-changed
 ```
 
 Manual runs can use an existing Codex login. For unattended local cron, put
@@ -203,7 +212,9 @@ crontab config/crontab.local
 The example polls notices every 15 minutes, capacity hourly, public market
 context every six hours, and the full notice/location export daily. A shared
 file lock prevents overlapping jobs. The AI job runs after capacity and is a
-no-op without `CODEX_API_KEY`. Nothing is installed into cron automatically.
+no-op without `CODEX_API_KEY`. The cron file calls the `.venv` that `uv sync`
+created directly, so cron does not need uv on its `PATH`. Nothing is installed
+into cron automatically.
 
 ## Submission evidence
 
@@ -225,7 +236,7 @@ byte recoverable with `gzip -dc` and stays below GitHub's individual-file limit.
 ## Development
 
 ```bash
-PYTHONPATH=src ./.venv/bin/python -m unittest discover -s tests -v
+uv run --locked python -m unittest discover -s tests -v
 node --check ui/app.js
 ```
 
