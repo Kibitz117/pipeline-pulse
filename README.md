@@ -149,7 +149,9 @@ uv run --locked pipeline-pulse generate-tgp-insights --if-changed
 Manual runs can use an existing Codex login. For unattended local cron, put
 `CODEX_API_KEY=<your key>` only in the untracked `config/crontab.local`.
 Collection and the deterministic app continue to work if the key is absent or
-the model call fails.
+the model call fails. When the key is configured, every successful collection
+checks the economic-evidence fingerprint and refreshes the memo only when those
+inputs changed.
 
 The runner:
 
@@ -211,10 +213,11 @@ crontab config/crontab.local
 
 The example polls notices every 15 minutes, capacity hourly, public market
 context every six hours, and the full notice/location export daily. A shared
-file lock prevents overlapping jobs. The AI job runs after capacity and is a
-no-op without `CODEX_API_KEY`. The cron file calls the `.venv` that `uv sync`
-created directly, so cron does not need uv on its `PATH`. Nothing is installed
-into cron automatically.
+file lock prevents overlapping jobs. Each successful pull rebuilds derived
+tables, curated CSVs, and `data/curated/tgp_dataset_status.json`; when
+`CODEX_API_KEY` is configured it also refreshes the AI memo if material evidence
+changed. The cron file calls the `.venv` that `uv sync` created directly, so cron
+does not need uv on its `PATH`. Nothing is installed into cron automatically.
 
 ## Submission evidence
 
@@ -225,7 +228,7 @@ into cron automatically.
 | Timely updates and alerts | Incremental collectors, cron example, material alert ledger, same-ID revision detection |
 | Investor-facing UI | Build-free local terminal in `ui/`, served over the DuckDB read model |
 | AI central to building and operating | Lossless design/build session plus raw operating-agent packets, prompts, events, outputs, and validation |
-| Quality control | Content hashes, byte verification, source-schema fingerprints, audit clocks, reconciliation warnings, 47 network-free tests |
+| Quality control | Content hashes, byte verification, source-schema fingerprints, audit clocks, reconciliation warnings, 50 network-free tests |
 
 `sessions/design/` contains the single Codex session used to design and build
 the project as a lossless compressed raw JSONL export. `sessions/insights/`

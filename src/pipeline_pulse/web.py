@@ -10,9 +10,9 @@ from urllib.parse import parse_qs, urlparse
 import duckdb
 import pendulum
 
+from .alerts import normalize_alert_semantics
 from .insights import build_tgp_research_packet, latest_tgp_research_memo
 from .market_state import build_tgp_daily_market_state
-
 
 UI_ROOT = Path(__file__).parents[2] / "ui"
 NOTICE_URL = (
@@ -86,7 +86,7 @@ def _parse_as_of(value: str | None) -> pendulum.DateTime | None:
         return None
     parsed = pendulum.parse(value, strict=False)
     if not isinstance(parsed, pendulum.DateTime):
-        raise ValueError("as_of must be an ISO-8601 date or timestamp")
+        raise ValueError("as_of must be an ISO-8601 date or timestamp")  # noqa: TRY004
     return parsed.in_timezone("UTC")
 
 
@@ -720,9 +720,7 @@ class TgpReadModel:
         report_notice_id: str | None = None,
         limit: int = 100,
     ) -> list[dict[str, object]]:
-        if status not in {
-            "all", "research_scenario", "monitor", "no_trade_mapping"
-        }:
+        if status not in {"all", "research_scenario", "monitor", "no_trade_mapping"}:
             status = "all"
         rows = self._query(
             """
@@ -796,16 +794,22 @@ class TgpReadModel:
             LIMIT ?
             """,
             [
-                report_notice_id, report_notice_id, status, status,
-                search, search, search, search, search, limit,
+                report_notice_id,
+                report_notice_id,
+                status,
+                status,
+                search,
+                search,
+                search,
+                search,
+                search,
+                limit,
             ],
         )
         for row in rows:
             row["unresolved_reasons"] = json.loads(str(row["unresolved_reasons"]))
             row["evidence"] = json.loads(str(row["evidence"]))
-            row["source_url"] = NOTICE_URL.format(
-                notice_id=row["report_notice_id"]
-            )
+            row["source_url"] = NOTICE_URL.format(notice_id=row["report_notice_id"])
         return rows
 
     def research_brief(self) -> dict[str, object]:
@@ -992,9 +996,7 @@ class TgpReadModel:
             "generated_at_utc": now.to_iso8601_string(),
             "sources": rows,
             "all_decision_sources_fresh": all(
-                row["status"] == "fresh"
-                for row in rows
-                if row["decision_critical"]
+                row["status"] == "fresh" for row in rows if row["decision_critical"]
             ),
         }
 
@@ -1042,8 +1044,16 @@ class TgpReadModel:
             FROM latest_notice, latest_report, latest_capacity
             """,
             [
-                as_of, as_of, as_of, as_of,
-                as_of, as_of, as_of, as_of, as_of, as_of,
+                as_of,
+                as_of,
+                as_of,
+                as_of,
+                as_of,
+                as_of,
+                as_of,
+                as_of,
+                as_of,
+                as_of,
             ],
         )
         latest_collection_at = (
@@ -1132,9 +1142,12 @@ class TgpReadModel:
         for row in rows:
             row["score_components"] = json.loads(str(row["score_components"]))
             row["evidence"] = json.loads(str(row["evidence"]))
+            normalize_alert_semantics(row)
             row["severity_band"] = (
-                "high" if row["severity_score"] >= 70
-                else "medium" if row["severity_score"] >= 40
+                "high"
+                if row["severity_score"] >= 70
+                else "medium"
+                if row["severity_score"] >= 40
                 else "low"
             )
         summary = summary_rows[0]
@@ -1305,7 +1318,9 @@ class TgpReadModel:
                     value for value in str(row[key] or "").split("|") if value
                 )
             names = sorted(
-                value for value in str(row.pop("location_names") or "").split("|") if value
+                value
+                for value in str(row.pop("location_names") or "").split("|")
+                if value
             )
             row["sample_location_names"] = names[:6]
 
@@ -1840,7 +1855,7 @@ class PipelinePulseHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def do_GET(self) -> None:  # noqa: N802 - BaseHTTPRequestHandler contract
+    def do_GET(self) -> None:
         request = urlparse(self.path)
         parameters = parse_qs(request.query)
         search = parameters.get("search", [""])[0].strip()
@@ -1850,7 +1865,9 @@ class PipelinePulseHandler(BaseHTTPRequestHandler):
             report_notice_id = parameters.get("report", [None])[0]
             if request.path == "/api/catalog":
                 self._send_json(self.read_model.data_catalog())
-            elif request.path.startswith("/api/download/") and request.path.endswith(".csv"):
+            elif request.path.startswith("/api/download/") and request.path.endswith(
+                ".csv"
+            ):
                 dataset_id = request.path.rsplit("/", 1)[-1][:-4]
                 self._send_csv_download(dataset_id)
             elif request.path == "/api/overview":
@@ -1928,9 +1945,8 @@ class PipelinePulseHandler(BaseHTTPRequestHandler):
                 self._send_json(
                     self.read_model.map_data(report_notice_id=report_notice_id)
                 )
-            elif (
-                request.path.startswith("/api/notices/")
-                and request.path.endswith("/history")
+            elif request.path.startswith("/api/notices/") and request.path.endswith(
+                "/history"
             ):
                 notice_id = request.path.split("/")[-2]
                 history = self.read_model.notice_history(notice_id, as_of=as_of)
@@ -1964,7 +1980,7 @@ class PipelinePulseHandler(BaseHTTPRequestHandler):
                 {"error": type(exc).__name__, "message": str(exc)},
                 HTTPStatus.BAD_REQUEST,
             )
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 - HTTP boundary returns JSON errors
             self._send_json(
                 {"error": type(exc).__name__, "message": str(exc)},
                 HTTPStatus.INTERNAL_SERVER_ERROR,

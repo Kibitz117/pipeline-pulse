@@ -5,21 +5,18 @@ import json
 from dataclasses import asdict, dataclass
 from datetime import date, datetime
 from pathlib import Path
-from typing import Any
 
 import duckdb
 import pendulum
 
 from .database import connect_database, initialize_database
 
-
 NOTICE_URL = (
     "https://pipeline2.kindermorgan.com/Notices/NoticeDetail.aspx"
     "?code=TGP&notc_nbr={notice_id}"
 )
 CAPACITY_URL = (
-    "https://pipeline2.kindermorgan.com/Capacity/"
-    "OpAvailSegment.aspx?code=TGP"
+    "https://pipeline2.kindermorgan.com/Capacity/OpAvailSegment.aspx?code=TGP"
 )
 
 
@@ -84,7 +81,7 @@ def _utc(value: object) -> pendulum.DateTime:
         return pendulum.instance(value).in_timezone("UTC")
     parsed = pendulum.parse(str(value), strict=False)
     if not isinstance(parsed, pendulum.DateTime):
-        raise ValueError(f"expected timestamp, got {value!r}")
+        raise ValueError(f"expected timestamp, got {value!r}")  # noqa: TRY004
     return parsed.in_timezone("UTC")
 
 
@@ -111,9 +108,7 @@ def _gas_day(value: object | None, *, end: bool = False) -> pendulum.DateTime | 
                 parsed.day,
                 tz="America/Chicago",
             )
-    return (output.end_of("day") if end else output.start_of("day")).in_timezone(
-        "UTC"
-    )
+    return (output.end_of("day") if end else output.start_of("day")).in_timezone("UTC")
 
 
 def _identifier(event_type: str, values: list[object]) -> tuple[str, str]:
@@ -127,13 +122,47 @@ def _identifier(event_type: str, values: list[object]) -> tuple[str, str]:
     return f"TGP:{event_type}:{digest}", f"TGP:alert:{digest}"
 
 
-def _capacity_label(value: float | int | None) -> str:
+def _capacity_label(value: float | None) -> str:
     if value is None:
         return "unknown"
     magnitude = abs(float(value))
     if magnitude >= 1_000_000:
         return f"{magnitude / 1_000_000:.2f}m"
     return f"{magnitude / 1_000:.0f}k"
+
+
+def normalize_alert_semantics(alert: dict[str, object]) -> dict[str, object]:
+    """Apply current investor-facing semantics to a stored alert observation."""
+    if alert.get("event_type") != "capacity_snapshot_change":
+        return alert
+    evidence = alert.get("evidence")
+    if not isinstance(evidence, dict) or not evidence.get("comparison_warning"):
+        return alert
+    delta = evidence.get("delta")
+    operating_delta = (
+        delta.get("operating_capacity_dth_per_day") if isinstance(delta, dict) else None
+    )
+    subject = evidence.get("subject")
+    segment_id = (
+        subject.get("operator_segment_id", "unknown")
+        if isinstance(subject, dict)
+        else "unknown"
+    )
+    alert["current_status"] = "changed"
+    if operating_delta:
+        alert["change_type"] = "operating_capacity_changed"
+        alert["headline"] = (
+            f"Segment {segment_id} reported operating capacity changed by "
+            f"{_capacity_label(float(operating_delta))} Dth/day across different "
+            "scheduling periods"
+        )
+    else:
+        alert["change_type"] = "scheduling_changed"
+        alert["headline"] = (
+            f"Segment {segment_id} reported scheduling changed across different "
+            "scheduling periods"
+        )
+    return alert
 
 
 def _magnitude_points(value: float) -> int:
@@ -246,12 +275,16 @@ def _notice_alerts(connection: duckdb.DuckDBPyConnection) -> list[_AlertSpec]:
             if row["detail_observed_at"] is not None
             else _utc(row["capture_observed_at"]),
         )
-        effective_start = _utc(
-            row["detail_effective_start"] or row["index_effective_start"]
-        ) if (row["detail_effective_start"] or row["index_effective_start"]) else None
-        effective_end = _utc(
-            row["detail_effective_end"] or row["index_effective_end"]
-        ) if (row["detail_effective_end"] or row["index_effective_end"]) else None
+        effective_start = (
+            _utc(row["detail_effective_start"] or row["index_effective_start"])
+            if (row["detail_effective_start"] or row["index_effective_start"])
+            else None
+        )
+        effective_end = (
+            _utc(row["detail_effective_end"] or row["index_effective_end"])
+            if (row["detail_effective_end"] or row["index_effective_end"])
+            else None
+        )
         lowered = " ".join(
             str(value or "").lower()
             for value in (
@@ -260,18 +293,24 @@ def _notice_alerts(connection: duckdb.DuckDBPyConnection) -> list[_AlertSpec]:
                 subject,
             )
         )
-        subject_points = 30 if any(
-            term in lowered
-            for term in (
-                "force majeure",
-                "curtail",
-                "emergency",
-                "emergent",
-                "ofo",
+        subject_points = (
+            30
+            if any(
+                term in lowered
+                for term in (
+                    "force majeure",
+                    "curtail",
+                    "emergency",
+                    "emergent",
+                    "ofo",
+                )
             )
-        ) else 20 if any(
-            term in lowered for term in ("restriction", "constraint")
-        ) else 15 if "maintenance" in lowered else 8
+            else 20
+            if any(term in lowered for term in ("restriction", "constraint"))
+            else 15
+            if "maintenance" in lowered
+            else 8
+        )
         imminence_points = 0
         if effective_start is not None:
             hours = (effective_start - decision_at).total_seconds() / 3600
@@ -445,7 +484,9 @@ def _notice_content_revision_alerts(
         timing_changed = any(
             field in changed_fields
             for field in (
-                "posted time", "effective start", "effective end",
+                "posted time",
+                "effective start",
+                "effective end",
                 "response deadline",
             )
         )
@@ -462,9 +503,7 @@ def _notice_content_revision_alerts(
                 for field in ("notice type", "notice subtype", "subject")
             )
             else 0,
-            "operator_text_changed": 10
-            if "operator text" in changed_fields
-            else 0,
+            "operator_text_changed": 10 if "operator text" in changed_fields else 0,
             "response_requirement_changed": 20
             if "required response" in changed_fields
             else 0,
@@ -674,9 +713,12 @@ def _outage_revision_alerts(
             else None
         )
         imminence = (
-            20 if days_until is not None and days_until <= 7
-            else 12 if days_until is not None and days_until <= 30
-            else 6 if days_until is not None and days_until <= 60
+            20
+            if days_until is not None and days_until <= 7
+            else 12
+            if days_until is not None and days_until <= 30
+            else 6
+            if days_until is not None and days_until <= 60
             else 0
         )
         percentage_points = min(25, int(abs(delta_pct or 0)))
@@ -876,10 +918,14 @@ def _capacity_alerts(connection: duckdb.DuckDBPyConnection) -> list[_AlertSpec]:
         if not material:
             continue
         magnitude = operating_delta if operating_delta else available_delta
-        threshold_points = 25 if crossed_zero else 20 if crossed_95 else 10 if crossed_80 else 0
+        threshold_points = (
+            25 if crossed_zero else 20 if crossed_95 else 10 if crossed_80 else 0
+        )
         current_pressure_points = (
-            15 if (current_tightness or 0) >= 95
-            else 8 if (current_tightness or 0) >= 80
+            15
+            if (current_tightness or 0) >= 95
+            else 8
+            if (current_tightness or 0) >= 80
             else 0
         )
         score_components = {
@@ -893,11 +939,32 @@ def _capacity_alerts(connection: duckdb.DuckDBPyConnection) -> list[_AlertSpec]:
             row["gas_day"] == row["prior_gas_day"]
             and row["cycle"] == row["prior_cycle"]
         )
-        comparison_warning = None if comparable else (
-            "Snapshots use different gas days or nomination cycles; the change "
-            "is descriptive and may reflect normal scheduling evolution."
+        comparison_warning = (
+            None
+            if comparable
+            else (
+                "Snapshots use different gas days or nomination cycles; the change "
+                "is descriptive and may reflect normal scheduling evolution."
+            )
         )
-        if operating_delta:
+        if not comparable:
+            status = "changed"
+            if operating_delta:
+                change_type = "operating_capacity_changed"
+                title = (
+                    f"Segment {row['operator_segment_id']} reported operating "
+                    f"capacity changed by {_capacity_label(operating_delta)} Dth/day "
+                    "across different scheduling periods"
+                )
+                impact_channel = "operating_capacity"
+            else:
+                change_type = "scheduling_changed"
+                title = (
+                    f"Segment {row['operator_segment_id']} reported scheduling "
+                    "changed across different scheduling periods"
+                )
+                impact_channel = "scheduling_pressure"
+        elif operating_delta:
             improved = operating_delta > 0
             status = "improved" if improved else "worsened"
             change_type = (
@@ -912,10 +979,9 @@ def _capacity_alerts(connection: duckdb.DuckDBPyConnection) -> list[_AlertSpec]:
             )
             impact_channel = "operating_capacity"
         else:
-            tightened = (
-                (current_tightness or 0) > (prior_tightness or 0)
-                or current_available < prior_available
-            )
+            tightened = (current_tightness or 0) > (
+                prior_tightness or 0
+            ) or current_available < prior_available
             status = "tightened" if tightened else "relieved"
             change_type = "scheduling_tightened" if tightened else "scheduling_relieved"
             title = (
@@ -991,7 +1057,12 @@ def _capacity_alerts(connection: duckdb.DuckDBPyConnection) -> list[_AlertSpec]:
                 effective_end=_gas_day(row["gas_day"], end=True),
                 impact_channel=impact_channel,
                 summary=(
-                    f"{row['location_name']} moved from "
+                    f"{row['location_name']} reported "
+                    f"{prior_tightness if prior_tightness is not None else 'unknown'}% "
+                    f"and {current_tightness if current_tightness is not None else 'unknown'}% "
+                    "scheduled relative to operating capacity."
+                    if not comparable
+                    else f"{row['location_name']} moved from "
                     f"{prior_tightness if prior_tightness is not None else 'unknown'}% "
                     f"to {current_tightness if current_tightness is not None else 'unknown'}% "
                     "scheduled relative to operating capacity."
@@ -1051,6 +1122,7 @@ def _upsert_alert(
             score_components, headline, explanation, confidence, evidence
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (alert_id) DO UPDATE SET
+            change_type = excluded.change_type,
             severity_score = excluded.severity_score,
             score_components = excluded.score_components,
             headline = excluded.headline,

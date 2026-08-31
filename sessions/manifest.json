@@ -688,6 +688,70 @@
           "sha256": "33cf58a688d00dda5c7b9caf6bdd3898c2fac51c210028f6f37e24bde4b311fd"
         }
       ]
+    },
+    {
+      "agent_run_id": "087b30ee-be1a-420e-bb7b-d2b253dd1b0b",
+      "role": "tgp_research_analyst",
+      "runtime": "codex-cli 0.150.1",
+      "model": "gpt-5.6-terra",
+      "started_at_utc": "2026-08-31T17:08:45.177611Z",
+      "completed_at_utc": "2026-08-31T17:09:52.105670Z",
+      "status": "completed",
+      "code_commit": null,
+      "data_fingerprint": "681f4719b09826b153195ecfdad84a8d782c0b15b1ed7376cef80f3fdf04b02b",
+      "input_artifact_ids": [
+        "eia_henry_hub_spot:1788187507759848000:3241dfb4a8883f486cfb073eb5161263d2da2c27ccb423435106659f0cd0bc3e",
+        "eia_wngsr:1788115874039669000:c7dd258cb0915a825acbed60129cdeb5e37aaf8e0ebe0021c97414369d461469",
+        "km_tgp_critical:1788187420608151000:c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43",
+        "km_tgp_notice_detail:1787932505364330000:46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063",
+        "km_tgp_notice_detail:1787932512717694000:4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6",
+        "km_tgp_notice_detail:1788187422363555000:7da9d3e04c78e0bdfb5633f21e222350add3f22f47b1169e44bad4340ffbcce9",
+        "km_tgp_notice_detail:1788187426251790000:54ca11e5e1a9df85cc1994767220b442e6752d508c9a4dedb0f76d3becf06c68",
+        "km_tgp_notice_detail:1788187430048900000:faa12d7fadd1214830234f151ae1b4c7fbcc05fd6a9f70b8d4db0faf8dffbf0b",
+        "km_tgp_point_delivery_capacity:1788187463756307000:7d3a3704ceb7fce4f1996b3595e796aae4d0ce40ed8dd8ebf2e12a22da533c67",
+        "km_tgp_point_receipt_capacity:1788187475908934000:70d513ee6296bf050aa4fbc44fc75a1c3f3ad43eab6fcfe520e075b1b86e7b18",
+        "km_tgp_segment_capacity:1788105216817246000:a4457f5a9ca6180e2bb5e83f4fab842ac9a9ac3f88e3d9819ba77215daf9490d",
+        "km_tgp_segment_capacity:1788187487739205000:d2eef3c517898b0f7e89817593d54eb118dd468faadfcbf3623b1e100402c9ce",
+        "nws_hourly_forecast:1788187509891570000:4fd92c2e2e51e57c2557b5d022fe6fa4a41f12932d1055cfba98fa17fdaf3170",
+        "nws_hourly_forecast:1788187510128882000:a83743c9fc411d0edff77e7e4cb85d02016e879433671b86c84c4560196c0d31"
+      ],
+      "validation": {
+        "available_evidence_count": 14,
+        "cited_evidence_count": 12,
+        "quality_gate_status": "warning",
+        "unknown_evidence_ids": [],
+        "valid": true
+      },
+      "files": [
+        {
+          "path": "insights/20260831T170845Z_087b30ee-be1a-420e-bb7b-d2b253dd1b0b.packet.json",
+          "sha256": "afd4495a2ebab330e6cb0c1ff5b1e5d05590957e00a69968bed0980d38a5f2eb"
+        },
+        {
+          "path": "insights/20260831T170845Z_087b30ee-be1a-420e-bb7b-d2b253dd1b0b.prompt.txt",
+          "sha256": "962bf11b54280c361651251c63bbf724c5a17dc0f91a78ecda15036e44e4a0b5"
+        },
+        {
+          "path": "insights/20260831T170845Z_087b30ee-be1a-420e-bb7b-d2b253dd1b0b.schema.json",
+          "sha256": "2f71df871135b7c7d71ad9accddb5eeb7d0744e827444af88bf2d0828279e641"
+        },
+        {
+          "path": "insights/20260831T170845Z_087b30ee-be1a-420e-bb7b-d2b253dd1b0b.events.jsonl",
+          "sha256": "ce0de2cd23426979121067b35ac30ba4117ce966e7effa389702a8b83fbdf6ea"
+        },
+        {
+          "path": "insights/20260831T170845Z_087b30ee-be1a-420e-bb7b-d2b253dd1b0b.output.json",
+          "sha256": "150ec5653236c45f43150f5bc262a2682b4ddafa080a90d45ccc5bc7a5070ba5"
+        },
+        {
+          "path": "insights/20260831T170845Z_087b30ee-be1a-420e-bb7b-d2b253dd1b0b.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "insights/20260831T170845Z_087b30ee-be1a-420e-bb7b-d2b253dd1b0b.validation.json",
+          "sha256": "9082024e918d79662be34cb80745ccd88f4b03adb7eb777f275b543c0383d96d"
+        }
+      ]
     }
   ]
 }

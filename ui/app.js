@@ -133,6 +133,9 @@ function alertMarketMeaning(alert) {
       : "Higher forecast capacity reduces the modeled transport constraint, all else equal.";
   }
   if (alert.event_type === "capacity_snapshot_change") {
+    if (alert.current_status === "changed") {
+      return "The reported values come from different gas days or nomination cycles. Treat this as a monitoring update until a like-for-like snapshot confirms the direction.";
+    }
     return ["worsened", "tightened"].includes(alert.current_status)
       ? "Less available capacity or higher scheduling pressure can signal near-term transport stress; compare the same gas day and cycle before treating it as persistent."
       : "More available capacity or lower scheduling pressure eases the immediate transport setup.";
@@ -146,7 +149,7 @@ function alertMarketMeaning(alert) {
 function renderAlerts(data) {
   state.alerts = data.items || [];
   el("alert-summary").textContent = data.material_change_in_latest_pull
-    ? `${data.returned_item_count < data.alert_count ? `${data.returned_item_count} of ` : ""}${data.alert_count} priority changes · ${timestampLabel(data.latest_alert_at_utc)}`
+    ? `${data.returned_item_count < data.alert_count ? `${data.returned_item_count} of ` : ""}${data.alert_count} material updates · ${timestampLabel(data.latest_alert_at_utc)}`
     : data.recent_fallback
       ? `No change in latest pull · showing ${data.returned_item_count} recent`
       : `No priority change · latest check ${timestampLabel(data.latest_collection_at_utc)}`;
@@ -473,7 +476,8 @@ async function loadResearchBrief() {
   state.research = data;
   state.marketState = marketState;
   const packet = data.packet;
-  const memo = data.memo?.memo;
+  const currentMemo = data.memo_status === "current" ? data.memo?.memo : null;
+  const priorMemoAvailable = Boolean(data.memo?.memo && !currentMemo);
   const stale = packet.freshness.is_stale;
   const memoStatus = el("memo-status");
   const freshness = el("data-freshness");
@@ -482,21 +486,21 @@ async function loadResearchBrief() {
     freshness.classList.toggle("stale", stale);
   }
 
-  if (memo) {
-    memoStatus.textContent = data.memo_status === "current"
-      ? stale ? "Analyst note · stale source" : "Analyst note · current"
-      : "Analyst note · based on earlier source state";
-    memoStatus.classList.toggle("stale", stale || data.memo_status !== "current");
-    el("brief-headline").textContent = analystText(memo.headline);
-    el("brief-summary").textContent = analystText(memo.plain_english_summary);
-    el("brief-why").textContent = analystText(memo.why_it_matters);
+  if (currentMemo) {
+    memoStatus.textContent = stale ? "Analyst note · stale source" : "Analyst note · current";
+    memoStatus.classList.toggle("stale", stale);
+    el("brief-headline").textContent = analystText(currentMemo.headline);
+    el("brief-summary").textContent = analystText(currentMemo.plain_english_summary);
+    el("brief-why").textContent = analystText(currentMemo.why_it_matters);
   } else {
     const scenarios = (packet.transport_impacts || []).filter((item) => item.research_status === "research_scenario");
     const mapped = (packet.transport_impacts || []).filter((item) => item.research_status !== "no_trade_mapping");
-    memoStatus.textContent = stale
-      ? "Current assessment · stale source"
-      : "Current assessment";
-    memoStatus.classList.toggle("stale", stale);
+    memoStatus.textContent = priorMemoAvailable
+      ? "Current calculated view · AI refresh pending"
+      : stale
+        ? "Current calculated view · stale source"
+        : "Current calculated view";
+    memoStatus.classList.toggle("stale", stale || priorMemoAvailable);
     el("brief-headline").textContent = scenarios.length
       ? `${scenarios.length} TGP maintenance rows create a conditional scheduled-shortfall scenario`
       : `${mapped.length} forward-maintenance rows now have direction-matched capacity context`;
@@ -525,16 +529,16 @@ async function loadResearchBrief() {
     <div class="signal-row"><span>Lower 48 storage vs 5-year</span><strong>${lower48Surplus ? `${lower48Value > 0 ? "+" : ""}${escapeHtml(lower48Surplus.value)}%` : "Unavailable"}</strong><small>${lower48Surplus ? `${escapeHtml(lower48Direction)} · EIA week ending ${escapeHtml(dateLabel(lower48Surplus.period_start_utc))}` : "No EIA storage release is available yet"}</small></div>
   `;
   renderBalanceBridge(packet, marketState);
-  renderWatchItems(memo?.watch_items || deterministicWatchItems(packet));
+  renderWatchItems(currentMemo?.watch_items || deterministicWatchItems(packet));
   el("counterevidence").innerHTML = listItems(
-    memo?.counterevidence,
+    currentMemo?.counterevidence,
     "The capacity snapshot is not a physical-flow measurement and is now stale for live use.",
   );
   el("missing-data").innerHTML = listItems(
-    memo?.missing_data,
+    currentMemo?.missing_data,
     "Regional cash basis, nominations or measured flows, rerouting evidence, and newer capacity cycles.",
   );
-  const glossary = memo?.glossary?.length ? memo.glossary.slice(0, 5) : defaultGlossary;
+  const glossary = currentMemo?.glossary?.length ? currentMemo.glossary.slice(0, 5) : defaultGlossary;
   el("brief-glossary").innerHTML = glossary.map((item) => `<dt>${escapeHtml(item.term)}</dt><dd>${escapeHtml(item.definition)}</dd>`).join("");
 }
 

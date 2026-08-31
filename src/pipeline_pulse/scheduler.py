@@ -2,27 +2,30 @@ from __future__ import annotations
 
 import fcntl
 import json
+import os
+from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Iterator, Literal, TextIO
+from typing import Literal, TextIO
 
 import pendulum
 
+from .alerts import build_tgp_alerts
 from .collector import (
-    collect_tgp_critical_export,
-    collect_tgp_critical_index,
-    collect_tgp_locations,
-    collect_tgp_operational_capacity,
-    collect_tgp_notice_details,
     collect_eia_storage,
     collect_henry_hub_spot,
     collect_nws_degree_days,
+    collect_tgp_critical_export,
+    collect_tgp_critical_index,
+    collect_tgp_locations,
+    collect_tgp_notice_details,
+    collect_tgp_operational_capacity,
 )
 from .curated import export_curated_notice_index, export_tgp_mvp_tables
-from .alerts import build_tgp_alerts
 from .impacts import build_tgp_transport_impacts
-
+from .insights import generate_tgp_research_memo
+from .quality import export_tgp_dataset_status
 
 CollectionMode = Literal[
     "bootstrap",
@@ -69,6 +72,27 @@ class ScheduledCollectionSummary:
 
     def to_json(self) -> str:
         return json.dumps(asdict(self), indent=2, sort_keys=True)
+
+
+def refresh_insights_if_configured(
+    database_path: str | Path,
+) -> dict[str, object]:
+    """Refresh the memo after data changes without making AI a collection dependency."""
+    if not os.environ.get("CODEX_API_KEY"):
+        return {"status": "not_configured"}
+    try:
+        return asdict(
+            generate_tgp_research_memo(
+                database_path,
+                skip_if_unchanged=True,
+            )
+        )
+    except Exception as exc:  # noqa: BLE001 - AI cannot fail data collection
+        return {
+            "status": "failed",
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+        }
 
 
 def run_scheduled_collection(
@@ -123,7 +147,7 @@ def run_scheduled_collection(
                             raw_root=raw_root,
                         )
                         collection[source_name] = asdict(result)
-                    except Exception as exc:
+                    except Exception as exc:  # noqa: BLE001 - isolate source failures
                         collection[source_name] = {
                             "status": "failed",
                             "error_type": type(exc).__name__,
@@ -179,7 +203,7 @@ def run_scheduled_collection(
                         )
                         collection[source_name] = asdict(result)
                         completed_sources += 1
-                    except Exception as exc:
+                    except Exception as exc:  # noqa: BLE001 - isolate source failures
                         collection[source_name] = {
                             "status": "failed",
                             "error_type": type(exc).__name__,
@@ -207,6 +231,12 @@ def run_scheduled_collection(
                 database_path,
                 Path(curated_output_path).parent,
             )
+            status_export = export_tgp_dataset_status(
+                database_path,
+                Path(curated_output_path).parent / "tgp_dataset_status.json",
+            )
+            collection["dataset_status"] = asdict(status_export)
+            collection["insights"] = refresh_insights_if_configured(database_path)
             return ScheduledCollectionSummary(
                 mode=mode,
                 status="completed",

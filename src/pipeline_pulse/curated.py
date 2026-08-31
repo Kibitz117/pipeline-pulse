@@ -8,7 +8,6 @@ import duckdb
 
 from .database import connect_database, initialize_database
 
-
 _HEADERS = (
     "pipeline_id",
     "notice_id",
@@ -457,16 +456,51 @@ def export_tgp_mvp_tables(
                 alert.alert_id,
                 alert.event_id,
                 event.event_type,
-                event.current_status,
+                CASE
+                    WHEN event.event_type = 'capacity_snapshot_change'
+                     AND json_extract_string(
+                         alert.evidence, '$.comparison_warning'
+                     ) IS NOT NULL
+                    THEN 'changed'
+                    ELSE event.current_status
+                END AS current_status,
                 event.impact_channel,
                 strftime(
                     alert.decision_at AT TIME ZONE 'UTC',
                     '%Y-%m-%dT%H:%M:%S.%fZ'
                 ) AS decision_at_utc,
-                alert.change_type,
+                CASE
+                    WHEN event.event_type = 'capacity_snapshot_change'
+                     AND json_extract_string(
+                         alert.evidence, '$.comparison_warning'
+                     ) IS NOT NULL
+                     AND abs(coalesce(try_cast(json_extract_string(
+                         alert.evidence,
+                         '$.delta.operating_capacity_dth_per_day'
+                     ) AS DOUBLE), 0)) > 0
+                    THEN 'operating_capacity_changed'
+                    WHEN event.event_type = 'capacity_snapshot_change'
+                     AND json_extract_string(
+                         alert.evidence, '$.comparison_warning'
+                     ) IS NOT NULL
+                    THEN 'scheduling_changed'
+                    ELSE alert.change_type
+                END AS change_type,
                 alert.severity_score,
                 CAST(alert.score_components AS VARCHAR) AS score_components_json,
-                alert.headline,
+                CASE
+                    WHEN event.event_type = 'capacity_snapshot_change'
+                     AND json_extract_string(
+                         alert.evidence, '$.comparison_warning'
+                     ) IS NOT NULL
+                    THEN 'Segment ' || coalesce(json_extract_string(
+                        alert.evidence,
+                        '$.subject.operator_segment_id'
+                    ), 'unknown') ||
+                        ' reported capacity or scheduling changed across ' ||
+                        'different scheduling periods'
+                    ELSE alert.headline
+                END AS headline,
                 alert.explanation,
                 alert.confidence,
                 strftime(

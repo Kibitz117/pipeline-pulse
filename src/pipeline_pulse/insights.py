@@ -12,10 +12,10 @@ from pathlib import Path
 import duckdb
 import pendulum
 
+from .alerts import normalize_alert_semantics
 from .database import connect_database, initialize_database
 from .market_state import build_tgp_daily_market_state
 from .quality import build_tgp_quality_report
-
 
 DEFAULT_INSIGHT_MODEL = "gpt-5.6-terra"
 _RAW_EVIDENCE_TOKEN = re.compile(
@@ -515,10 +515,9 @@ def build_tgp_research_packet(
             [decision_time],
         )
         for alert in material_alerts:
-            alert["score_components"] = json.loads(
-                str(alert["score_components"])
-            )
+            alert["score_components"] = json.loads(str(alert["score_components"]))
             alert["evidence"] = json.loads(str(alert["evidence"]))
+            normalize_alert_semantics(alert)
         transport_impacts = _rows(
             connection,
             """
@@ -577,9 +576,7 @@ def build_tgp_research_packet(
             [selected_report[0], decision_time],
         )
         for impact in transport_impacts:
-            impact["unresolved_reasons"] = json.loads(
-                str(impact["unresolved_reasons"])
-            )
+            impact["unresolved_reasons"] = json.loads(str(impact["unresolved_reasons"]))
             impact["evidence"] = json.loads(str(impact["evidence"]))
         transport_impact_summary = _rows(
             connection,
@@ -636,9 +633,7 @@ def build_tgp_research_packet(
         )[0]
         for field in ("first_scenario_date", "last_scenario_date"):
             if transport_impact_summary[field] is not None:
-                transport_impact_summary[field] = str(
-                    transport_impact_summary[field]
-                )
+                transport_impact_summary[field] = str(transport_impact_summary[field])
         transport_impact_horizons = _rows(
             connection,
             """
@@ -834,8 +829,7 @@ def build_tgp_research_packet(
         connection.close()
 
     source_posted_values = [
-        pendulum.parse(str(row["source_posted_at_utc"]))
-        for row in capacity_exports
+        pendulum.parse(str(row["source_posted_at_utc"])) for row in capacity_exports
     ]
     latest_source_posted = max(source_posted_values)
     source_age_hours = max(
@@ -996,9 +990,7 @@ def build_tgp_research_packet(
                 "transport_impact_summary": _stable_fingerprint_value(
                     transport_impact_summary
                 ),
-                "daily_market_state": _stable_fingerprint_value(
-                    daily_market_state
-                ),
+                "daily_market_state": _stable_fingerprint_value(daily_market_state),
                 "eia_storage_context": _stable_fingerprint_value(storage_context),
                 "benchmark_context": _stable_fingerprint_value(benchmark_context),
                 "weather_context": _stable_fingerprint_value(weather_context),
@@ -1084,8 +1076,7 @@ def latest_tgp_research_memo(
     memo = rows[0]
     memo["memo"] = json.loads(str(memo["memo"]))
     memo["is_current"] = (
-        data_fingerprint is None
-        or memo["data_fingerprint"] == data_fingerprint
+        data_fingerprint is None or memo["data_fingerprint"] == data_fingerprint
     )
     return memo
 
@@ -1124,7 +1115,7 @@ def _validate_memo(
             raise ValueError(f"insight memo {section_name} must be a nonempty list")
         for item in section:
             if not isinstance(item, dict):
-                raise ValueError(f"insight memo {section_name} item must be an object")
+                raise TypeError(f"insight memo {section_name} item must be an object")
             evidence = item.get("evidence_ids")
             if not isinstance(evidence, list) or not evidence:
                 raise ValueError(f"insight memo {section_name} item lacks evidence")
@@ -1243,9 +1234,7 @@ def rebuild_session_manifest(
     )
     for run in runs:
         events_path = Path(str(run["session_path"]))
-        prefix = Path(
-            events_path.as_posix().removesuffix(".events.jsonl")
-        )
+        prefix = Path(events_path.as_posix().removesuffix(".events.jsonl"))
         files: list[dict[str, str]] = []
         for suffix in suffixes:
             file_path = Path(prefix.as_posix() + suffix)
@@ -1280,9 +1269,7 @@ def rebuild_session_manifest(
                 "status": run["status"],
                 "code_commit": None,
                 "data_fingerprint": run["data_fingerprint"],
-                "input_artifact_ids": json.loads(
-                    str(run["input_artifact_ids"])
-                ),
+                "input_artifact_ids": json.loads(str(run["input_artifact_ids"])),
                 "validation": (
                     json.loads(str(run["validation"]))
                     if run["validation"] is not None
@@ -1436,7 +1423,10 @@ def generate_tgp_research_memo(
     command.extend(["--model", selected_model])
     command.append("-")
     try:
-        with events_path.open("wb") as events_file, stderr_path.open("wb") as error_file:
+        with (
+            events_path.open("wb") as events_file,
+            stderr_path.open("wb") as error_file,
+        ):
             completed = subprocess.run(
                 command,
                 input=prompt_text.encode("utf-8"),
@@ -1453,7 +1443,7 @@ def generate_tgp_research_memo(
         memo = json.loads(output_path.read_text(encoding="utf-8"))
         validation = _validate_memo(
             memo,
-            valid_evidence_ids=set(str(value) for value in packet["evidence_ids"]),
+            valid_evidence_ids={str(value) for value in packet["evidence_ids"]},
         )
         validation["quality_gate_status"] = quality.overall_status
         validation_path.write_text(

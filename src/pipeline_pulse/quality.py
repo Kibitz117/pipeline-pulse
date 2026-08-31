@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
+
+import pendulum
 
 from .database import connect_database, initialize_database
 from .sources.kinder_morgan_capacity import (
@@ -156,6 +158,14 @@ class TgpQualityReport:
 
     def to_json(self) -> str:
         return json.dumps(asdict(self), indent=2, sort_keys=True)
+
+
+@dataclass(frozen=True)
+class DatasetStatusExport:
+    output_path: str
+    generated_at_utc: str
+    overall_status: str
+    agent_input_ready: bool
 
 
 @dataclass(frozen=True)
@@ -626,7 +636,9 @@ def build_location_quality_report(
     if previous_count and abs(count_change or 0) / previous_count > 0.10:
         findings.append("location row count changed by more than 10%")
     if stats[5] or stats[6] or stats[7] or stats[8]:
-        findings.append("one or more location identity, segment, or zone fields are missing")
+        findings.append(
+            "one or more location identity, segment, or zone fields are missing"
+        )
     if geocoded_ratio < 0.98:
         findings.append("fewer than 98% of locations have auditable coordinates")
     if segment_match_ratio < 0.90:
@@ -809,12 +821,8 @@ def build_capacity_quality_report(
     matched_facility_rows = int(observation_stats[2])
     matched_segment_rows = int(observation_stats[3])
     reconciliation_mismatches = int(observation_stats[4])
-    facility_match_ratio = (
-        matched_facility_rows / point_rows if point_rows else 0.0
-    )
-    segment_match_ratio = (
-        matched_segment_rows / capacity_rows if capacity_rows else 0.0
-    )
+    facility_match_ratio = matched_facility_rows / point_rows if point_rows else 0.0
+    segment_match_ratio = matched_segment_rows / capacity_rows if capacity_rows else 0.0
 
     findings: list[str] = []
     hard_failure = False
@@ -1015,4 +1023,36 @@ def build_tgp_quality_report(
         capacity=capacity,
         artifacts=artifacts,
         findings=tuple(findings),
+    )
+
+
+def export_tgp_dataset_status(
+    database_path: str | Path,
+    output_path: str | Path,
+) -> DatasetStatusExport:
+    """Write the current quality snapshot after all derived tables are rebuilt."""
+    report = build_tgp_quality_report(database_path)
+    generated_at = pendulum.now("UTC")
+    destination = Path(output_path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_suffix(destination.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(
+            {
+                "schema_version": "tgp_dataset_status_v1",
+                "generated_at_utc": generated_at.to_iso8601_string(),
+                **asdict(report),
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(destination)
+    return DatasetStatusExport(
+        output_path=destination.as_posix(),
+        generated_at_utc=generated_at.to_iso8601_string(),
+        overall_status=report.overall_status,
+        agent_input_ready=report.agent_input_ready,
     )

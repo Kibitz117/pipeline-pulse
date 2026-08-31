@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pendulum
 
-from pipeline_pulse.alerts import build_tgp_alerts
+from pipeline_pulse.alerts import build_tgp_alerts, normalize_alert_semantics
 from pipeline_pulse.artifacts import StoredArtifact
 from pipeline_pulse.database import (
     connect_database,
@@ -32,6 +32,8 @@ def store_segment_snapshot(
     suffix: str,
     observed_at: pendulum.DateTime,
     operating: int,
+    gas_day: pendulum.Date | None = None,
+    cycle: str = "EVENING",
 ) -> None:
     artifact = StoredArtifact(
         artifact_id=f"capacity:{suffix}",
@@ -56,8 +58,8 @@ def store_segment_snapshot(
         tsp_number="1939164",
         tsp_name="TENNESSEE GAS PIPELINE",
         effective_at=pendulum.datetime(2026, 8, 30, 14, 0, tz="America/Chicago"),
-        gas_day=pendulum.date(2026, 8, 30),
-        cycle="EVENING",
+        gas_day=gas_day or pendulum.date(2026, 8, 30),
+        cycle=cycle,
         location_purpose="Segment",
         measurement_basis="Dth",
         source_posted_at=observed_at.subtract(minutes=10),
@@ -155,7 +157,28 @@ def store_notice_observation(
 
 
 class AlertBuildTests(unittest.TestCase):
-    def test_notice_revisions_are_point_in_time_and_reversions_are_preserved(self) -> None:
+    def test_legacy_cross_period_alert_is_normalized_for_research(self) -> None:
+        alert = {
+            "event_type": "capacity_snapshot_change",
+            "current_status": "worsened",
+            "change_type": "operating_capacity_decrease",
+            "headline": "Segment 307 operating capacity fell",
+            "evidence": {
+                "comparison_warning": "Different scheduling periods.",
+                "subject": {"operator_segment_id": "307"},
+                "delta": {"operating_capacity_dth_per_day": -200_000},
+            },
+        }
+
+        normalized = normalize_alert_semantics(alert)
+
+        self.assertEqual(normalized["current_status"], "changed")
+        self.assertEqual(normalized["change_type"], "operating_capacity_changed")
+        self.assertNotIn("fell", normalized["headline"])
+
+    def test_notice_revisions_are_point_in_time_and_reversions_are_preserved(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
             database_path = root / "test.duckdb"
@@ -188,12 +211,8 @@ class AlertBuildTests(unittest.TestCase):
 
             first_alerts = build_tgp_alerts(database_path)
             model = TgpReadModel(database_path)
-            before_revision = model.notice(
-                "403900", as_of=first_at.add(minutes=30)
-            )
-            after_revision = model.notice(
-                "403900", as_of=revised_at.add(minutes=30)
-            )
+            before_revision = model.notice("403900", as_of=first_at.add(minutes=30))
+            after_revision = model.notice("403900", as_of=revised_at.add(minutes=30))
             history_after_unchanged = model.notice_history("403900")
             alerts_before_revision = model.alerts(
                 scope="recent", as_of=first_at.add(minutes=30), limit=10
@@ -297,7 +316,9 @@ class AlertBuildTests(unittest.TestCase):
                 limit=10,
             )
             connection = connect_database(database_path)
-            stored_count = connection.execute("SELECT count(*) FROM alerts").fetchone()[0]
+            stored_count = connection.execute("SELECT count(*) FROM alerts").fetchone()[
+                0
+            ]
             connection.close()
 
         self.assertEqual(first.capacity_alert_count, 1)
@@ -306,9 +327,50 @@ class AlertBuildTests(unittest.TestCase):
         self.assertTrue(alert_response["material_change_in_latest_pull"])
         item = alert_response["items"][0]
         self.assertEqual(item["change_type"], "operating_capacity_decrease")
-        self.assertEqual(item["evidence"]["before"]["operating_capacity_dth_per_day"], 1_000_000)
-        self.assertEqual(item["evidence"]["after"]["operating_capacity_dth_per_day"], 800_000)
+        self.assertEqual(
+            item["evidence"]["before"]["operating_capacity_dth_per_day"], 1_000_000
+        )
+        self.assertEqual(
+            item["evidence"]["after"]["operating_capacity_dth_per_day"], 800_000
+        )
         self.assertIn("absolute_change", item["score_components"])
+
+    def test_capacity_alert_is_neutral_across_different_scheduling_periods(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            database_path = root / "test.duckdb"
+            raw_path = root / "capacity.xlsx"
+            raw_path.write_bytes(b"fixture")
+            connection = connect_database(database_path)
+            initialize_database(connection)
+            connection.close()
+
+            store_segment_snapshot(
+                database_path,
+                raw_path,
+                suffix="a",
+                observed_at=pendulum.datetime(2026, 8, 30, 14, 0, tz="UTC"),
+                operating=1_000_000,
+            )
+            store_segment_snapshot(
+                database_path,
+                raw_path,
+                suffix="b",
+                observed_at=pendulum.datetime(2026, 8, 31, 14, 0, tz="UTC"),
+                operating=800_000,
+                gas_day=pendulum.date(2026, 8, 31),
+            )
+
+            build_tgp_alerts(database_path)
+            response = TgpReadModel(database_path).alerts(scope="latest", limit=10)
+
+        item = response["items"][0]
+        self.assertEqual(item["current_status"], "changed")
+        self.assertEqual(item["change_type"], "operating_capacity_changed")
+        self.assertIn("different gas days", item["evidence"]["comparison_warning"])
+        self.assertNotIn("fell", item["headline"])
 
 
 if __name__ == "__main__":

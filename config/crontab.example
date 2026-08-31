@@ -21,6 +21,6 @@ PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
 42 */6 * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse scheduled-collect --mode context >> data/logs/collector.log 2>&1
 
 # In the untracked config/crontab.local, add CODEX_API_KEY=<your key> above.
-# Twelve minutes after capacity collection, generate a memo only when material
-# evidence changed. With no key, this job is a no-op and collection keeps running.
-12 * * * * if [ -n "$CODEX_API_KEY" ]; then cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse generate-tgp-insights --if-changed >> data/logs/insights.log 2>&1; fi
+# Every successful collection then refreshes the memo only when its material
+# evidence fingerprint changed. With no key, deterministic collection and the
+# current calculated view continue without an AI call.
