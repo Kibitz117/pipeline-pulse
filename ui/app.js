@@ -12,6 +12,8 @@ const state = {
   marketState: null,
   alerts: [],
   marketDayIndex: null,
+  refreshRunning: false,
+  refreshPollTimer: null,
 };
 
 const el = (id) => document.getElementById(id);
@@ -69,6 +71,63 @@ async function fetchJson(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
   return response.json();
+}
+
+function renderRefreshStatus(data) {
+  const button = el("refresh-data");
+  const status = el("refresh-status");
+  const detail = el("refresh-detail");
+  const copy = button.closest(".refresh-control").querySelector(".refresh-copy");
+  const wasRunning = state.refreshRunning;
+  const running = data.status === "running";
+  state.refreshRunning = running;
+  button.disabled = running;
+  button.textContent = running ? "Refreshing…" : "Refresh data";
+  copy.classList.toggle("failed", data.status === "failed");
+  status.textContent = running
+    ? "Refreshing public data"
+    : data.status === "completed"
+      ? `Updated ${timestampLabel(data.completed_at_utc)}`
+      : data.status === "failed"
+        ? "Refresh failed"
+        : data.status === "skipped_locked"
+          ? "Refresh already running"
+          : "Data refresh";
+  detail.textContent = data.message || "Pull latest public sources";
+  detail.title = detail.textContent;
+  clearTimeout(state.refreshPollTimer);
+  if (running) {
+    state.refreshPollTimer = setTimeout(loadRefreshStatus, 1500);
+  } else if (wasRunning && data.status === "completed") {
+    detail.textContent = "Updated—reloading the current market view…";
+    setTimeout(() => window.location.reload(), 600);
+  }
+}
+
+async function loadRefreshStatus() {
+  try {
+    renderRefreshStatus(await fetchJson("/api/refresh"));
+  } catch (error) {
+    renderRefreshStatus({ status: "failed", message: error.message });
+  }
+}
+
+async function startRefresh() {
+  const button = el("refresh-data");
+  button.disabled = true;
+  try {
+    const response = await fetch("/api/refresh", {
+      method: "POST",
+      headers: { "X-Pipeline-Pulse": "refresh" },
+    });
+    const data = await response.json();
+    if (!response.ok && response.status !== 409) {
+      throw new Error(data.message || `${response.status} ${response.statusText}`);
+    }
+    renderRefreshStatus(data);
+  } catch (error) {
+    renderRefreshStatus({ status: "failed", message: error.message });
+  }
 }
 
 function showError(error) {
@@ -1751,9 +1810,11 @@ el("map-inspector").addEventListener("click", (event) => {
 el("drawer-close").addEventListener("click", closeDrawer);
 el("drawer-backdrop").addEventListener("click", closeDrawer);
 document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeDrawer(); });
+el("refresh-data").addEventListener("click", startRefresh);
 
 configureFilter();
 activatePage("overview", { scroll: false });
+loadRefreshStatus();
 Promise.all([loadOverview(), loadReports(), loadResearchBrief(), loadChanges()])
   .then(() => Promise.all([loadView(), loadMarketContext()]))
   .then(() => {

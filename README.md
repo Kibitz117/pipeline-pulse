@@ -43,6 +43,10 @@ alerts begin with subsequent incremental pulls rather than treating every row
 in the initial page as newly arrived.
 
 Open <http://127.0.0.1:8765>. There is no frontend build or second database.
+The header's **Refresh data** button runs one bounded background update of the
+latest notices, capacity, EIA, and NWS sources, then reloads the current view.
+It is local-only, rejects overlapping jobs, and shows source failures without
+discarding the last successful data.
 
 The UI leads with the aggregate 30-day TGP pressure calendar and then lets an
 analyst double-click into corridors, alerts, notice revisions, report vintages,
@@ -118,6 +122,9 @@ availability.
 After the bootstrap, use the smaller modes below from the repository root:
 
 ```bash
+# Same bounded latest-data workflow exposed by the UI
+uv run --locked pipeline-pulse scheduled-collect --mode refresh
+
 # Notices, missing detail backlog, and rotating same-ID revision checks
 uv run --locked pipeline-pulse scheduled-collect --mode incremental
 
@@ -228,7 +235,7 @@ does not need uv on its `PATH`. Nothing is installed into cron automatically.
 | Timely updates and alerts | Incremental collectors, cron example, material alert ledger, same-ID revision detection |
 | Investor-facing UI | Build-free local terminal in `ui/`, served over the DuckDB read model |
 | AI central to building and operating | Lossless design/build session plus raw operating-agent packets, prompts, events, outputs, and validation |
-| Quality control | Content hashes, byte verification, source-schema fingerprints, audit clocks, reconciliation warnings, 50 network-free tests |
+| Quality control | Content hashes, byte verification, source-schema fingerprints, audit clocks, reconciliation warnings, network-free test suite |
 
 `sessions/design/` contains the single Codex session used to design and build
 the project as a lossless compressed raw JSONL export. `sessions/insights/`

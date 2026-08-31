@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import json
 import mimetypes
+from collections.abc import Callable
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from ipaddress import ip_address
 from pathlib import Path
+from threading import Lock, Thread
 from urllib.parse import parse_qs, urlparse
 
 import duckdb
@@ -13,6 +16,7 @@ import pendulum
 from .alerts import normalize_alert_semantics
 from .insights import build_tgp_research_packet, latest_tgp_research_memo
 from .market_state import build_tgp_daily_market_state
+from .scheduler import ScheduledCollectionSummary, run_scheduled_collection
 
 UI_ROOT = Path(__file__).parents[2] / "ui"
 NOTICE_URL = (
@@ -833,6 +837,25 @@ class TgpReadModel:
 
     def source_freshness(self) -> dict[str, object]:
         now = pendulum.now("UTC")
+        memo_fingerprint_rows = self._query(
+            """
+            SELECT data_fingerprint
+            FROM research_memos
+            WHERE pipeline_id = 'TGP'
+            ORDER BY generated_at DESC, research_memo_id DESC
+            LIMIT 1
+            """
+        )
+        memo_fingerprint = (
+            str(memo_fingerprint_rows[0]["data_fingerprint"])
+            if memo_fingerprint_rows
+            else None
+        )
+        current_fingerprint = (
+            str(build_tgp_research_packet(self.database_path)["data_fingerprint"])
+            if memo_fingerprint is not None
+            else None
+        )
         rows = self._query(
             """
             WITH latest_notice AS (
@@ -990,6 +1013,11 @@ class TgpReadModel:
             row["status"] = (
                 "stale" if age_hours > float(row["stale_after_hours"]) else "fresh"
             )
+            if row["source_code"] == "ai_memo":
+                row["evidence_current"] = memo_fingerprint == current_fingerprint
+                if not row["evidence_current"]:
+                    row["status"] = "stale"
+                    row["status_reason"] = "Newer economic evidence is available."
             del row["collected_at"]
             del row["source_as_of"]
         return {
@@ -1794,8 +1822,106 @@ class TgpReadModel:
         }
 
 
+class RefreshManager:
+    """Run one bounded local refresh without blocking the HTTP request thread."""
+
+    def __init__(
+        self,
+        database_path: str | Path,
+        *,
+        runner: Callable[..., ScheduledCollectionSummary] = run_scheduled_collection,
+    ) -> None:
+        self.database_path = Path(database_path)
+        self.runner = runner
+        self._lock = Lock()
+        self._state: dict[str, object] = {
+            "status": "idle",
+            "message": "Ready to pull the latest public data.",
+            "started_at_utc": None,
+            "completed_at_utc": None,
+            "source_failures": [],
+            "insights_status": None,
+        }
+
+    def status(self) -> dict[str, object]:
+        with self._lock:
+            return dict(self._state)
+
+    def start(self) -> tuple[bool, dict[str, object]]:
+        with self._lock:
+            if self._state["status"] == "running":
+                return False, dict(self._state)
+            self._state = {
+                "status": "running",
+                "message": "Pulling notices, capacity, EIA, and NWS data…",
+                "started_at_utc": pendulum.now("UTC").to_iso8601_string(),
+                "completed_at_utc": None,
+                "source_failures": [],
+                "insights_status": None,
+            }
+            current = dict(self._state)
+        Thread(target=self._run, name="pipeline-pulse-refresh", daemon=True).start()
+        return True, current
+
+    def _run(self) -> None:
+        try:
+            summary = self.runner(
+                mode="refresh",
+                database_path=self.database_path,
+                raw_root=self.database_path.parent / "raw",
+                lock_path=self.database_path.parent / "pipeline-pulse.lock",
+                curated_output_path=(
+                    self.database_path.parent
+                    / "curated"
+                    / "tgp_critical_notice_index.csv"
+                ),
+            )
+            collection = summary.collection or {}
+            source_failures = [
+                name
+                for name in ("eia_storage", "henry_hub_spot", "nws_degree_days")
+                if isinstance(collection.get(name), dict)
+                and collection[name].get("status") == "failed"
+            ]
+            insights = collection.get("insights")
+            insights_status = (
+                insights.get("status") if isinstance(insights, dict) else None
+            )
+            if summary.status == "skipped_locked":
+                status = "skipped_locked"
+                message = "Another collection is already running. Try again shortly."
+            elif source_failures:
+                status = "completed"
+                message = (
+                    "Pipeline data updated; some market context sources failed: "
+                    + ", ".join(source_failures)
+                    + "."
+                )
+            else:
+                status = "completed"
+                message = "Latest public data and derived analysis are ready."
+            with self._lock:
+                self._state = {
+                    "status": status,
+                    "message": message,
+                    "started_at_utc": summary.started_at,
+                    "completed_at_utc": summary.completed_at,
+                    "source_failures": source_failures,
+                    "insights_status": insights_status,
+                }
+        except Exception as exc:  # noqa: BLE001 - background boundary reports failure
+            with self._lock:
+                self._state = {
+                    **self._state,
+                    "status": "failed",
+                    "message": f"Refresh failed: {type(exc).__name__}: {exc}",
+                    "completed_at_utc": pendulum.now("UTC").to_iso8601_string(),
+                }
+
+
 class PipelinePulseHandler(BaseHTTPRequestHandler):
     read_model: TgpReadModel
+    refresh_manager: RefreshManager
 
     def log_message(self, format: str, *args: object) -> None:
         print(f"{self.address_string()} - {format % args}")
@@ -1865,6 +1991,8 @@ class PipelinePulseHandler(BaseHTTPRequestHandler):
             report_notice_id = parameters.get("report", [None])[0]
             if request.path == "/api/catalog":
                 self._send_json(self.read_model.data_catalog())
+            elif request.path == "/api/refresh":
+                self._send_json(self.refresh_manager.status())
             elif request.path.startswith("/api/download/") and request.path.endswith(
                 ".csv"
             ):
@@ -1986,6 +2114,29 @@ class PipelinePulseHandler(BaseHTTPRequestHandler):
                 HTTPStatus.INTERNAL_SERVER_ERROR,
             )
 
+    def do_POST(self) -> None:
+        request = urlparse(self.path)
+        if request.path != "/api/refresh":
+            self.send_error(HTTPStatus.NOT_FOUND)
+            return
+        if (
+            not ip_address(self.client_address[0]).is_loopback
+            or self.headers.get("X-Pipeline-Pulse") != "refresh"
+        ):
+            self._send_json(
+                {
+                    "error": "refresh_forbidden",
+                    "message": "Refresh is available only from the local application.",
+                },
+                HTTPStatus.FORBIDDEN,
+            )
+            return
+        started, state = self.refresh_manager.start()
+        self._send_json(
+            state,
+            HTTPStatus.ACCEPTED if started else HTTPStatus.CONFLICT,
+        )
+
 
 def serve(
     database_path: str | Path,
@@ -1998,7 +2149,10 @@ def serve(
     handler = type(
         "ConfiguredPipelinePulseHandler",
         (PipelinePulseHandler,),
-        {"read_model": TgpReadModel(database_path)},
+        {
+            "read_model": TgpReadModel(database_path),
+            "refresh_manager": RefreshManager(database_path),
+        },
     )
     server = ThreadingHTTPServer((host, port), handler)
     print(f"Pipeline Pulse is available at http://{host}:{port}")

@@ -66,6 +66,15 @@ button, input, select { font: inherit; }
 .pipeline-scopes span { padding: 9px 13px; color: var(--muted); border-radius: 999px; font-size: 12px; font-weight: 750; }
 .pipeline-scopes span.active { color: #fff; background: #252b2c; }
 .topbar-meta { margin-left: auto; display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 12px; }
+.refresh-control { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.refresh-copy { min-width: 180px; text-align: right; }
+.refresh-copy span, .refresh-copy small { display: block; }
+.refresh-copy span { color: #34414b; font-size: 11px; font-weight: 650; }
+.refresh-copy small { margin-top: 2px; max-width: 280px; overflow: hidden; color: var(--muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.refresh-copy.failed span { color: var(--red); }
+.refresh-button { min-height: 32px; padding: 0 11px; color: #fff; background: #1f2933; border: 1px solid #1f2933; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 650; }
+.refresh-button:hover { background: #2c3945; }
+.refresh-button:disabled { color: #6d7780; background: #edf0f2; border-color: #dce1e4; cursor: wait; }
 .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #48a979; box-shadow: 0 0 0 4px rgba(72,169,121,.12); }
 .scope-pill { margin-left: 8px; padding: 5px 8px; color: #53666b; border: 1px solid var(--line); border-radius: 3px; text-transform: uppercase; letter-spacing: .08em; }
 .freshness-pill { padding: 5px 8px; color: #27664d; background: #e3f1ea; border: 1px solid #c6e3d6; border-radius: 999px; }
@@ -402,6 +411,7 @@ tbody tr:hover { background: #f4f8f6; }
 
 @media (max-width: 680px) {
   .topbar { padding: 12px 16px; }
+  .refresh-copy { display: none; }
   .topbar-meta > span:not(.live-dot) { display: none; }
   .pipeline-scopes { display: none; }
   .boundary-note { padding: 8px 16px; }

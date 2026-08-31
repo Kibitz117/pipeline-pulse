@@ -2,33 +2,34 @@ from __future__ import annotations
 
 import argparse
 
+from .alerts import build_tgp_alerts
 from .collector import (
-    collect_tgp_critical_export,
-    collect_tgp_critical_index,
-    collect_tgp_notice_details,
-    collect_tgp_locations,
-    collect_tgp_operational_capacity,
-    reprocess_tgp_critical_indexes,
-    reprocess_tgp_notice_details,
     collect_eia_storage,
     collect_henry_hub_spot,
     collect_nws_degree_days,
+    collect_tgp_critical_export,
+    collect_tgp_critical_index,
+    collect_tgp_locations,
+    collect_tgp_notice_details,
+    collect_tgp_operational_capacity,
     collect_yahoo_front_month_futures,
+    reprocess_tgp_critical_indexes,
+    reprocess_tgp_notice_details,
 )
-from .quality import build_tgp_quality_report
-from .insights import DEFAULT_INSIGHT_MODEL, generate_tgp_research_memo
-from .alerts import build_tgp_alerts
-from .scheduler import run_scheduled_collection
 from .curated import export_curated_notice_index, export_tgp_mvp_tables
-from .web import serve
 from .impacts import build_tgp_transport_impacts
+from .insights import DEFAULT_INSIGHT_MODEL, generate_tgp_research_memo
+from .quality import build_tgp_quality_report
+from .scheduler import run_scheduled_collection
+from .web import serve
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Collect Pipeline Pulse source data.")
     subparsers = parser.add_subparsers(dest="command", required=True)
     collect = subparsers.add_parser(
-        "collect-tgp-critical", description="Archive and normalize TGP critical notices."
+        "collect-tgp-critical",
+        description="Archive and normalize TGP critical notices.",
     )
     collect.add_argument("--db", default="data/pipeline_pulse.duckdb")
     collect.add_argument("--raw-dir", default="data/raw")
@@ -61,6 +62,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--mode",
         choices=(
             "bootstrap",
+            "refresh",
             "incremental",
             "full-export",
             "capacity",

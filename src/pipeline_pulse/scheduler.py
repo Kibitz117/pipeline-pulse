@@ -29,6 +29,7 @@ from .quality import export_tgp_dataset_status
 
 CollectionMode = Literal[
     "bootstrap",
+    "refresh",
     "incremental",
     "full-export",
     "capacity",
@@ -95,6 +96,35 @@ def refresh_insights_if_configured(
         }
 
 
+def _collect_market_context(
+    *,
+    database_path: str | Path,
+    raw_root: str | Path,
+) -> tuple[dict[str, object], int]:
+    collection: dict[str, object] = {}
+    completed_sources = 0
+    context_sources = (
+        ("eia_storage", collect_eia_storage),
+        ("henry_hub_spot", collect_henry_hub_spot),
+        ("nws_degree_days", collect_nws_degree_days),
+    )
+    for source_name, collect_source in context_sources:
+        try:
+            result = collect_source(
+                database_path=database_path,
+                raw_root=raw_root,
+            )
+            collection[source_name] = asdict(result)
+            completed_sources += 1
+        except Exception as exc:  # noqa: BLE001 - isolate source failures
+            collection[source_name] = {
+                "status": "failed",
+                "error_type": type(exc).__name__,
+                "error": str(exc),
+            }
+    return collection, completed_sources
+
+
 def run_scheduled_collection(
     *,
     mode: CollectionMode,
@@ -135,24 +165,36 @@ def run_scheduled_collection(
                     "maintenance_details": asdict(detail_result),
                     "capacity": asdict(capacity_result),
                 }
-                context_sources = (
-                    ("eia_storage", collect_eia_storage),
-                    ("henry_hub_spot", collect_henry_hub_spot),
-                    ("nws_degree_days", collect_nws_degree_days),
+                context, _ = _collect_market_context(
+                    database_path=database_path,
+                    raw_root=raw_root,
                 )
-                for source_name, collect_source in context_sources:
-                    try:
-                        result = collect_source(
-                            database_path=database_path,
-                            raw_root=raw_root,
-                        )
-                        collection[source_name] = asdict(result)
-                    except Exception as exc:  # noqa: BLE001 - isolate source failures
-                        collection[source_name] = {
-                            "status": "failed",
-                            "error_type": type(exc).__name__,
-                            "error": str(exc),
-                        }
+                collection.update(context)
+            elif mode == "refresh":
+                index_result = collect_tgp_critical_index(
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                detail_result = collect_tgp_notice_details(
+                    database_path=database_path,
+                    raw_root=raw_root,
+                    limit=detail_limit,
+                    revision_check_limit=revision_check_limit,
+                )
+                capacity_result = collect_tgp_operational_capacity(
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                context, _ = _collect_market_context(
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                collection = {
+                    "index": asdict(index_result),
+                    "details": asdict(detail_result),
+                    "capacity": asdict(capacity_result),
+                    **context,
+                }
             elif mode == "incremental":
                 index_result = collect_tgp_critical_index(
                     database_path=database_path,
@@ -188,27 +230,10 @@ def run_scheduled_collection(
                 )
                 collection = {"capacity": asdict(capacity_result)}
             elif mode == "context":
-                collection = {}
-                context_sources = (
-                    ("eia_storage", collect_eia_storage),
-                    ("henry_hub_spot", collect_henry_hub_spot),
-                    ("nws_degree_days", collect_nws_degree_days),
+                collection, completed_sources = _collect_market_context(
+                    database_path=database_path,
+                    raw_root=raw_root,
                 )
-                completed_sources = 0
-                for source_name, collect_source in context_sources:
-                    try:
-                        result = collect_source(
-                            database_path=database_path,
-                            raw_root=raw_root,
-                        )
-                        collection[source_name] = asdict(result)
-                        completed_sources += 1
-                    except Exception as exc:  # noqa: BLE001 - isolate source failures
-                        collection[source_name] = {
-                            "status": "failed",
-                            "error_type": type(exc).__name__,
-                            "error": str(exc),
-                        }
                 if completed_sources == 0:
                     raise RuntimeError("all configured market-context sources failed")
             else:  # pragma: no cover - argparse and Literal guard this path

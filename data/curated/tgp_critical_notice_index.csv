@@ -1,4 +1,111 @@
 pipeline_id,notice_id,notice_type_primary,notice_type_secondary,subject,subject_missing,detail_available,critical,status_description,prior_notice_id,notice_text,detail_version_sha256,posted_at_utc,posted_at_operator_local,effective_start_utc,effective_end_utc,observed_at_utc,source_content_sha256
+TGP,403884,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-31-2026 ID1,False,True,True,INITIATE,,"Effective Intraday 1 Cycle (14:00) for the gas day of Monday,
+August 31, 2026 Tennessee restricted the following:
+OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
+OFO DAILY CRITICAL DAY
+1 ON THE 500 lINE FROM STA 527 TO STA 542 FOR OVERTAKES from the system OR
+UNDERDELIVERieS into the system FOR ALL LMPA, SA ACTING AS BALANCING PARTIES
+AND LMMA BALANCING PARTIES
+OFO DAILY CRITICAL DAY
+1 FOR ALL AREAS EAST AND NORTH OF STA 219 FOR UNDERTAKES FROM THE SYSTEM OR
+OVERDELIVERIES INTO THE SYSTEM FOR ALL LMPA, SA ACTING AS BALANCING PARTIES AND
+LMMA BALANCING PARTIES
+METER RESTRICTIONS
+·
+ATMOS-TX/TGP Katy Exch Waller Receipt Meter (Pin 412100) -
+through approx 99% of SA increases due to nominations in excess of operational
+capacity; 3,715 Dths
+·
+GULFSTH/TGP Petal Storage Field For Delivery Meter (Pin 420797) -
+through 100% of SIPss increases due to operational concerns; 39 Dths
+·
+TET/TGP Dry Creek Sales Casey Delivery Meter (Pin 420886) -
+through approx 46% of SIPps increases due to operational concerns; 8,232 Dths
+SEGMENT RESTRICTIONS
+·
+STA 534 South Of Pool (Segment 530 BH) - through 100% of SOP
+increases due to scheduled maintenance and nominations in excess of operational
+capacity; 450 Dths
+·
+STA 1 (Segment 101 BH) - through 100% of SOP increases due to
+operational concerns; 98,446 Dths
+·
+MLV 509 Muskrat Line (Segment 515 BH) - through 100% of SOP
+increases due to nominations in excess of operational capacity; 4,494 Dths
+·
+STA 523 West (Segment 516 FH) - through 100% of SOP increases due
+to nominations in excess of operational capacity; 19,952 Dths
+·
+STA 114 East (Segment 114 BH) - through PIP increases due to
+force majeure
+·
+STA 204 (Segment 204 BH) - through 100% of SOP increases due to
+scheduled maintenance and nominations in excess of operational capacity; 155
+Dths
+·
+STA 307 (Segment 307 BH) - through 100% of SOP increases due to
+scheduled maintenance and nominations in excess of operational capacity;
+378,652 Dths
+·
+MLV 314 East (Segment 314 BH) - through approx 87% of SOP
+increases due to nominations in excess of operational capacity; 191,664 Dths
+·
+STA 315 (Segment 315 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 290,739 Dths
+·
+STA 317 (Segment 317 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 44,847 Dths
+·
+STA 321 (Segment 321 FH) - through PIP increases due to
+operational concerns
+·
+STA 325 (Segment 324 FH) - through 100% of SOP increases due to
+scheduled maintenance and nominations in excess of operational capacity; 75,712
+Dths
+·
+Z5hc North (Segment 299 FH) - through 100% of SOP increases due
+to nominations in excess of operational capacity; 193,551 Dths
+·
+STA 245 (Segment 245 FH) - through approx 99% of SOP increases
+due to scheduled maintenance and nominations in excess of operational capacity;
+219,175 Dths
+·
+STA 249 (Segment 249 FH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 72,558 Dths
+·
+STA 261 Discharge East (Segment 261 FH) - through approx 88% of
+SOP increases due to scheduled maintenance and nominations in excess of
+operational capacity; 17,563 Dths
+·
+MLV 273 (Segment 284 FH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 197,384 Dths
+LINEPACK RESTRICTIONS
+PAYBACK NOMINATIONS
+WILL BE EVALUATED AT EACH CYCLE AND SCHEDULED ONLY IF OPERATIONALLY FEASIBLE.
+STORAGE RESTRICTIONS
+No Authorized Overrun Injections
+Services under Rate Schedule FS-AO at the following storage fields:
+o Northern MA (460018) storage field
+o Portland MA (460025) storage field
+· No Interruptible Storage Injection
+Services under Rate Schedule IS at the following storage fields:
+o Northern MA (460018) storage field
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PALD service in Zones 4, 5 and 6
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PAL-AO service in Zones 4, 5 and 6
+**PLEASE
+NOTE MAXIMUM HOURLY ENTITLEMENTS (""MHE"") AND/OR ELAPSED PRO RATA
+SCHEDULED QUANTITIES (""EPSQ"") WILL BE REVIEWED AND MAY BE ENFORCED AT
+ANY METER DURING INTRADAY OR HOURLY CYCLES.
+**FINAL
+VOLUMES MAY CHANGE DUE TO SYSTEM BALANCING AND/OR CONFIRMATION REDUCTIONS.
+**THE
+OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
+FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
+OUTAGES.
+If you
+have any questions, please contact your Scheduler.",058567800bb11fb1bdfbc0117b6eaf7a409c043f136119716814b1834bd5b1e1,2026-08-31T16:26:47.000000Z,2026-08-31T11:26:47,2026-08-31T16:26:47.000000Z,2026-09-01T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403883,STORAGE,RESTRICTIONS,MONTHLY STORAGE TRANSFER REMINDER,False,True,True,SUPERSEDE,403824,"MONTHLY STORAGE TRANSFERS FOR SEPTEMBER 1,
 2026
 DART provides the ability for storage customers to
@@ -26,7 +133,7 @@ TENNESSEE
 GAS PIPELINE WILL CONFISCATE ANY REMAINING BALANCE NOT TRANSFERRED OR REQUESTED
 BY THE CUSTOMER TO BE TRANSFERRED ON TERMINATED FIRM STORAGE CONTRACTS.
 Please contact your Primary Gas Scheduler if you need
-procedures and/or help with your storage transfer.",8a00fb106eb509f74ad4588588989d5ee560ab20c109f7b4615f48b7910e5e13,2026-08-31T11:47:21.000000Z,2026-08-31T06:47:21,2026-08-31T11:47:21.000000Z,2026-09-01T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+procedures and/or help with your storage transfer.",8a00fb106eb509f74ad4588588989d5ee560ab20c109f7b4615f48b7910e5e13,2026-08-31T11:47:21.000000Z,2026-08-31T06:47:21,2026-08-31T11:47:21.000000Z,2026-09-01T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403877,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-30-2026 ID3,False,True,True,INITIATE,,"Effective Intraday 3 Cycle (22:00) for the gas day of Sunday,
 August 30, 2026 Tennessee restricted the following:
 OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
@@ -75,7 +182,7 @@ OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
 FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
 OUTAGES.
 If you
-have any questions, please contact your Scheduler.",1c98dea52d46306f8ccd4457280f1377ff195410ac4e81fa44b1ebb634a2c1a3,2026-08-31T00:58:54.000000Z,2026-08-30T19:58:54,2026-08-31T00:58:54.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+have any questions, please contact your Scheduler.",1c98dea52d46306f8ccd4457280f1377ff195410ac4e81fa44b1ebb634a2c1a3,2026-08-31T00:58:54.000000Z,2026-08-30T19:58:54,2026-08-31T00:58:54.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403875,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-31-2026 EC,False,True,True,INITIATE,,"Effective Evening
 Cycle (9:00) for the gas day of Monday, August 31, 2026 Tennessee restricted
 the following:
@@ -181,9 +288,219 @@ OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
 FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
 OUTAGES.
 If you
-have any questions, please contact your Scheduler.",2db1a398b93ba2e7afa300a84ded10a44e4881a90f84d724d96f00389ea9199b,2026-08-31T00:25:16.000000Z,2026-08-30T19:25:16,2026-08-31T00:25:16.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403870,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-30-2026,False,False,,,,,,2026-08-30T20:45:57.000000Z,2026-08-30T15:45:57,2026-08-30T20:45:57.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403869,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-31-2026 TIMELY CYCLE,False,False,,,,,,2026-08-30T20:01:58.000000Z,2026-08-30T15:01:58,2026-08-30T20:01:58.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+have any questions, please contact your Scheduler.",2db1a398b93ba2e7afa300a84ded10a44e4881a90f84d724d96f00389ea9199b,2026-08-31T00:25:16.000000Z,2026-08-30T19:25:16,2026-08-31T00:25:16.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403870,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-30-2026,False,True,True,INITIATE,,"Effective Intraday 2 Cycle (18:00) for the gas day of Sunday,
+August 30, 2026 Tennessee restricted the following:
+OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
+OFO DAILY CRITICAL DAY
+1 ON THE 500 lINE FROM STA 527 TO STA 542 FOR OVERTAKES from the system OR
+UNDERDELIVERieS into the system FOR ALL LMPA, SA ACTING AS BALANCING PARTIES
+AND LMMA BALANCING PARTIES
+OFO DAILY CRITICAL DAY
+1 FOR ALL AREAS EAST AND NORTH OF STA 219 FOR UNDERTAKES FROM THE SYSTEM OR
+OVERDELIVERIES INTO THE SYSTEM FOR ALL LMPA, SA ACTING AS BALANCING PARTIES AND
+LMMA BALANCING PARTIES
+METER RESTRICTIONS
+·
+ATMOS-TX/TGP Katy Exch Waller Receipt Meter (Pin 412100) -
+through 100% of SA increases due to nominations in excess of operational
+capacity; 375 Dths
+·
+TET/TGP Dry Creek Sales Casey Delivery Meter (Pin 420886) -
+through approx 45% of SOP increases due to operational concerns; 8,000 Dths
+SEGMENT RESTRICTIONS
+·
+STA 534 South Of Pool (Segment 530 BH) - through 100% of SOP
+increases due to scheduled maintenance and nominations in excess of operational
+capacity; 450 Dths
+·
+STA 1 (Segment 101 BH) - through 100% of SOP increases due to
+operational concerns; 86,267 Dths
+·
+MLV 509 Muskrat Line (Segment 515 BH) - through 100% of SOP
+increases due to nominations in excess of operational capacity; 4,494 Dths
+·
+STA 860 (Segment 860 BH) - through PIP increases due to scheduled
+maintenance and nominations in excess of operational capacity
+·
+STA 204 (Segment 204 BH) - through 100% of SOP increases due to
+scheduled maintenance and nominations in excess of operational capacity; 150
+Dths
+·
+STA 307 (Segment 307 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 378,652 Dths
+·
+MLV 314 East (Segment 314 BH) - through approx 89% of SOP
+increases due to nominations in excess of operational capacity; 192,082 Dths
+·
+STA 315 (Segment 315 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 285,073 Dths
+·
+STA 317 (Segment 317 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 99,756 Dths
+·
+STA 321 (Segment 321 FH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 107,777 Dths
+·
+Z5hc North (Segment 299 FH) - through approx 90% of SOP increases
+due to nominations in excess of operational capacity; 168,454 Dths
+·
+STA 245 (Segment 245 FH) - through approx 75% of SOP increases
+due to scheduled maintenance and nominations in excess of operational capacity;
+127,013 Dths
+·
+STA 249 (Segment 249 FH) - through approx 44% of SOP increases
+due to nominations in excess of operational capacity; 32,181 Dths
+·
+STA 261 Discharge East (Segment 261 FH) - through approx 82% of
+SOP increases due to scheduled maintenance and nominations in excess of
+operational capacity; 15,691 Dths
+·
+MLV 273 (Segment 284 FH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 197,765 Dths
+LINEPACK RESTRICTIONS
+PAYBACK NOMINATIONS
+WILL BE EVALUATED AT EACH CYCLE AND SCHEDULED ONLY IF OPERATIONALLY FEASIBLE.
+STORAGE RESTRICTIONS
+No Authorized Overrun Injections
+Services under Rate Schedule FS-AO at the following storage fields:
+o Northern MA (460018) storage field
+o Portland MA (460025) storage field
+· No Interruptible Storage Injection
+Services under Rate Schedule IS at the following storage fields:
+o Northern MA (460018) storage field
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PALD service in Zones 4, 5 and 6
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PAL-AO service in Zones 4, 5 and 6
+**PLEASE
+NOTE MAXIMUM HOURLY ENTITLEMENTS (""MHE"") AND/OR ELAPSED PRO RATA
+SCHEDULED QUANTITIES (""EPSQ"") WILL BE REVIEWED AND MAY BE ENFORCED AT
+ANY METER DURING INTRADAY OR HOURLY CYCLES.
+**FINAL
+VOLUMES MAY CHANGE DUE TO SYSTEM BALANCING AND/OR CONFIRMATION REDUCTIONS.
+**THE
+OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
+FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
+OUTAGES.
+If you
+have any questions, please contact your Scheduler.",660ba7379d830c6665e032fec429ed512f1249f9dcdc3a24cb687f6dcf567976,2026-08-30T20:45:57.000000Z,2026-08-30T15:45:57,2026-08-30T20:45:57.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403869,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-31-2026 TIMELY CYCLE,False,True,True,INITIATE,,"Effective Timely Cycle (9:00) for the gas day of Monday,
+August 31, 2026 Tennessee restricted the following:
+OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
+OFO DAILY CRITICAL DAY
+1 ON THE 500 lINE FROM STA 527 TO STA 542 FOR OVERTAKES from the system OR
+UNDERDELIVERieS into the SYSTEM FOR ALL LMPA, SA ACTING AS BALANCING PARTIES
+AND LMMA BALANCING PARTIES
+METER RESTRICTIONS
+·
+TGP/SNG Rose Hill Miss Clarke Delivery Meter (Pin 420546) -
+through 100% of SIPss due to operational concerns; 5,000 Dths
+·
+FGT/TGP Carnes Mississippi Stone Delivery Meter (Pin 420366) -
+through 100% of PIP due to planned and unplanned maintenance
+·
+ATMOS-TX/TGP Katy Exch Waller Receipt Meter (Pin 412100) -
+through approx 7% of SA due to nominations in excess of operational capacity;
+6,491 Dths
+·
+TGP/SNG Bear Creek Injection Bienvi Delivery Meter (Pin 405367) -
+through 100% of SOP due to operational concerns; 20,000 Dths
+·
+GULF SOUTH/TGP Petal Storage Field For Delivery Meter (Pin
+420797) - through 100% of SIPss due to operational concerns; 139 Dths
+·
+TRANSCO/TGP Heidelberg Mississippi Delivery Meter (Pin 420291) -
+through 100% of SIPps due to operational concerns; 10,000 Dths
+SEGMENT RESTRICTIONS
+·
+STA 534 South Of Pool (Segment 530 BH) - through 100% of SOP due
+to scheduled maintenance and nominations in excess of operational capacity; 450
+Dths
+·
+STA 1 (Segment 101 BH) - through 100% of SOP due to operational
+concerns; 96,548 Dths
+·
+STA 9 (Segment 109 BH) - through approx 2% of SOP due to
+scheduled maintenance and nominations in excess of operational capacity; 4,746
+Dths
+·
+MLV 509 Muskrat Line (Segment 515 BH) - through 100% of SOP due
+to nominations in excess of operational capacity; 4,494 Dths
+·
+STA 523 West (Segment 516 FH) - through 100% of SOP due to
+nominations in excess of operational capacity; 34,952 Dths
+·
+STA 110 South (Segment 187 BH) - through 100% of IT due to force
+majeure; 5 Dths
+·
+STA 114 East (Segment 114 BH) - into PIP due to force majeure
+·
+STA 204 (Segment 204 BH) - through 100% of SOP due to scheduled
+maintenance and nominations in excess of operational capacity; 155 Dths
+·
+STA 307 (Segment 307 BH) - through 100% of SOP due to scheduled
+maintenance and nominations in excess of operational capacity; 378,652 Dths
+·
+MLV 314 East (Segment 314 BH) - through approx 87% of SOP due to
+nominations in excess of operational capacity; 340,139 Dths
+·
+STA 315 (Segment 315 BH) - through 100% of SOP due to nominations
+in excess of operational capacity; 528,499 Dths
+·
+STA 317 (Segment 317 BH) - through 100% of SOP due to nominations
+in excess of operational capacity; 119,887 Dths
+·
+STA 321 (Segment 321 FH) - through 100% of SOP due to operational
+concerns; 1,121,299 Dths
+·
+STA 325 (Segment 324 FH) - through approx 46% of SOP due to
+scheduled maintenance and nominations in excess of operational capacity;
+182,428 Dths
+·
+Z5 HC North (Segment 299 FH) - through approx 80% of SOP due to
+nominations in excess of operational capacity; 544,204 Dths
+·
+STA 245 (Segment 245 FH) - through approx 75% of SOP due to
+scheduled maintenance and nominations in excess of operational capacity;
+550,217 Dths
+·
+STA 249 (Segment 249 FH) - through approx 54% of SOP due to
+nominations in excess of operational capacity; 298,664 Dths
+·
+STA 261 Discharge East (Segment 261 FH) - through approx 24% of
+SOP due to scheduled maintenance and nominations in excess of operational
+capacity; 38,963 Dths
+·
+MLV 273 (Segment 284 FH) - through approx 97% of SOP due to
+nominations in excess of operational capacity; 258,878 Dths
+LINEPACK RESTRICTIONS
+PAYBACK NOMINATIONS
+WILL BE EVALUATED AT EACH CYCLE AND SCHEDULED ONLY IF OPERATIONALLY FEASIBLE.
+STORAGE RESTRICTIONS
+No Authorized Overrun Injections
+Services under Rate Schedule FS-AO at the following storage fields:
+o Northern MA (460018) storage field
+o Portland MA (460025) storage field
+· No Interruptible Storage Injection
+Services under Rate Schedule IS at the following storage fields:
+o Northern MA (460018) storage field
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PALD service in Zones 4, 5 and 6
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PAL-AO service in Zones 4, 5 and 6
+**PLEASE
+NOTE MAXIMUM HOURLY ENTITLEMENTS (""MHE"") AND/OR ELAPSED PRO RATA
+SCHEDULED QUANTITIES (""EPSQ"") WILL BE REVIEWED AND MAY BE ENFORCED AT
+ANY METER DURING INTRADAY OR HOURLY CYCLES.
+**FINAL
+VOLUMES MAY CHANGE DUE TO SYSTEM BALANCING AND/OR CONFIRMATION REDUCTIONS.
+**THE
+OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
+FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
+OUTAGES.
+If you
+have any questions, please contact your Scheduler.",2e20b6583cbf4335ceb5131c874d7879b17bdd34c9769cb952951b61d6d2031c,2026-08-30T20:01:58.000000Z,2026-08-30T15:01:58,2026-08-30T20:01:58.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403864,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-30-2026 ID1,False,True,True,INITIATE,,"Effective Intraday 1 Cycle (14:00) for the gas day of Sunday,
 August 30, 2026 Tennessee restricted the following:
 OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
@@ -282,7 +599,7 @@ OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
 FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
 OUTAGES.
 If you
-have any questions, please contact your Scheduler.",89485dcbd7f7b005fbfec328058f3d7749c1dd60986643a5d2348298779f9c6a,2026-08-30T16:20:05.000000Z,2026-08-30T11:20:05,2026-08-30T16:20:05.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+have any questions, please contact your Scheduler.",89485dcbd7f7b005fbfec328058f3d7749c1dd60986643a5d2348298779f9c6a,2026-08-30T16:20:05.000000Z,2026-08-30T11:20:05,2026-08-30T16:20:05.000000Z,2026-08-31T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403858,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-26 ID3,False,True,True,INITIATE,,"Effective Intraday 3 Cycle (22:00) for the gas day of Saturday,
 August 29, 2026 Tennessee restricted the following:
 OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
@@ -331,7 +648,7 @@ OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
 FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
 OUTAGES.
 If you
-have any questions, please contact your Scheduler.",1341e6b30aaa48accdfd197aec172eef49ee01076fc2b13e0a5eaeb1351d4929,2026-08-30T01:02:43.000000Z,2026-08-29T20:02:43,2026-08-30T01:02:43.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+have any questions, please contact your Scheduler.",1341e6b30aaa48accdfd197aec172eef49ee01076fc2b13e0a5eaeb1351d4929,2026-08-30T01:02:43.000000Z,2026-08-29T20:02:43,2026-08-30T01:02:43.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403857,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-30-2026 EC,False,True,True,INITIATE,,"Effective Evening Cycle (9:00) for the gas day of Sunday,
 August 30, 2026 Tennessee restricted the following:
 OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
@@ -433,12 +750,310 @@ OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
 FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
 OUTAGES.
 If you
-have any questions, please contact your Scheduler.",562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3,2026-08-30T00:21:58.000000Z,2026-08-29T19:21:58,2026-08-30T00:21:58.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403852,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-2026 ID2,False,False,,,,,,2026-08-29T20:33:47.000000Z,2026-08-29T15:33:47,2026-08-29T20:33:47.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403850,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-30-2026 TIMELY CYCLE,False,False,,,,,,2026-08-29T19:17:07.000000Z,2026-08-29T14:17:07,2026-08-29T19:17:07.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403845,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-2026 ID1,False,False,,,,,,2026-08-29T16:40:19.000000Z,2026-08-29T11:40:19,2026-08-29T16:40:19.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403840,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 ID3,False,False,,,,,,2026-08-29T00:58:52.000000Z,2026-08-28T19:58:52,2026-08-29T00:58:52.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403839,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-2026 EC,False,False,,,,,,2026-08-29T00:34:50.000000Z,2026-08-28T19:34:50,2026-08-29T00:34:50.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+have any questions, please contact your Scheduler.",562ccbf385a4895a751cd49caec7cf58657ea6f6cc7207626d7c1e9fda2093e3,2026-08-30T00:21:58.000000Z,2026-08-29T19:21:58,2026-08-30T00:21:58.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403852,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-2026 ID2,False,True,True,INITIATE,,"Effective Intraday 2 Cycle (18:00) for the gas day of Saturday,
+August 29, 2026 Tennessee restricted the following:
+OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
+OFO DAILY CRITICAL DAY 1 ON THE
+500 lINE FROM STA 527 TO STA 542 FOR OVERTAKES from the system OR
+UNDERDELIVERieS into the SYSTEM FOR ALL LMPA, SA ACTING AS BALANCING PARTIES
+AND LMMA BALANCING PARTIES
+OFO DAILY CRITICAL DAY 1 FOR ALL
+AREAS EAST AND NORTH OF STA 219 FOR UNDERTAKES FROM THE SYSTEM OR
+OVERDELIVERIES INTO THE SYSTEM FOR ALL LMPA, SA ACTING AS BALANCING PARTIES AND
+LMMA BALANCING PARTIES
+METER RESTRICTIONS
+·
+NONE
+SEGMENT RESTRICTIONS
+·
+STA 534 South Of Pool (Segment 530 BH) - through 100% of SOP
+increases due to scheduled maintenance and nominations in excess of operational
+capacity; 450 Dths
+·
+STA 1 (Segment 101 BH) - through 100% of SOP increases due to
+operational concerns; 91,243 Dths
+·
+MLV 509 Muskrat Line (Segment 515 BH) - through 100% of SOP
+increases due to nominations in excess of operational capacity; 4,494 Dths
+·
+STA 860 (Segment 860 BH) - through SIPsp increases due to
+scheduled maintenance and nominations in excess of operational capacity
+·
+STA 204 (Segment 204 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 150 Dths
+·
+STA 307 (Segment 307 BH) - through 100% of SOP increases due to
+scheduled maintenance and nominations in excess of operational capacity;
+378,652 Dths
+·
+MLV 314 East (Segment 314 BH) - through approx 94% of SOP
+increases due to nominations in excess of operational capacity; 209,026 Dths
+·
+STA 315 (Segment 315 BH) - through approx 75% of SOP increases
+due to nominations in excess of operational capacity; 212,458 Dths
+·
+STA 317 (Segment 317 BH) - through approx 99% of SOP increases
+due to nominations in excess of operational capacity; 89,943 Dths
+·
+Z5 HC North (Segment 299 FH) - through approx 88% of SOP
+increases due to nominations in excess of operational capacity; 161,982 Dths
+·
+STA 245 (Segment 245 FH) - through approx 61% of SOP increases
+due to scheduled maintenance and nominations in excess of operational capacity;
+109,161 Dths
+·
+STA 249 (Segment 249 FH) - through approx 20% of SOP increases
+due to nominations in excess of operational capacity; 15,002 Dths
+·
+STA 261 Discharge East (Segment 261 FH) - through approx 71% of
+SOP increases due to scheduled maintenance and nominations in excess of
+operational capacity; 12,086 Dths
+·
+MLV 273 (Segment 284 FH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 196,777 Dths
+LINEPACK RESTRICTIONS
+PAYBACK NOMINATIONS
+WILL BE EVALUATED AT EACH CYCLE AND SCHEDULED ONLY IF OPERATIONALLY FEASIBLE.
+STORAGE RESTRICTIONS
+No Authorized Overrun Injections
+Services under Rate Schedule FS-AO at the following storage fields:
+o Northern MA (460018) storage field
+o Portland MA (460025) storage field
+· No Interruptible Storage Injection
+Services under Rate Schedule IS at the following storage fields:
+o Northern MA (460018) storage field
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PALD service in Zones 4, 5 and 6
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PAL-AO service in Zones 4, 5 and 6
+**PLEASE
+NOTE MAXIMUM HOURLY ENTITLEMENTS (""MHE"") AND/OR ELAPSED PRO RATA
+SCHEDULED QUANTITIES (""EPSQ"") WILL BE REVIEWED AND MAY BE ENFORCED AT
+ANY METER DURING INTRADAY OR HOURLY CYCLES.
+**FINAL
+VOLUMES MAY CHANGE DUE TO SYSTEM BALANCING AND/OR CONFIRMATION REDUCTIONS.
+**THE
+OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
+FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
+OUTAGES.
+If you
+have any questions, please contact your Scheduler.",bf1702039537041b952309c522718bd667aaab87f58538f96ec591e306eb2838,2026-08-29T20:33:47.000000Z,2026-08-29T15:33:47,2026-08-29T20:33:47.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403850,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-30-2026 TIMELY CYCLE,False,True,True,INITIATE,,"Effective Timely Cycle (9:00) for the gas day of Sunday,
+August 30, 2026 Tennessee restricted the following:
+OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
+OFO DAILY CRITICAL DAY
+1 ON THE 500 lINE FROM STA 527 TO STA 542 FOR OVERTAKES from the system OR
+UNDERDELIVERieS into the system FOR ALL LMPA, SA ACTING AS BALANCING PARTIES
+AND LMMA BALANCING PARTIES
+OFO DAILY CRITICAL DAY
+1 FOR ALL AREAS EAST AND NORTH OF STA 219 FOR UNDERTAKES FROM THE SYSTEM OR
+OVERDELIVERIES INTO THE SYSTEM FOR ALL LMPA, SA ACTING AS BALANCING PARTIES AND
+LMMA BALANCING PARTIES
+METER RESTRICTIONS
+·
+TGP/SNG Rose Hill Miss Clarke Delivery Meter (Pin 420546) -
+through 100% of SIPss due to operational concerns; 5,000 Dths
+·
+FGT/TGP Carnes Mississippi Stone Delivery Meter (Pin 420366) -
+through 100% of PIP due to planned and unplanned maintenance;
+·
+ATMOS-TX/TGP Katy Exch Waller Receipt Meter (Pin 412100) -
+through approx 7% of SA due to nominations in excess of operational capacity;
+6,516 Dths
+·
+TGP/SNG Bear Creek Injection Bienvi Delivery Meter (Pin 405367) -
+through 100% of SOP due to operational concerns; 20,000 Dths
+·
+GULFSTH/TGP Petal Storage Field For Delivery Meter (Pin 420797) -
+through 100% of SIPss due to operational concerns; 139 Dths
+·
+TRNSCO/TGP Heidelberg Missisippi Ja Delivery Meter (Pin 420291) -
+through 100% of SIPps due to operational concerns; 10,000 Dths
+SEGMENT RESTRICTIONS
+·
+STA 534 South Of Pool (Segment 530 BH) - through 100% of SOP due
+to scheduled maintenance and nominations in excess of operational capacity; 450
+Dths
+·
+STA 1 (Segment 101 BH) - through 100% of SOP due to operational
+concerns; 91,243 Dths
+·
+MLV 509 Muskrat Line (Segment 515 BH) - through 100% of SOP due
+to nominations in excess of operational capacity; 4,494 Dths
+·
+STA 523 West (Segment 516 FH) - through 100% of SOP due to
+nominations in excess of operational capacity; 34,952 Dths
+·
+STA 114 East (Segment 114 BH) - into PIP due to force majeure
+·
+STA 204 (Segment 204 BH) - through 100% of SOP due to scheduled
+maintenance and nominations in excess of operational capacity; 155 Dths
+·
+STA 307 (Segment 307 BH) - through 100% of SOP due to nominations
+in excess of operational capacity; 378,652 Dths
+·
+MLV 314 East (Segment 314 BH) - through approx 87% of SOP due to
+nominations in excess of operational capacity; 344,626 Dths
+·
+STA 315 (Segment 315 BH) - through approx 82% of SOP due to
+nominations in excess of operational capacity; 425,077 Dths
+·
+STA 317 (Segment 317 BH) - through approx 84% of SOP due to
+nominations in excess of operational capacity; 167,943 Dths
+·
+STA 321 (Segment 321 FH) - through approx 46% of SOP due to
+nominations in excess of operational capacity; 505,132 Dths
+·
+STA 325 (Segment 324 FH) - through approx 12% of SOP due to
+nominations in excess of operational capacity; 60,258 Dths
+·
+MLV 330 (Segment 324 FH) - through approx 29% of SOP due to
+nominations in excess of operational capacity; 178,247 Dths
+·
+Z5hc North (Segment 299 FH) - through approx 80% of SOP due to
+nominations in excess of operational capacity; 544,689 Dths
+·
+STA 245 (Segment 245 FH) - through approx 75% of SOP due to
+scheduled maintenance and nominations in excess of operational capacity;
+550,852 Dths
+·
+STA 249 (Segment 249 FH) - through approx 54% of SOP due to
+nominations in excess of operational capacity; 299,124 Dths
+·
+STA 261 Discharge East (Segment 261 FH) - through approx 25% of
+SOP due to scheduled maintenance and nominations in excess of operational
+capacity; 40,611 Dths
+·
+MLV 273 (Segment 284 FH) - through approx 97% of SOP due to
+nominations in excess of operational capacity; 259,378 Dths
+LINEPACK RESTRICTIONS
+PAYBACK NOMINATIONS
+WILL BE EVALUATED AT EACH CYCLE AND SCHEDULED ONLY IF OPERATIONALLY FEASIBLE.
+STORAGE RESTRICTIONS
+No Authorized Overrun Injections
+Services under Rate Schedule FS-AO at the following storage fields:
+o Northern MA (460018) storage field
+o Portland MA (460025) storage field
+· No Interruptible Storage Injection
+Services under Rate Schedule IS at the following storage fields:
+o Northern MA (460018) storage field
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PALD service in Zones 4, 5 and 6
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PAL-AO service in Zones 4, 5 and 6
+**PLEASE
+NOTE MAXIMUM HOURLY ENTITLEMENTS (""MHE"") AND/OR ELAPSED PRO RATA
+SCHEDULED QUANTITIES (""EPSQ"") WILL BE REVIEWED AND MAY BE ENFORCED AT
+ANY METER DURING INTRADAY OR HOURLY CYCLES.
+**FINAL
+VOLUMES MAY CHANGE DUE TO SYSTEM BALANCING AND/OR CONFIRMATION REDUCTIONS.
+**THE
+OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
+FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
+OUTAGES.
+If you
+have any questions, please contact your Scheduler.",28c0d052fe9c17454a9c46f0a37bee1952cc85b99a6aef9b8465b63e6e16a72a,2026-08-29T19:17:07.000000Z,2026-08-29T14:17:07,2026-08-29T19:17:07.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403845,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-2026 ID1,False,True,True,INITIATE,,"Effective Intraday 1 Cycle (14:00) for the gas day of Saturday,
+August 29, 2026 Tennessee restricted the following:
+OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
+OFO DAILY CRITICAL DAY
+1 ON THE 500 lINE FROM STA 527 TO STA 542 FOR OVERTAKES from the system OR
+UNDERDELIVERieS into the SYSTEM FOR ALL LMPA, SA ACTING AS BALANCING PARTIES
+AND LMMA BALANCING PARTIES
+OFO DAILY CRITICAL DAY
+1 FOR ALL AREAS EAST AND NORTH OF STA 219 FOR UNDERTAKES FROM THE SYSTEM OR
+OVERDELIVERIES INTO THE SYSTEM FOR ALL LMPA, SA ACTING AS BALANCING PARTIES AND
+LMMA BALANCING PARTIES
+METER RESTRICTIONS
+·
+ATMOS-TX/TGP Katy Exch Waller Receipt Meter (Pin 412100) -
+through approx 11% of SA increases due to nominations in excess of operational
+capacity; 510 Dths
+SEGMENT RESTRICTIONS
+·
+STA 534 South Of Pool (Segment 530 BH) - through 100% of SOP
+increases due to scheduled maintenance and nominations in excess of operational
+capacity; 450 Dths
+·
+STA 1 (Segment 101 BH) - through 100% of SOP increases due to
+operational concerns; 92,759 Dths
+·
+MLV 509 Muskrat Line (Segment 515 BH) - through 100% of SOP
+increases due to nominations in excess of operational capacity; 4,494 Dths
+·
+STA 860 (Segment 860 BH) - through PIP increases due to scheduled
+maintenance and nominations in excess of operational capacity
+·
+STA 523 West (Segment 516 FH) - through 100% of SOP increases due
+to nominations in excess of operational capacity; 19,952 Dths
+·
+STA 204 (Segment 204 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 155 Dths
+·
+STA 307 (Segment 307 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 378,652 Dths
+·
+MLV 314 East (Segment 314 BH) - through approx 99% of SOP
+increases due to nominations in excess of operational capacity; 223,090 Dths
+·
+STA 315 (Segment 315 BH) - through approx 79% of SOP increases
+due to nominations in excess of operational capacity; 236,416 Dths
+·
+STA 317 (Segment 317 BH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 80,693 Dths
+·
+STA 321 (Segment 321 FH) - through approx 26% of SOP increases
+due to nominations in excess of operational capacity; 28,335 Dths
+·
+MLV 330 (Segment 324 FH) - through approx 30% of SOP increases
+due to nominations in excess of operational capacity; 15,626 Dths
+·
+Z5 HC North (Segment 299 FH) - through 100% of SOP increases due
+to nominations in excess of operational capacity; 184,173 Dths
+·
+STA 245 (Segment 245 FH) - through 100% of SOP increases due to
+scheduled maintenance and nominations in excess of operational capacity;
+210,097 Dths
+·
+STA 249 (Segment 249 FH) - through approx 92% of SOP increases
+due to nominations in excess of operational capacity; 74,998 Dths
+·
+STA 261 Discharge East (Segment 261 FH) - through approx 44% of
+SOP increases due to scheduled maintenance and nominations in excess of
+operational capacity; 11,884 Dths
+·
+MLV 273 (Segment 284 FH) - through 100% of SOP increases due to
+nominations in excess of operational capacity; 196,777 Dths
+LINEPACK RESTRICTIONS
+PAYBACK NOMINATIONS
+WILL BE EVALUATED AT EACH CYCLE AND SCHEDULED ONLY IF OPERATIONALLY FEASIBLE.
+STORAGE RESTRICTIONS
+No Authorized Overrun Injections
+Services under Rate Schedule FS-AO at the following storage fields:
+o Northern MA (460018) storage field
+o Portland MA (460025) storage field
+· No Interruptible Storage Injection
+Services under Rate Schedule IS at the following storage fields:
+o Northern MA (460018) storage field
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PALD service in Zones 4, 5 and 6
+· No Parks or Loan Paybacks under
+Rate Schedule PAL utilizing the PAL-AO service in Zones 4, 5 and 6
+**PLEASE
+NOTE MAXIMUM HOURLY ENTITLEMENTS (""MHE"") AND/OR ELAPSED PRO RATA
+SCHEDULED QUANTITIES (""EPSQ"") WILL BE REVIEWED AND MAY BE ENFORCED AT
+ANY METER DURING INTRADAY OR HOURLY CYCLES.
+**FINAL
+VOLUMES MAY CHANGE DUE TO SYSTEM BALANCING AND/OR CONFIRMATION REDUCTIONS.
+**THE
+OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
+FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
+OUTAGES.
+If you
+have any questions, please contact your Scheduler.",e4af76cfd21f5c37a4c5622105d7643af442b4575f597e032f48f34c6e9c56ee,2026-08-29T16:40:19.000000Z,2026-08-29T11:40:19,2026-08-29T16:40:19.000000Z,2026-08-30T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403840,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 ID3,False,False,,,,,,2026-08-29T00:58:52.000000Z,2026-08-28T19:58:52,2026-08-29T00:58:52.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403839,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-2026 EC,False,False,,,,,,2026-08-29T00:34:50.000000Z,2026-08-28T19:34:50,2026-08-29T00:34:50.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403838,MAINTENANCE,MAINTENANCE,EMERGENT REPAIR STA 563 1A EFF 8-28-26,False,True,True,INITIATE,,"EMERGENT
 REPAIR AT STA 563 UNIT 1A EFFECTIVE 8-28-2026
 Pursuant
@@ -459,10 +1074,10 @@ Gas Day, August 29, 2026, are at risk.
 Updates
 will be posted as more information becomes available.
 Please
-contact your Scheduler if you have any questions.",f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d,2026-08-28T23:36:04.000000Z,2026-08-28T18:36:04,2026-08-28T23:36:04.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403833,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 ID2,False,False,,,,,,2026-08-28T20:42:28.000000Z,2026-08-28T15:42:28,2026-08-28T20:42:28.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403832,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-2026 TIMELY CYCLE,False,False,,,,,,2026-08-28T20:28:46.000000Z,2026-08-28T15:28:46,2026-08-28T20:28:46.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403825,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 ID1,False,False,,,,,,2026-08-28T16:37:30.000000Z,2026-08-28T11:37:30,2026-08-28T16:37:30.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+contact your Scheduler if you have any questions.",f6e560a11a28f7db622d566fd415c012ffc4e7a8baa3d17f365651da6e2b059d,2026-08-28T23:36:04.000000Z,2026-08-28T18:36:04,2026-08-28T23:36:04.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403833,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 ID2,False,False,,,,,,2026-08-28T20:42:28.000000Z,2026-08-28T15:42:28,2026-08-28T20:42:28.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403832,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-29-2026 TIMELY CYCLE,False,False,,,,,,2026-08-28T20:28:46.000000Z,2026-08-28T15:28:46,2026-08-28T20:28:46.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403825,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 ID1,False,False,,,,,,2026-08-28T16:37:30.000000Z,2026-08-28T11:37:30,2026-08-28T16:37:30.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403824,STORAGE,RESTRICTIONS,MONTHLY STORAGE TRANSFER REMINDER,False,True,True,INITIATE,,"MONTHLY STORAGE TRANSFERS FOR SEPTEMBER 1,
 2026
 DART provides the ability for storage customers to
@@ -490,7 +1105,7 @@ TENNESSEE
 GAS PIPELINE WILL CONFISCATE ANY REMAINING BALANCE NOT TRANSFERRED OR REQUESTED
 BY THE CUSTOMER TO BE TRANSFERRED ON TERMINATED FIRM STORAGE CONTRACTS.
 Please contact your Primary Gas Scheduler if you need
-procedures and/or help with your storage transfer.",aa948c8c23a18f8c63ee5a1041e4f2a0fdadae5c3cb2e829db4c940e5602eefb,2026-08-28T14:27:08.000000Z,2026-08-28T09:27:08,2026-08-28T14:27:08.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+procedures and/or help with your storage transfer.",aa948c8c23a18f8c63ee5a1041e4f2a0fdadae5c3cb2e829db4c940e5602eefb,2026-08-28T14:27:08.000000Z,2026-08-28T09:27:08,2026-08-28T14:27:08.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403823,OPERATIONAL FLOW ORDER,OFO,OFO DAILY CD1 DS219 EFF 8-29 LIFTED 8-31,False,True,True,INITIATE,,"OFO DAILY CRITICAL DAY 1 EFFECTIVE 8-29-2026
 Due to forecasted milder weather with associated lesser demand
 moving into the Northeast areas of its system, in order to protect the
@@ -605,7 +1220,7 @@ Critical Day II, a Balancing Alert, Meter Specific OFO(s) or Hourly OFO(s), or
 taking any other actions that may be permitted or required by Tennessee's
 Tariff.
 Please contact your Scheduling Representative if you
-have any questions.",1ce9d164340cd15e9f3a0ecb3b2f988a1499f135dc6c96a629d15d089b7bd090,2026-08-28T11:48:40.000000Z,2026-08-28T06:48:40,2026-08-28T11:48:40.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+have any questions.",1ce9d164340cd15e9f3a0ecb3b2f988a1499f135dc6c96a629d15d089b7bd090,2026-08-28T11:48:40.000000Z,2026-08-28T06:48:40,2026-08-28T11:48:40.000000Z,2026-08-29T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403816,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 ID3,False,True,True,INITIATE,,"Effective Intraday 3 Cycle (22:00) for the gas day of Thursday,
 August 27, 2026 Tennessee restricted the following:
 OPERATIONAL FLOW ORDERS (OFO) AND IMBALANCE WARNINGS
@@ -643,12 +1258,12 @@ OUTAGE AND MAINTENANCE SCHEDULE IS AVAILABLE IN EXCEL SPREADSHEET AND ADOBE
 FORMATS WHICH MAY BE ACCESSED VIA A HYPERLINK UNDER NOTICES/PLANNED SERVICE
 OUTAGES.
 If you
-have any questions, please contact your Scheduler.",ea79cd60081c144544ef997f2a7c7fd228a831fccba87ebea45ac0f2706471dd,2026-08-28T00:52:25.000000Z,2026-08-27T19:52:25,2026-08-28T00:52:25.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403815,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 EC,False,False,,,,,,2026-08-28T00:31:30.000000Z,2026-08-27T19:31:30,2026-08-28T00:31:30.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403808,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 ID2,False,False,,,,,,2026-08-27T21:03:07.000000Z,2026-08-27T16:03:07,2026-08-27T21:03:07.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403807,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 TC REVISED,False,False,,,,,,2026-08-27T20:56:39.000000Z,2026-08-27T15:56:39,2026-08-27T20:56:39.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403805,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 TIMELY CYCLE,False,False,,,,,,2026-08-27T20:18:27.000000Z,2026-08-27T15:18:27,2026-08-27T20:18:27.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403803,TSP CAPACITY OFFERING,TSP CAP OFFERING,SUCCESSFUL BIDDER - OS #1436,False,False,,,,,,2026-08-27T20:04:58.000000Z,2026-08-27T15:04:58,2026-08-27T20:04:58.000000Z,2049-12-31T15:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+have any questions, please contact your Scheduler.",ea79cd60081c144544ef997f2a7c7fd228a831fccba87ebea45ac0f2706471dd,2026-08-28T00:52:25.000000Z,2026-08-27T19:52:25,2026-08-28T00:52:25.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403815,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 EC,False,False,,,,,,2026-08-28T00:31:30.000000Z,2026-08-27T19:31:30,2026-08-28T00:31:30.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403808,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 ID2,False,False,,,,,,2026-08-27T21:03:07.000000Z,2026-08-27T16:03:07,2026-08-27T21:03:07.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403807,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 TC REVISED,False,False,,,,,,2026-08-27T20:56:39.000000Z,2026-08-27T15:56:39,2026-08-27T20:56:39.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403805,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-28-2026 TIMELY CYCLE,False,False,,,,,,2026-08-27T20:18:27.000000Z,2026-08-27T15:18:27,2026-08-27T20:18:27.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403803,TSP CAPACITY OFFERING,TSP CAP OFFERING,SUCCESSFUL BIDDER - OS #1436,False,False,,,,,,2026-08-27T20:04:58.000000Z,2026-08-27T15:04:58,2026-08-27T20:04:58.000000Z,2049-12-31T15:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403802,MAINTENANCE,MAINTENANCE,TGP Outage Impact Report,False,True,True,INITIATE,,"-Primary
 impact restrictions may be necessary
 TGP - Outage
@@ -2130,46 +2745,46 @@ in the event of conflicts between DART posted
 dates and dates on this report.
 The impacts sheet are based on steady-state hydraulic models assuming recent operating flows,
 conditions, and various
-unit outages.",46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063,2026-08-27T19:41:15.000000Z,2026-08-27T14:41:15,2026-08-27T19:41:15.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403794,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 ID1,False,False,,,,,,2026-08-27T16:39:34.000000Z,2026-08-27T11:39:34,2026-08-27T16:39:34.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403787,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 ID3,False,False,,,,,,2026-08-27T00:34:45.000000Z,2026-08-26T19:34:45,2026-08-27T00:34:45.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403786,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 EC,False,False,,,,,,2026-08-27T00:18:16.000000Z,2026-08-26T19:18:16,2026-08-27T00:18:16.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403781,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 ID2,False,False,,,,,,2026-08-26T20:50:00.000000Z,2026-08-26T15:50:00,2026-08-26T20:50:00.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403780,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 TIMELY CYCLE,False,False,,,,,,2026-08-26T20:36:22.000000Z,2026-08-26T15:36:22,2026-08-26T20:36:22.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403777,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 ID1,False,False,,,,,,2026-08-26T17:01:23.000000Z,2026-08-26T12:01:23,2026-08-26T17:01:23.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403770,STORAGE,RESTRICTIONS,MASTORAGE INJECTION LIMITATIONS EFF 8-27,False,False,,,,,,2026-08-26T15:19:15.000000Z,2026-08-26T10:19:15,2026-08-26T15:19:15.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403769,RATES AND CHARGES,FUEL AND GLU,BH FUEL OVERRIDE PATHS EFF 9-1-26 REM,False,False,,,,,,2026-08-26T12:24:05.000000Z,2026-08-26T07:24:05,2026-08-26T12:24:05.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403768,CAPACITY CONSTRAINT,SEGMENTS,ANT PIP RESTR 114BH & 539BH EFF 8-27-26,False,False,,,,,,2026-08-26T11:58:00.000000Z,2026-08-26T06:58:00,2026-08-26T11:58:00.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403767,FORCE MAJEURE,FORCE MAJEURE,FORCE MAJEURE AT STA 542 RESOLVED 8-27,False,False,,,,,,2026-08-26T11:56:53.000000Z,2026-08-26T06:56:53,2026-08-26T11:56:53.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403760,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 ID3,False,False,,,,,,2026-08-26T00:38:30.000000Z,2026-08-25T19:38:30,2026-08-26T00:38:30.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403759,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 EC,False,False,,,,,,2026-08-26T00:10:24.000000Z,2026-08-25T19:10:24,2026-08-26T00:10:24.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403753,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 ID2,False,False,,,,,,2026-08-25T20:55:05.000000Z,2026-08-25T15:55:05,2026-08-25T20:55:05.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403752,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 TC REVISED,False,False,,,,,,2026-08-25T20:43:49.000000Z,2026-08-25T15:43:49,2026-08-25T20:43:49.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403750,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 TIMELY CYCLE,False,False,,,,,,2026-08-25T19:32:07.000000Z,2026-08-25T14:32:07,2026-08-25T19:32:07.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403739,TSP CAPACITY OFFERING,TSP CAP OFFERING,AVAILABLE FIRM CAPACITY OS #1436,False,False,,,,,,2026-08-25T16:57:39.000000Z,2026-08-25T11:57:39,2026-08-25T16:57:39.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403742,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 ID1,False,False,,,,,,2026-08-25T16:50:43.000000Z,2026-08-25T11:50:43,2026-08-25T16:50:43.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403736,CAPACITY CONSTRAINT,SEGMENTS,ANT PIP RESTR 114BH & 539BH EFF 8-26-26,False,False,,,,,,2026-08-25T12:13:37.000000Z,2026-08-25T07:13:37,2026-08-25T12:13:37.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403735,FORCE MAJEURE,FORCE MAJEURE,FORCE MAJEURE AT STA 542 EFF 8-25-26,False,False,,,,,,2026-08-25T12:11:17.000000Z,2026-08-25T07:11:17,2026-08-25T12:11:17.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403730,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 ID3,False,False,,,,,,2026-08-25T00:53:07.000000Z,2026-08-24T19:53:07,2026-08-25T00:53:07.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403729,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 EC,False,False,,,,,,2026-08-25T00:31:49.000000Z,2026-08-24T19:31:49,2026-08-25T00:31:49.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403725,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 ID2,False,False,,,,,,2026-08-24T21:03:48.000000Z,2026-08-24T16:03:48,2026-08-24T21:03:48.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403724,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 TIMELY CYCLE,False,False,,,,,,2026-08-24T20:19:10.000000Z,2026-08-24T15:19:10,2026-08-24T20:19:10.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403723,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 ID1,False,False,,,,,,2026-08-24T17:17:57.000000Z,2026-08-24T12:17:57,2026-08-24T17:17:57.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403711,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 ID3,False,False,,,,,,2026-08-24T00:27:39.000000Z,2026-08-23T19:27:39,2026-08-24T00:27:39.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403710,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 EC,False,False,,,,,,2026-08-24T00:04:45.000000Z,2026-08-23T19:04:45,2026-08-24T00:04:45.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403704,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 ID2,False,False,,,,,,2026-08-23T20:18:12.000000Z,2026-08-23T15:18:12,2026-08-23T20:18:12.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403703,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 TIMELY CYCLE,False,False,,,,,,2026-08-23T19:56:28.000000Z,2026-08-23T14:56:28,2026-08-23T19:56:28.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403694,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 ID1,False,False,,,,,,2026-08-23T15:54:49.000000Z,2026-08-23T10:54:49,2026-08-23T15:54:49.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403689,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 ID3,False,False,,,,,,2026-08-23T00:36:19.000000Z,2026-08-22T19:36:19,2026-08-23T00:36:19.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403688,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 EC,False,False,,,,,,2026-08-22T23:59:49.000000Z,2026-08-22T18:59:49,2026-08-22T23:59:49.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403683,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 ID2,False,False,,,,,,2026-08-22T20:24:13.000000Z,2026-08-22T15:24:13,2026-08-22T20:24:13.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403682,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 TIMELY CYCLE,False,False,,,,,,2026-08-22T19:34:01.000000Z,2026-08-22T14:34:01,2026-08-22T19:34:01.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403674,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 ID1,False,False,,,,,,2026-08-22T16:37:27.000000Z,2026-08-22T11:37:27,2026-08-22T16:37:27.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403669,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 ID3,False,False,,,,,,2026-08-22T00:30:11.000000Z,2026-08-21T19:30:11,2026-08-22T00:30:11.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403668,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 EC,False,False,,,,,,2026-08-22T00:16:10.000000Z,2026-08-21T19:16:10,2026-08-22T00:16:10.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403663,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 ID2,False,False,,,,,,2026-08-21T20:28:07.000000Z,2026-08-21T15:28:07,2026-08-21T20:28:07.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403661,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 TIMELY CYCLE,False,False,,,,,,2026-08-21T19:52:40.000000Z,2026-08-21T14:52:40,2026-08-21T19:52:40.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403654,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 ID1,False,False,,,,,,2026-08-21T16:47:24.000000Z,2026-08-21T11:47:24,2026-08-21T16:47:24.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+unit outages.",46485bb248300193468625e90e1a0552f36c4adb8a4d2cdff1a507c289e82063,2026-08-27T19:41:15.000000Z,2026-08-27T14:41:15,2026-08-27T19:41:15.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403794,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 ID1,False,False,,,,,,2026-08-27T16:39:34.000000Z,2026-08-27T11:39:34,2026-08-27T16:39:34.000000Z,2026-08-28T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403787,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 ID3,False,False,,,,,,2026-08-27T00:34:45.000000Z,2026-08-26T19:34:45,2026-08-27T00:34:45.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403786,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 EC,False,False,,,,,,2026-08-27T00:18:16.000000Z,2026-08-26T19:18:16,2026-08-27T00:18:16.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403781,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 ID2,False,False,,,,,,2026-08-26T20:50:00.000000Z,2026-08-26T15:50:00,2026-08-26T20:50:00.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403780,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-27-2026 TIMELY CYCLE,False,False,,,,,,2026-08-26T20:36:22.000000Z,2026-08-26T15:36:22,2026-08-26T20:36:22.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403777,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 ID1,False,False,,,,,,2026-08-26T17:01:23.000000Z,2026-08-26T12:01:23,2026-08-26T17:01:23.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403770,STORAGE,RESTRICTIONS,MASTORAGE INJECTION LIMITATIONS EFF 8-27,False,False,,,,,,2026-08-26T15:19:15.000000Z,2026-08-26T10:19:15,2026-08-26T15:19:15.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403769,RATES AND CHARGES,FUEL AND GLU,BH FUEL OVERRIDE PATHS EFF 9-1-26 REM,False,False,,,,,,2026-08-26T12:24:05.000000Z,2026-08-26T07:24:05,2026-08-26T12:24:05.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403768,CAPACITY CONSTRAINT,SEGMENTS,ANT PIP RESTR 114BH & 539BH EFF 8-27-26,False,False,,,,,,2026-08-26T11:58:00.000000Z,2026-08-26T06:58:00,2026-08-26T11:58:00.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403767,FORCE MAJEURE,FORCE MAJEURE,FORCE MAJEURE AT STA 542 RESOLVED 8-27,False,False,,,,,,2026-08-26T11:56:53.000000Z,2026-08-26T06:56:53,2026-08-26T11:56:53.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403760,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 ID3,False,False,,,,,,2026-08-26T00:38:30.000000Z,2026-08-25T19:38:30,2026-08-26T00:38:30.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403759,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 EC,False,False,,,,,,2026-08-26T00:10:24.000000Z,2026-08-25T19:10:24,2026-08-26T00:10:24.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403753,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 ID2,False,False,,,,,,2026-08-25T20:55:05.000000Z,2026-08-25T15:55:05,2026-08-25T20:55:05.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403752,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 TC REVISED,False,False,,,,,,2026-08-25T20:43:49.000000Z,2026-08-25T15:43:49,2026-08-25T20:43:49.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403750,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-26-2026 TIMELY CYCLE,False,False,,,,,,2026-08-25T19:32:07.000000Z,2026-08-25T14:32:07,2026-08-25T19:32:07.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403739,TSP CAPACITY OFFERING,TSP CAP OFFERING,AVAILABLE FIRM CAPACITY OS #1436,False,False,,,,,,2026-08-25T16:57:39.000000Z,2026-08-25T11:57:39,2026-08-25T16:57:39.000000Z,2026-08-27T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403742,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 ID1,False,False,,,,,,2026-08-25T16:50:43.000000Z,2026-08-25T11:50:43,2026-08-25T16:50:43.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403736,CAPACITY CONSTRAINT,SEGMENTS,ANT PIP RESTR 114BH & 539BH EFF 8-26-26,False,False,,,,,,2026-08-25T12:13:37.000000Z,2026-08-25T07:13:37,2026-08-25T12:13:37.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403735,FORCE MAJEURE,FORCE MAJEURE,FORCE MAJEURE AT STA 542 EFF 8-25-26,False,False,,,,,,2026-08-25T12:11:17.000000Z,2026-08-25T07:11:17,2026-08-25T12:11:17.000000Z,2026-08-26T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403730,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 ID3,False,False,,,,,,2026-08-25T00:53:07.000000Z,2026-08-24T19:53:07,2026-08-25T00:53:07.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403729,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 EC,False,False,,,,,,2026-08-25T00:31:49.000000Z,2026-08-24T19:31:49,2026-08-25T00:31:49.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403725,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 ID2,False,False,,,,,,2026-08-24T21:03:48.000000Z,2026-08-24T16:03:48,2026-08-24T21:03:48.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403724,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-25-2026 TIMELY CYCLE,False,False,,,,,,2026-08-24T20:19:10.000000Z,2026-08-24T15:19:10,2026-08-24T20:19:10.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403723,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 ID1,False,False,,,,,,2026-08-24T17:17:57.000000Z,2026-08-24T12:17:57,2026-08-24T17:17:57.000000Z,2026-08-25T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403711,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 ID3,False,False,,,,,,2026-08-24T00:27:39.000000Z,2026-08-23T19:27:39,2026-08-24T00:27:39.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403710,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 EC,False,False,,,,,,2026-08-24T00:04:45.000000Z,2026-08-23T19:04:45,2026-08-24T00:04:45.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403704,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 ID2,False,False,,,,,,2026-08-23T20:18:12.000000Z,2026-08-23T15:18:12,2026-08-23T20:18:12.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403703,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-24-2026 TIMELY CYCLE,False,False,,,,,,2026-08-23T19:56:28.000000Z,2026-08-23T14:56:28,2026-08-23T19:56:28.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403694,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 ID1,False,False,,,,,,2026-08-23T15:54:49.000000Z,2026-08-23T10:54:49,2026-08-23T15:54:49.000000Z,2026-08-24T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403689,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 ID3,False,False,,,,,,2026-08-23T00:36:19.000000Z,2026-08-22T19:36:19,2026-08-23T00:36:19.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403688,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 EC,False,False,,,,,,2026-08-22T23:59:49.000000Z,2026-08-22T18:59:49,2026-08-22T23:59:49.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403683,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 ID2,False,False,,,,,,2026-08-22T20:24:13.000000Z,2026-08-22T15:24:13,2026-08-22T20:24:13.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403682,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-23-2026 TIMELY CYCLE,False,False,,,,,,2026-08-22T19:34:01.000000Z,2026-08-22T14:34:01,2026-08-22T19:34:01.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403674,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 ID1,False,False,,,,,,2026-08-22T16:37:27.000000Z,2026-08-22T11:37:27,2026-08-22T16:37:27.000000Z,2026-08-23T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403669,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 ID3,False,False,,,,,,2026-08-22T00:30:11.000000Z,2026-08-21T19:30:11,2026-08-22T00:30:11.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403668,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 EC,False,False,,,,,,2026-08-22T00:16:10.000000Z,2026-08-21T19:16:10,2026-08-22T00:16:10.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403663,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 ID2,False,False,,,,,,2026-08-21T20:28:07.000000Z,2026-08-21T15:28:07,2026-08-21T20:28:07.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403661,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-22-2026 TIMELY CYCLE,False,False,,,,,,2026-08-21T19:52:40.000000Z,2026-08-21T14:52:40,2026-08-21T19:52:40.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403654,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 ID1,False,False,,,,,,2026-08-21T16:47:24.000000Z,2026-08-21T11:47:24,2026-08-21T16:47:24.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403653,MAINTENANCE,MAINTENANCE,MLV 5-2 to 1-2 Pig Sta 313 Maint,False,True,True,INITIATE,,"Project
 Updates
 “***Sta 313
@@ -2237,12 +2852,12 @@ constrained or shut in during the project.
 Date Change, Previously scheduled 8/21/26.
 ………………………………”
 If
-you have any questions, please contact your Scheduler.",6c85a95e56eca392929aa7977d736c9c33394145eab62af7aa4360f0b083527f,2026-08-21T14:59:23.000000Z,2026-08-21T09:59:23,2026-08-21T14:59:23.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403652,OPERATIONAL FLOW ORDER,OFO,OFO DAILY CD1 DS219 EFF 8-22 LIFTED 8-24,False,False,,,,,,2026-08-21T12:25:34.000000Z,2026-08-21T07:25:34,2026-08-21T12:25:34.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403645,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 ID3,False,False,,,,,,2026-08-21T00:54:44.000000Z,2026-08-20T19:54:44,2026-08-21T00:54:44.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403644,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 EC,False,False,,,,,,2026-08-21T00:11:16.000000Z,2026-08-20T19:11:16,2026-08-21T00:11:16.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403640,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 TIMELY CYCLE,False,False,,,,,,2026-08-20T21:16:44.000000Z,2026-08-20T16:16:44,2026-08-20T21:16:44.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403636,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 ID2,False,False,,,,,,2026-08-20T20:21:30.000000Z,2026-08-20T15:21:30,2026-08-20T20:21:30.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+you have any questions, please contact your Scheduler.",6c85a95e56eca392929aa7977d736c9c33394145eab62af7aa4360f0b083527f,2026-08-21T14:59:23.000000Z,2026-08-21T09:59:23,2026-08-21T14:59:23.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403652,OPERATIONAL FLOW ORDER,OFO,OFO DAILY CD1 DS219 EFF 8-22 LIFTED 8-24,False,False,,,,,,2026-08-21T12:25:34.000000Z,2026-08-21T07:25:34,2026-08-21T12:25:34.000000Z,2026-08-22T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403645,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 ID3,False,False,,,,,,2026-08-21T00:54:44.000000Z,2026-08-20T19:54:44,2026-08-21T00:54:44.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403644,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 EC,False,False,,,,,,2026-08-21T00:11:16.000000Z,2026-08-20T19:11:16,2026-08-21T00:11:16.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403640,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-21-2026 TIMELY CYCLE,False,False,,,,,,2026-08-20T21:16:44.000000Z,2026-08-20T16:16:44,2026-08-20T21:16:44.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403636,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 ID2,False,False,,,,,,2026-08-20T20:21:30.000000Z,2026-08-20T15:21:30,2026-08-20T20:21:30.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
 TGP,403635,MAINTENANCE,MAINTENANCE,TGP Outage Impact Report,False,True,True,INITIATE,,"-Primary
 impact restrictions may be necessary
 TGP - Outage
@@ -3747,10 +4362,10 @@ in the event of conflicts between DART posted
 dates and dates on this report.
 The impacts sheet are based on steady-state hydraulic models assuming recent operating flows,
 conditions, and various
-unit outages.",4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6,2026-08-20T19:53:52.000000Z,2026-08-20T14:53:52,2026-08-20T19:53:52.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403626,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 ID1,False,False,,,,,,2026-08-20T16:10:29.000000Z,2026-08-20T11:10:29,2026-08-20T16:10:29.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403621,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-19-2026 ID3,False,False,,,,,,2026-08-20T00:34:55.000000Z,2026-08-19T19:34:55,2026-08-20T00:34:55.000000Z,2026-08-20T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
-TGP,403620,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 EC,False,False,,,,,,2026-08-20T00:05:49.000000Z,2026-08-19T19:05:49,2026-08-20T00:05:49.000000Z,2026-08-20T14:00:00.000000Z,2026-08-31T14:43:40.608151Z,c96480f007417925f56ef4a71daf42b6d59f9b03a7d9b50c56c772a761315a43
+unit outages.",4e5308a6b60198988cebfe87c90c7936ec29248dea254a2e2949d8b71262ebc6,2026-08-20T19:53:52.000000Z,2026-08-20T14:53:52,2026-08-20T19:53:52.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403626,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 ID1,False,False,,,,,,2026-08-20T16:10:29.000000Z,2026-08-20T11:10:29,2026-08-20T16:10:29.000000Z,2026-08-21T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403621,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-19-2026 ID3,False,False,,,,,,2026-08-20T00:34:55.000000Z,2026-08-19T19:34:55,2026-08-20T00:34:55.000000Z,2026-08-20T14:00:00.000000Z,2026-08-31T17:41:09.106135Z,59d60895fad10d0c1494b480e524ea563c5a1c238d45632a7836f29ab88f59e5
+TGP,403620,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 EC,False,False,,,,,,2026-08-20T00:05:49.000000Z,2026-08-19T19:05:49,2026-08-20T00:05:49.000000Z,2026-08-20T14:00:00.000000Z,2026-08-28T15:15:24.376143Z,a046031aec9cb792916046a3dd5e07f6d14782f3a092757123da1b2796872abd
 TGP,403615,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-19-2026 ID2,False,False,,,,,,2026-08-19T20:38:57.000000Z,2026-08-19T15:38:57,2026-08-19T20:38:57.000000Z,2026-08-20T14:00:00.000000Z,2026-08-28T15:15:24.376143Z,a046031aec9cb792916046a3dd5e07f6d14782f3a092757123da1b2796872abd
 TGP,403614,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-20-2026 TIMELY CYCLE,False,False,,,,,,2026-08-19T19:40:04.000000Z,2026-08-19T14:40:04,2026-08-19T19:40:04.000000Z,2026-08-20T14:00:00.000000Z,2026-08-28T15:15:24.376143Z,a046031aec9cb792916046a3dd5e07f6d14782f3a092757123da1b2796872abd
 TGP,403606,PIPELINE CONDITIONS,CURRENT PIPELINE CONDITIONS,RESTRICTIONS FOR 08-19-2026 ID1,False,False,,,,,,2026-08-19T16:57:54.000000Z,2026-08-19T11:57:54,2026-08-19T16:57:54.000000Z,2026-08-20T14:00:00.000000Z,2026-08-28T15:15:24.376143Z,a046031aec9cb792916046a3dd5e07f6d14782f3a092757123da1b2796872abd
