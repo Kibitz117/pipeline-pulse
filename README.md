@@ -234,14 +234,16 @@ does not need uv on its `PATH`. Nothing is installed into cron automatically.
 | Useful investor analysis | Transport-fit scenarios, no-double-count daily rollup, tradability gates, AI research brief |
 | Timely updates and alerts | Incremental collectors, cron example, material alert ledger, same-ID revision detection |
 | Investor-facing UI | Build-free local terminal in `ui/`, served over the DuckDB read model |
-| AI central to building and operating | Lossless design/build session plus raw operating-agent packets, prompts, events, outputs, and validation |
+| AI central to operating | Raw operating-agent packets, prompts, events, outputs, and validation |
 | Quality control | Content hashes, byte verification, source-schema fingerprints, audit clocks, reconciliation warnings, network-free test suite |
 
-`sessions/design/` contains the single Codex session used to design and build
-the project as a lossless compressed raw JSONL export. `sessions/insights/`
-contains the product's operating-agent runs. `sessions/manifest.json` records
-runtime metadata and checksums. The compressed design export is still byte-for-
-byte recoverable with `gzip -dc` and stays below GitHub's individual-file limit.
+`sessions/insights/` contains the product's operating-agent runs, and
+`sessions/manifest.json` records their runtime metadata and checksums. Private
+development conversations are deliberately excluded from the public repository.
+
+## License
+
+Pipeline Pulse is released under the [MIT License](LICENSE).
 
 ## Development
 

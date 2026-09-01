@@ -1,32 +1,4 @@
 {
-  "design_sessions": [
-    {
-      "session_id": "01a04539-3a59-72a3-aa91-e3c1611b33fd",
-      "role": "design_and_implementation",
-      "task": "Design, implement, test, and prepare Pipeline Pulse for submission",
-      "runtime": "codex-cli 0.150.1",
-      "model": "gpt-5.6-sol",
-      "started_at_utc": "2026-08-27T21:56:47.215Z",
-      "captured_through_utc": "2026-08-31T14:58:36.699Z",
-      "capture_status": "lossless_snapshot_of_active_session",
-      "code_commit": null,
-      "raw_format": "jsonl.gz",
-      "recovered_jsonl": {
-        "bytes": 176728283,
-        "sha256": "fe7102a756dc91a927a54bc1864fd682544c1796825a0b753aa970345044e816"
-      },
-      "secret_scan": {
-        "status": "passed",
-        "scope": "Plaintext OpenAI, GitHub, AWS, Slack, and PEM private-key formats; encrypted model payloads retained as opaque raw-session data",
-        "reviewed_at_utc": "2026-08-31T14:59:04Z"
-      },
-      "file": {
-        "path": "design/pipeline-pulse-design-build-session.jsonl.gz",
-        "bytes": 82797719,
-        "sha256": "74d5481d1a6df597e5ce951d40b76940dd71e81bc928cbb5a8e52f693c362e8f"
-      }
-    }
-  ],
   "sessions": [
     {
       "agent_run_id": "1d4d43b7-484c-4f9f-b3cb-f7ae4792e938",

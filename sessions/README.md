@@ -1,10 +1,4 @@
-# AI session exports
-
-`design/` contains the single Codex session used to design and implement the
-project. The raw JSONL is losslessly gzip-compressed because the uncompressed
-rollout exceeds GitHub's individual-file limit. Its metadata records both the
-compressed and recovered-byte checksums, size, runtime, model, and capture
-window.
+# Operating-agent evidence
 
 `insights/` contains complete local operating-agent evidence:
 
@@ -16,9 +10,9 @@ window.
 - `*.stderr.log`: process diagnostics;
 - `*.validation.json`: evidence-ID and quality-gate validation.
 
-Do not commit API keys or unrelated private conversation history. The design
-export is limited to the one project session and was checked for common secret
-formats before inclusion.
+Do not commit API keys, design conversations, or unrelated private history.
+The `sessions/design/` path is ignored intentionally; only auditable product
+runs belong here.
 
 Each export should have a manifest entry containing:
 

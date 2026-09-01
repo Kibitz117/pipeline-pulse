@@ -1,5 +1,6 @@
 .env
 config/crontab.local
+sessions/design/
 .venv/
 __pycache__/
 *.py[cod]
