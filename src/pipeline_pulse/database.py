@@ -3,25 +3,26 @@ from __future__ import annotations
 import hashlib
 import json
 import uuid
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 import duckdb
 import pendulum
 
 from .artifacts import StoredArtifact
+from .pipelines import KINDER_MORGAN_PIPELINES
+from .sources.census import CountyReference, normalize_county_name
+from .sources.eia_storage import EiaStorageRelease
+from .sources.fred_spot import HenryHubSpotObservation
 from .sources.kinder_morgan import (
     KinderMorganNotice,
     KinderMorganNoticeIndexExport,
     KinderMorganNoticeIndexPage,
 )
-from .sources.kinder_morgan_tables import TgpOutageImpactRow
-from .sources.kinder_morgan_locations import TgpLocationExport
 from .sources.kinder_morgan_capacity import TgpCapacityExport
-from .sources.census import CountyReference, normalize_county_name
-from .sources.eia_storage import EiaStorageRelease
-from .sources.fred_spot import HenryHubSpotObservation
+from .sources.kinder_morgan_locations import TgpLocationExport
+from .sources.kinder_morgan_tables import TgpOutageImpactRow
 from .sources.nws_weather import NwsHourlyForecast, WeatherAnchor
 from .sources.yahoo_futures import FrontMonthFuturesQuote
 
@@ -107,8 +108,7 @@ def initialize_database(connection: duckdb.DuckDBPyConnection) -> None:
         "parser_version VARCHAR",
     ):
         connection.execute(
-            "ALTER TABLE location_exports ADD COLUMN IF NOT EXISTS "
-            + column_definition
+            "ALTER TABLE location_exports ADD COLUMN IF NOT EXISTS " + column_definition
         )
     for column_definition in (
         "capacity_kind VARCHAR",
@@ -229,25 +229,44 @@ def initialize_database(connection: duckdb.DuckDBPyConnection) -> None:
         GROUP BY ALL
         """
     )
-    connection.execute(
+    operators = {
+        (
+            pipeline.operator_id,
+            pipeline.operator_name,
+            pipeline.parent_company,
+            pipeline.ticker,
+        )
+        for pipeline in KINDER_MORGAN_PIPELINES.values()
+    }
+    connection.executemany(
         """
-        INSERT INTO operators(operator_id, operator_name, parent_company, ticker, source_url)
-        VALUES ('km', 'Kinder Morgan', 'Kinder Morgan, Inc.', 'KMI',
-                'https://pipeportal.kindermorgan.com/')
+        INSERT INTO operators(
+            operator_id, operator_name, parent_company, ticker, source_url
+        ) VALUES (?, ?, ?, ?, 'https://pipeportal.kindermorgan.com/')
         ON CONFLICT (operator_id) DO NOTHING
-        """
+        """,
+        list(operators),
     )
-    connection.execute(
+    connection.executemany(
         """
         INSERT INTO pipeline_systems(
             pipeline_id, operator_id, pipeline_name, source_code,
             tsp_number, ferc_cid, timezone
-        ) VALUES (
-            'TGP', 'km', 'Tennessee Gas Pipeline', 'TGP',
-            '1939164', 'C000020', 'America/Chicago'
-        )
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (pipeline_id) DO NOTHING
-        """
+        """,
+        [
+            [
+                pipeline.pipeline_id,
+                pipeline.operator_id,
+                pipeline.pipeline_name,
+                pipeline.portal_code,
+                pipeline.tsp_number,
+                pipeline.ferc_cid,
+                pipeline.timezone,
+            ]
+            for pipeline in KINDER_MORGAN_PIPELINES.values()
+        ],
     )
 
 
@@ -490,9 +509,7 @@ def store_notice_version(
     ).fetchone()
     is_new_version = matching_row is None
     version_sha256 = (
-        notice_semantic_sha256(notice)
-        if matching_row is None
-        else str(matching_row[0])
+        notice_semantic_sha256(notice) if matching_row is None else str(matching_row[0])
     )
     connection.execute(
         """
@@ -550,8 +567,7 @@ def store_notice_version(
         prior_version_sha256=prior_version_sha256,
         is_new_version=is_new_version,
         is_revision_observation=(
-            prior_version_sha256 is not None
-            and prior_version_sha256 != version_sha256
+            prior_version_sha256 is not None and prior_version_sha256 != version_sha256
         ),
     )
 

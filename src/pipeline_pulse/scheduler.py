@@ -15,6 +15,11 @@ from .alerts import build_tgp_alerts
 from .collector import (
     collect_eia_storage,
     collect_henry_hub_spot,
+    collect_kinder_morgan_critical_export,
+    collect_kinder_morgan_critical_index,
+    collect_kinder_morgan_locations,
+    collect_kinder_morgan_notice_details,
+    collect_kinder_morgan_operational_capacity,
     collect_nws_degree_days,
     collect_tgp_critical_export,
     collect_tgp_critical_index,
@@ -25,6 +30,7 @@ from .collector import (
 from .curated import export_curated_notice_index, export_tgp_mvp_tables
 from .impacts import build_tgp_transport_impacts
 from .insights import generate_tgp_research_memo
+from .pipelines import get_pipeline_config
 from .quality import export_tgp_dataset_status
 
 CollectionMode = Literal[
@@ -35,6 +41,7 @@ CollectionMode = Literal[
     "capacity",
     "context",
 ]
+PipelineCollectionMode = Literal["bootstrap", "refresh", "full-export"]
 
 
 class CollectionAlreadyRunning(RuntimeError):
@@ -70,6 +77,21 @@ class ScheduledCollectionSummary:
     collection: dict[str, object] | None
     curated_output_path: str | None
     curated_row_count: int | None
+
+    def to_json(self) -> str:
+        return json.dumps(asdict(self), indent=2, sort_keys=True)
+
+
+@dataclass(frozen=True)
+class PipelineCollectionSummary:
+    pipeline_id: str
+    pipeline_name: str
+    mode: PipelineCollectionMode
+    status: Literal["completed", "skipped_locked"]
+    started_at: str
+    completed_at: str
+    collection: dict[str, object] | None
+    market_model_status: Literal["available", "raw_data_only"]
 
     def to_json(self) -> str:
         return json.dumps(asdict(self), indent=2, sort_keys=True)
@@ -280,4 +302,115 @@ def run_scheduled_collection(
             collection=None,
             curated_output_path=None,
             curated_row_count=None,
+        )
+
+
+def run_kinder_morgan_pipeline_collection(
+    *,
+    pipeline_id: str,
+    mode: PipelineCollectionMode,
+    database_path: str | Path,
+    raw_root: str | Path,
+    lock_path: str | Path,
+    detail_limit: int = 5,
+    revision_check_limit: int = 3,
+    bootstrap_detail_limit: int = 25,
+) -> PipelineCollectionSummary:
+    """Collect one KM pipeline without applying TGP-specific market logic."""
+    pipeline = get_pipeline_config(pipeline_id)
+    started_at = pendulum.now("UTC")
+    market_model_status = (
+        "available" if pipeline.pipeline_id == "TGP" else "raw_data_only"
+    )
+    try:
+        with exclusive_collection_lock(lock_path):
+            if mode == "bootstrap":
+                index = collect_kinder_morgan_critical_export(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                locations = collect_kinder_morgan_locations(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                details = collect_kinder_morgan_notice_details(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                    limit=bootstrap_detail_limit,
+                    revision_check_limit=0,
+                )
+                capacity = collect_kinder_morgan_operational_capacity(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                collection = {
+                    "critical_notice_export": asdict(index),
+                    "locations": asdict(locations),
+                    "notice_details": asdict(details),
+                    "operational_capacity": asdict(capacity),
+                }
+            elif mode == "refresh":
+                index = collect_kinder_morgan_critical_index(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                details = collect_kinder_morgan_notice_details(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                    limit=detail_limit,
+                    revision_check_limit=revision_check_limit,
+                )
+                capacity = collect_kinder_morgan_operational_capacity(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                collection = {
+                    "critical_notice_index": asdict(index),
+                    "notice_details": asdict(details),
+                    "operational_capacity": asdict(capacity),
+                }
+            elif mode == "full-export":
+                index = collect_kinder_morgan_critical_export(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                locations = collect_kinder_morgan_locations(
+                    pipeline_id=pipeline.pipeline_id,
+                    database_path=database_path,
+                    raw_root=raw_root,
+                )
+                collection = {
+                    "critical_notice_export": asdict(index),
+                    "locations": asdict(locations),
+                }
+            else:  # pragma: no cover - argparse and Literal guard this path
+                raise ValueError(f"unsupported pipeline collection mode: {mode}")
+            return PipelineCollectionSummary(
+                pipeline_id=pipeline.pipeline_id,
+                pipeline_name=pipeline.pipeline_name,
+                mode=mode,
+                status="completed",
+                started_at=started_at.to_iso8601_string(),
+                completed_at=pendulum.now("UTC").to_iso8601_string(),
+                collection=collection,
+                market_model_status=market_model_status,
+            )
+    except CollectionAlreadyRunning:
+        return PipelineCollectionSummary(
+            pipeline_id=pipeline.pipeline_id,
+            pipeline_name=pipeline.pipeline_name,
+            mode=mode,
+            status="skipped_locked",
+            started_at=started_at.to_iso8601_string(),
+            completed_at=pendulum.now("UTC").to_iso8601_string(),
+            collection=None,
+            market_model_status=market_model_status,
         )

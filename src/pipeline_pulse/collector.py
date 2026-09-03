@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import json
 import time
+from collections.abc import Callable
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Callable
 from urllib.parse import urlencode
 
 import pendulum
@@ -13,41 +13,44 @@ from .artifacts import ArtifactStore, StoredArtifact
 from .database import (
     connect_database,
     finish_fetch_run,
+    geocode_locations_to_counties,
     initialize_database,
     start_fetch_run,
     store_artifact_record,
+    store_capacity_export,
+    store_county_references,
+    store_eia_storage_release,
+    store_henry_hub_spot,
+    store_location_export,
+    store_map_reference_layer,
     store_notice_index_export,
     store_notice_index_page,
     store_notice_version,
-    store_outage_impact_observations,
-    store_location_export,
-    store_county_references,
-    geocode_locations_to_counties,
-    store_map_reference_layer,
-    store_capacity_export,
-    store_eia_storage_release,
-    store_henry_hub_spot,
     store_nws_degree_day_forecast,
+    store_outage_impact_observations,
     store_yahoo_front_month_quote,
 )
 from .http import ReadOnlyHTTPClient
+from .pipelines import get_pipeline_config
+from .sources.census import parse_county_gazetteer
+from .sources.eia_spot import parse_eia_henry_hub_spot_html
+from .sources.eia_storage import parse_eia_storage_release
 from .sources.kinder_morgan import (
-    build_notice_export_form,
     build_location_export_form,
+    build_notice_export_form,
     parse_notice_detail,
     parse_notice_index,
     parse_notice_index_export,
 )
-from .sources.kinder_morgan_tables import parse_tgp_outage_impact_report
-from .sources.kinder_morgan_locations import parse_tgp_location_export
 from .sources.kinder_morgan_capacity import (
     TgpCapacityExport,
     build_capacity_export_form,
-    parse_tgp_capacity_export,
+    parse_kinder_morgan_capacity_export,
 )
-from .sources.census import parse_county_gazetteer
-from .sources.eia_storage import parse_eia_storage_release
-from .sources.eia_spot import parse_eia_henry_hub_spot_html
+from .sources.kinder_morgan_locations import (
+    parse_kinder_morgan_location_export,
+)
+from .sources.kinder_morgan_tables import parse_tgp_outage_impact_report
 from .sources.nws_weather import (
     WeatherAnchor,
     parse_nws_hourly_forecast,
@@ -55,24 +58,12 @@ from .sources.nws_weather import (
 )
 from .sources.yahoo_futures import parse_yahoo_front_month_quote
 
-
-TGP_CRITICAL_INDEX_URL = (
-    "https://pipeline2.kindermorgan.com/Notices/Notices.aspx?code=TGP&type=C"
-)
-TGP_NOTICE_DETAIL_URL = (
-    "https://pipeline2.kindermorgan.com/Notices/NoticeDetail.aspx"
-    "?code=TGP&notc_nbr={notice_id}"
-)
-TGP_LOCATION_URL = (
-    "https://pipeline2.kindermorgan.com/LocationDataDownload/"
-    "LocDataDwnld.aspx?code=TGP"
-)
-TGP_POINT_CAPACITY_URL = (
-    "https://pipeline2.kindermorgan.com/Capacity/OpAvailPoint.aspx?code=TGP"
-)
-TGP_SEGMENT_CAPACITY_URL = (
-    "https://pipeline2.kindermorgan.com/Capacity/OpAvailSegment.aspx?code=TGP"
-)
+_TGP_CONFIG = get_pipeline_config("TGP")
+TGP_CRITICAL_INDEX_URL = _TGP_CONFIG.critical_index_url
+TGP_NOTICE_DETAIL_URL = _TGP_CONFIG.notice_detail_url("{notice_id}")
+TGP_LOCATION_URL = _TGP_CONFIG.location_url
+TGP_POINT_CAPACITY_URL = _TGP_CONFIG.point_capacity_url
+TGP_SEGMENT_CAPACITY_URL = _TGP_CONFIG.segment_capacity_url
 CENSUS_COUNTY_GAZETTEER_URL = (
     "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
     "2025_Gazetteer/2025_Gaz_counties_national.zip"
@@ -82,23 +73,43 @@ CENSUS_LEGACY_COUNTY_GAZETTEER_URL = (
     "2021_Gazetteer/2021_Gaz_counties_national.zip"
 )
 _TGP_STATES = (
-    "AL", "AR", "CT", "KY", "LA", "MA", "MS", "NH", "NJ", "NY", "OH",
-    "PA", "RI", "TN", "TX", "WV",
+    "AL",
+    "AR",
+    "CT",
+    "KY",
+    "LA",
+    "MA",
+    "MS",
+    "NH",
+    "NJ",
+    "NY",
+    "OH",
+    "PA",
+    "RI",
+    "TN",
+    "TX",
+    "WV",
 )
-_STATE_WHERE = "STUSAB IN (" + ",".join(f"'{state}'" for state in _TGP_STATES) + ")"
-CENSUS_TGP_STATE_BOUNDARIES_URL = (
-    "https://tigerweb.geo.census.gov/arcgis/rest/services/"
-    "Generalized_ACS2025/State_County/MapServer/9/query?"
-    + urlencode(
-        {
-            "where": _STATE_WHERE,
-            "outFields": "GEOID,STUSAB,NAME",
-            "returnGeometry": "true",
-            "outSR": "4326",
-            "f": "geojson",
-        }
+
+
+def _census_state_boundaries_url(states: tuple[str, ...]) -> str:
+    state_where = "STUSAB IN (" + ",".join(f"'{state}'" for state in states) + ")"
+    return (
+        "https://tigerweb.geo.census.gov/arcgis/rest/services/"
+        "Generalized_ACS2025/State_County/MapServer/9/query?"
+        + urlencode(
+            {
+                "where": state_where,
+                "outFields": "GEOID,STUSAB,NAME",
+                "returnGeometry": "true",
+                "outSR": "4326",
+                "f": "geojson",
+            }
+        )
     )
-)
+
+
+CENSUS_TGP_STATE_BOUNDARIES_URL = _census_state_boundaries_url(_TGP_STATES)
 EIA_WNGSR_URL = "https://ir.eia.gov/ngs/wngsr.json"
 EIA_HENRY_HUB_SPOT_URL = "https://www.eia.gov/dnav/ng/hist/rngwhhdD.htm"
 YAHOO_NG_FRONT_MONTH_URL = (
@@ -325,7 +336,9 @@ def collect_henry_hub_spot(
             if observation.observation_date >= earliest_date
         )
         if not observations:
-            raise ValueError("EIA Henry Hub page has no observations in requested history")
+            raise ValueError(
+                "EIA Henry Hub page has no observations in requested history"
+            )
         count = store_henry_hub_spot(
             connection,
             artifact,
@@ -377,9 +390,13 @@ def collect_nws_degree_days(
     raw_paths: list[str] = []
     try:
         for anchor in anchors:
-            points_url = f"https://api.weather.gov/points/{anchor.latitude},{anchor.longitude}"
+            points_url = (
+                f"https://api.weather.gov/points/{anchor.latitude},{anchor.longitude}"
+            )
             points_fetch = http_client.fetch(points_url, accept="application/geo+json")
-            points_artifact = ArtifactStore(raw_root).store("nws_forecast_points", points_fetch)
+            points_artifact = ArtifactStore(raw_root).store(
+                "nws_forecast_points", points_fetch
+            )
             store_artifact_record(connection, run_id, points_artifact)
             raw_paths.append(points_artifact.raw_path)
             forecast_url = parse_nws_points(points_fetch.body)
@@ -393,7 +410,11 @@ def collect_nws_degree_days(
             store_artifact_record(connection, run_id, forecast_artifact)
             raw_paths.append(forecast_artifact.raw_path)
             parsed_forecasts.append(
-                (anchor, forecast_artifact, parse_nws_hourly_forecast(forecast_fetch.body))
+                (
+                    anchor,
+                    forecast_artifact,
+                    parse_nws_hourly_forecast(forecast_fetch.body),
+                )
             )
         observation_count = sum(
             store_nws_degree_day_forecast(connection, artifact, anchor, forecast)
@@ -408,7 +429,9 @@ def collect_nws_degree_days(
     return DegreeDayCollectionSummary(
         run_id=run_id,
         anchors=tuple(anchor.name for anchor, _, _ in parsed_forecasts),
-        forecast_day_count=sum(len(forecast.days) for _, _, forecast in parsed_forecasts),
+        forecast_day_count=sum(
+            len(forecast.days) for _, _, forecast in parsed_forecasts
+        ),
         observation_count=observation_count,
         generated_at_utc=tuple(
             forecast.generated_at.to_iso8601_string()
@@ -504,27 +527,39 @@ def collect_eia_storage(
     )
 
 
-def collect_tgp_critical_index(
+def collect_kinder_morgan_critical_index(
     *,
+    pipeline_id: str,
     database_path: str | Path,
     raw_root: str | Path,
     client: ReadOnlyHTTPClient | None = None,
 ) -> CollectionSummary:
+    pipeline = get_pipeline_config(pipeline_id)
+    source_code = f"km_{pipeline.slug}_critical"
     http_client = client or ReadOnlyHTTPClient(timeout_seconds=180.0)
     connection = connect_database(database_path)
     initialize_database(connection)
     run_id = start_fetch_run(
         connection,
-        "km_tgp_critical",
+        source_code,
         requested_at=pendulum.now("UTC"),
-        config={"url": TGP_CRITICAL_INDEX_URL, "page": 0},
+        config={
+            "pipeline_id": pipeline.pipeline_id,
+            "url": pipeline.critical_index_url,
+            "page": 0,
+        },
     )
     try:
-        fetch = http_client.fetch(TGP_CRITICAL_INDEX_URL, accept="text/html")
-        artifact = ArtifactStore(raw_root).store("km_tgp_critical", fetch)
+        fetch = http_client.fetch(pipeline.critical_index_url, accept="text/html")
+        artifact = ArtifactStore(raw_root).store(source_code, fetch)
         store_artifact_record(connection, run_id, artifact)
-        page = parse_notice_index(fetch.text)
-        store_notice_index_page(connection, artifact, page)
+        page = parse_notice_index(fetch.text, timezone_name=pipeline.timezone)
+        store_notice_index_page(
+            connection,
+            artifact,
+            page,
+            pipeline_id=pipeline.pipeline_id,
+        )
         finish_fetch_run(connection, run_id)
     except Exception as exc:
         finish_fetch_run(connection, run_id, error=exc)
@@ -545,47 +580,81 @@ def collect_tgp_critical_index(
     )
 
 
-def collect_tgp_locations(
+def collect_tgp_critical_index(
     *,
     database_path: str | Path,
     raw_root: str | Path,
     client: ReadOnlyHTTPClient | None = None,
+) -> CollectionSummary:
+    return collect_kinder_morgan_critical_index(
+        pipeline_id="TGP",
+        database_path=database_path,
+        raw_root=raw_root,
+        client=client,
+    )
+
+
+def collect_kinder_morgan_locations(
+    *,
+    pipeline_id: str,
+    database_path: str | Path,
+    raw_root: str | Path,
+    client: ReadOnlyHTTPClient | None = None,
 ) -> LocationCollectionSummary:
-    """Archive TGP locations and attach explicit county-level coordinates."""
+    """Archive KM locations and attach explicit county-level coordinates."""
+    pipeline = get_pipeline_config(pipeline_id)
+    source_prefix = f"km_{pipeline.slug}"
     http_client = client or ReadOnlyHTTPClient(timeout_seconds=180.0)
     connection = connect_database(database_path)
     initialize_database(connection)
     run_id = start_fetch_run(
         connection,
-        "tgp_location_reference",
+        f"{pipeline.slug}_location_reference",
         requested_at=pendulum.now("UTC"),
         config={
-            "location_url": TGP_LOCATION_URL,
+            "pipeline_id": pipeline.pipeline_id,
+            "location_url": pipeline.location_url,
             "county_reference_url": CENSUS_COUNTY_GAZETTEER_URL,
             "legacy_county_reference_url": CENSUS_LEGACY_COUNTY_GAZETTEER_URL,
-            "state_boundaries_url": CENSUS_TGP_STATE_BOUNDARIES_URL,
+            "state_boundary_strategy": "states observed in location export",
             "coordinate_precision": "county",
         },
     )
     try:
-        page_fetch = http_client.fetch(TGP_LOCATION_URL, accept="text/html")
+        page_fetch = http_client.fetch(pipeline.location_url, accept="text/html")
         page_artifact = ArtifactStore(raw_root).store(
-            "km_tgp_locations_page",
+            f"{source_prefix}_locations_page",
             page_fetch,
         )
         store_artifact_record(connection, run_id, page_artifact)
 
         location_fetch = http_client.post_form(
-            TGP_LOCATION_URL,
+            pipeline.location_url,
             build_location_export_form(page_fetch.text),
             accept="text/csv",
-            referer=TGP_LOCATION_URL,
+            referer=pipeline.location_url,
         )
         location_artifact = ArtifactStore(raw_root).store(
-            "km_tgp_locations",
+            f"{source_prefix}_locations",
             location_fetch,
         )
         store_artifact_record(connection, run_id, location_artifact)
+        location_export = parse_kinder_morgan_location_export(
+            location_fetch.body,
+            expected_tsp_number=pipeline.tsp_number,
+            expected_ferc_cid=pipeline.ferc_cid,
+            pipeline_label=pipeline.pipeline_id,
+        )
+        states = tuple(
+            sorted(
+                {
+                    row.state_abbreviation
+                    for row in location_export.rows
+                    if row.state_abbreviation
+                }
+            )
+        )
+        boundary_url = _census_state_boundaries_url(states)
 
         county_fetch = http_client.fetch(
             CENSUS_COUNTY_GAZETTEER_URL,
@@ -608,16 +677,15 @@ def collect_tgp_locations(
         store_artifact_record(connection, run_id, legacy_county_artifact)
 
         boundary_fetch = http_client.fetch(
-            CENSUS_TGP_STATE_BOUNDARIES_URL,
+            boundary_url,
             accept="application/geo+json,application/json",
         )
         boundary_artifact = ArtifactStore(raw_root).store(
-            "census_tgp_state_boundaries",
+            f"census_{pipeline.slug}_state_boundaries",
             boundary_fetch,
         )
         store_artifact_record(connection, run_id, boundary_artifact)
 
-        location_export = parse_tgp_location_export(location_fetch.body)
         county_rows = parse_county_gazetteer(county_fetch.body)
         legacy_county_rows = parse_county_gazetteer(legacy_county_fetch.body)
         boundary_geojson = json.loads(boundary_fetch.text)
@@ -625,6 +693,7 @@ def collect_tgp_locations(
             connection,
             location_artifact,
             location_export,
+            pipeline_id=pipeline.pipeline_id,
         )
         store_county_references(connection, county_artifact, county_rows)
         store_county_references(
@@ -636,16 +705,18 @@ def collect_tgp_locations(
             connection,
             location_artifact,
             county_artifact,
+            pipeline_id=pipeline.pipeline_id,
         )
         geocoded_count, ungeocoded_count = geocode_locations_to_counties(
             connection,
             location_artifact,
             legacy_county_artifact,
+            pipeline_id=pipeline.pipeline_id,
         )
         boundary_count = store_map_reference_layer(
             connection,
             boundary_artifact,
-            layer_code="census_tgp_states_20m",
+            layer_code=f"census_{pipeline.slug}_states_20m",
             source_vintage="ACS2025",
             geojson=boundary_geojson,
         )
@@ -663,14 +734,9 @@ def collect_tgp_locations(
     return LocationCollectionSummary(
         run_id=run_id,
         location_rows=location_count,
-        segment_count=len(
-            {row.operator_segment_id for row in location_export.rows}
-        ),
+        segment_count=len({row.operator_segment_id for row in location_export.rows}),
         county_count=len(
-            {
-                (row.state_abbreviation, row.county_name)
-                for row in location_export.rows
-            }
+            {(row.state_abbreviation, row.county_name) for row in location_export.rows}
         ),
         geocoded_rows=geocoded_count,
         ungeocoded_rows=ungeocoded_count,
@@ -682,23 +748,41 @@ def collect_tgp_locations(
     )
 
 
-def collect_tgp_operational_capacity(
+def collect_tgp_locations(
     *,
     database_path: str | Path,
     raw_root: str | Path,
     client: ReadOnlyHTTPClient | None = None,
+) -> LocationCollectionSummary:
+    return collect_kinder_morgan_locations(
+        pipeline_id="TGP",
+        database_path=database_path,
+        raw_root=raw_root,
+        client=client,
+    )
+
+
+def collect_kinder_morgan_operational_capacity(
+    *,
+    pipeline_id: str,
+    database_path: str | Path,
+    raw_root: str | Path,
+    client: ReadOnlyHTTPClient | None = None,
 ) -> CapacityCollectionSummary:
-    """Archive best-available point and segment operational capacity."""
+    """Archive best-available KM point and segment operational capacity."""
+    pipeline = get_pipeline_config(pipeline_id)
+    source_prefix = f"km_{pipeline.slug}"
     http_client = client or ReadOnlyHTTPClient(timeout_seconds=240.0)
     connection = connect_database(database_path)
     initialize_database(connection)
     run_id = start_fetch_run(
         connection,
-        "tgp_operational_capacity",
+        f"{pipeline.slug}_operational_capacity",
         requested_at=pendulum.now("UTC"),
         config={
-            "point_url": TGP_POINT_CAPACITY_URL,
-            "segment_url": TGP_SEGMENT_CAPACITY_URL,
+            "pipeline_id": pipeline.pipeline_id,
+            "point_url": pipeline.point_capacity_url,
+            "segment_url": pipeline.segment_capacity_url,
             "cycle_selection": "BEST AVAILABLE",
             "point_roles": ["delivery", "receipt"],
         },
@@ -706,19 +790,19 @@ def collect_tgp_operational_capacity(
     specifications = (
         (
             "point_delivery",
-            TGP_POINT_CAPACITY_URL,
+            pipeline.point_capacity_url,
             "point",
             "delivery",
         ),
         (
             "point_receipt",
-            TGP_POINT_CAPACITY_URL,
+            pipeline.point_capacity_url,
             "point",
             "receipt",
         ),
         (
             "segment",
-            TGP_SEGMENT_CAPACITY_URL,
+            pipeline.segment_capacity_url,
             "segment",
             None,
         ),
@@ -729,7 +813,7 @@ def collect_tgp_operational_capacity(
         for label, url, capacity_kind, point_role in specifications:
             page_fetch = http_client.fetch(url, accept="text/html")
             page_artifact = ArtifactStore(raw_root).store(
-                f"km_tgp_{label}_capacity_page",
+                f"{source_prefix}_{label}_capacity_page",
                 page_fetch,
             )
             store_artifact_record(connection, run_id, page_artifact)
@@ -747,18 +831,21 @@ def collect_tgp_operational_capacity(
                 referer=url,
             )
             export_artifact = ArtifactStore(raw_root).store(
-                f"km_tgp_{label}_capacity",
+                f"{source_prefix}_{label}_capacity",
                 export_fetch,
             )
             store_artifact_record(connection, run_id, export_artifact)
-            capacity_export = parse_tgp_capacity_export(
+            capacity_export = parse_kinder_morgan_capacity_export(
                 export_fetch.body,
                 capacity_kind=capacity_kind,
+                expected_tsp_number=pipeline.tsp_number,
+                pipeline_label=pipeline.pipeline_id,
             )
             store_capacity_export(
                 connection,
                 export_artifact,
                 capacity_export,
+                pipeline_id=pipeline.pipeline_id,
             )
             collected.append((label, export_artifact, capacity_export))
             connection.execute(
@@ -777,14 +864,14 @@ def collect_tgp_operational_capacity(
                 count(*) FILTER (WHERE facility_id IS NOT NULL),
                 count(*) FILTER (WHERE segment_id IS NOT NULL)
             FROM capacity_observations
-            WHERE artifact_id IN (
+            WHERE pipeline_id = ?
+              AND artifact_id IN (
                 SELECT artifact_id
                 FROM source_artifacts
                 WHERE run_id = ?
-                  AND source_code LIKE 'km_tgp_%_capacity'
             )
             """,
-            [run_id],
+            [pipeline.pipeline_id, run_id],
         ).fetchone()
     except Exception as exc:
         finish_fetch_run(connection, run_id, error=exc)
@@ -803,49 +890,80 @@ def collect_tgp_operational_capacity(
         available_reconciliation_mismatch_count=int(stats[0]),
         matched_facility_rows=int(stats[1]),
         matched_segment_rows=int(stats[2]),
-        raw_paths=tuple(
-            artifact.raw_path for _, artifact, _ in collected
-        ),
+        raw_paths=tuple(artifact.raw_path for _, artifact, _ in collected),
     )
 
 
-def collect_tgp_critical_export(
+def collect_tgp_operational_capacity(
     *,
+    database_path: str | Path,
+    raw_root: str | Path,
+    client: ReadOnlyHTTPClient | None = None,
+) -> CapacityCollectionSummary:
+    return collect_kinder_morgan_operational_capacity(
+        pipeline_id="TGP",
+        database_path=database_path,
+        raw_root=raw_root,
+        client=client,
+    )
+
+
+def collect_kinder_morgan_critical_export(
+    *,
+    pipeline_id: str,
     database_path: str | Path,
     raw_root: str | Path,
     client: ReadOnlyHTTPClient | None = None,
 ) -> ExportCollectionSummary:
     """Archive KM's complete XLSX index export and normalize every notice row."""
+    pipeline = get_pipeline_config(pipeline_id)
+    source_code = f"km_{pipeline.slug}_critical"
     http_client = client or ReadOnlyHTTPClient(timeout_seconds=180.0)
     connection = connect_database(database_path)
     initialize_database(connection)
     run_id = start_fetch_run(
         connection,
-        "km_tgp_critical",
+        source_code,
         requested_at=pendulum.now("UTC"),
-        config={"url": TGP_CRITICAL_INDEX_URL, "capture": "xlsx_summary_all"},
+        config={
+            "pipeline_id": pipeline.pipeline_id,
+            "url": pipeline.critical_index_url,
+            "capture": "xlsx_summary_all",
+        },
     )
     try:
-        index_fetch = http_client.fetch(TGP_CRITICAL_INDEX_URL, accept="text/html")
+        index_fetch = http_client.fetch(
+            pipeline.critical_index_url,
+            accept="text/html",
+        )
         index_artifact = ArtifactStore(raw_root).store(
-            "km_tgp_critical", index_fetch
+            source_code,
+            index_fetch,
         )
         store_artifact_record(connection, run_id, index_artifact)
-        index_page = parse_notice_index(index_fetch.text)
-        store_notice_index_page(connection, index_artifact, index_page)
+        index_page = parse_notice_index(
+            index_fetch.text,
+            timezone_name=pipeline.timezone,
+        )
+        store_notice_index_page(
+            connection,
+            index_artifact,
+            index_page,
+            pipeline_id=pipeline.pipeline_id,
+        )
 
         form_fields = build_notice_export_form(index_fetch.text)
         export_fetch = http_client.post_form(
-            TGP_CRITICAL_INDEX_URL,
+            pipeline.critical_index_url,
             form_fields,
             accept=(
-                "application/vnd.openxmlformats-officedocument."
-                "spreadsheetml.sheet"
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             ),
             referer="https://pipeline2.kindermorgan.com/",
         )
         export_artifact = ArtifactStore(raw_root).store(
-            "km_tgp_critical", export_fetch
+            source_code,
+            export_fetch,
         )
         store_artifact_record(connection, run_id, export_artifact)
         expected_count, expected_range = _export_count_expectation(index_page)
@@ -853,12 +971,14 @@ def collect_tgp_critical_export(
             export_fetch.body,
             expected_row_count=expected_count,
             expected_row_count_range=expected_range,
+            timezone_name=pipeline.timezone,
         )
         store_notice_index_export(
             connection,
             export_artifact,
             export,
-            index_advertised_row_count=export.total_row_count,
+            pipeline_id=pipeline.pipeline_id,
+            index_advertised_row_count=index_page.total_row_count,
         )
         finish_fetch_run(connection, run_id)
     except Exception as exc:
@@ -881,6 +1001,20 @@ def collect_tgp_critical_export(
     )
 
 
+def collect_tgp_critical_export(
+    *,
+    database_path: str | Path,
+    raw_root: str | Path,
+    client: ReadOnlyHTTPClient | None = None,
+) -> ExportCollectionSummary:
+    return collect_kinder_morgan_critical_export(
+        pipeline_id="TGP",
+        database_path=database_path,
+        raw_root=raw_root,
+        client=client,
+    )
+
+
 def _export_count_expectation(
     page: object,
 ) -> tuple[int | None, tuple[int, int] | None]:
@@ -894,8 +1028,9 @@ def _export_count_expectation(
     return None, (minimum, maximum)
 
 
-def collect_tgp_notice_details(
+def collect_kinder_morgan_notice_details(
     *,
+    pipeline_id: str,
     database_path: str | Path,
     raw_root: str | Path,
     limit: int = 3,
@@ -911,6 +1046,8 @@ def collect_tgp_notice_details(
         raise ValueError("revision check limit cannot be negative")
     if minimum_interval_seconds < 0:
         raise ValueError("minimum interval cannot be negative")
+    pipeline = get_pipeline_config(pipeline_id)
+    source_code = f"km_{pipeline.slug}_notice_detail"
     connection = connect_database(database_path)
     initialize_database(connection)
     try:
@@ -925,11 +1062,11 @@ def collect_tgp_notice_details(
                         json_extract_string(config, '$.notice_id') AS notice_id,
                         count(*) AS attempt_count
                     FROM fetch_runs
-                    WHERE source_code = 'km_tgp_notice_detail'
+                    WHERE source_code = ?
                     GROUP BY 1
                 ) AS attempts
                   ON attempts.notice_id = current.notice_id
-                WHERE current.pipeline_id = 'TGP'
+                WHERE current.pipeline_id = ?
                   AND (
                       ? IS NULL
                       OR upper(current.notice_type_primary) = upper(?)
@@ -946,13 +1083,20 @@ def collect_tgp_notice_details(
                     current.notice_id DESC
                 LIMIT ?
                 """,
-                [notice_type, notice_type, limit],
+                [
+                    source_code,
+                    pipeline.pipeline_id,
+                    notice_type,
+                    notice_type,
+                    limit,
+                ],
             ).fetchall()
         )
-        rechecked_notice_ids = tuple(
-            row[0]
-            for row in connection.execute(
-                """
+        rechecked_notice_ids = (
+            tuple(
+                row[0]
+                for row in connection.execute(
+                    """
                 WITH last_check AS (
                     SELECT
                         pipeline_id,
@@ -966,7 +1110,7 @@ def collect_tgp_notice_details(
                 JOIN last_check
                   ON last_check.pipeline_id = current.pipeline_id
                  AND last_check.notice_id = current.notice_id
-                WHERE current.pipeline_id = 'TGP'
+                WHERE current.pipeline_id = ?
                   AND (
                       ? IS NULL
                       OR upper(current.notice_type_primary) = upper(?)
@@ -982,9 +1126,17 @@ def collect_tgp_notice_details(
                     current.notice_id DESC
                 LIMIT ?
                 """,
-                [notice_type, notice_type, revision_check_limit],
-            ).fetchall()
-        ) if revision_check_limit else ()
+                    [
+                        pipeline.pipeline_id,
+                        notice_type,
+                        notice_type,
+                        revision_check_limit,
+                    ],
+                ).fetchall()
+            )
+            if revision_check_limit
+            else ()
+        )
     finally:
         connection.close()
 
@@ -998,21 +1150,20 @@ def collect_tgp_notice_details(
     for position, notice_id in enumerate(notice_ids):
         if position:
             sleep(minimum_interval_seconds)
-        detail_url = TGP_NOTICE_DETAIL_URL.format(notice_id=notice_id)
+        detail_url = pipeline.notice_detail_url(notice_id)
         connection = connect_database(database_path)
         initialize_database(connection)
         try:
             run_id = start_fetch_run(
                 connection,
-                "km_tgp_notice_detail",
+                source_code,
                 requested_at=pendulum.now("UTC"),
                 config={
                     "url": detail_url,
+                    "pipeline_id": pipeline.pipeline_id,
                     "notice_id": notice_id,
                     "collection_reason": (
-                        "revision_check"
-                        if notice_id in rechecked_set
-                        else "new_detail"
+                        "revision_check" if notice_id in rechecked_set else "new_detail"
                     ),
                 },
             )
@@ -1022,7 +1173,8 @@ def collect_tgp_notice_details(
         try:
             fetch = http_client.fetch(detail_url, accept="text/html")
             artifact = ArtifactStore(raw_root).store(
-                "km_tgp_notice_detail", fetch
+                source_code,
+                fetch,
             )
             connection = connect_database(database_path)
             initialize_database(connection)
@@ -1031,22 +1183,37 @@ def collect_tgp_notice_details(
             finally:
                 connection.close()
 
-            notice = parse_notice_detail(fetch.text)
+            notice = parse_notice_detail(
+                fetch.text,
+                timezone_name=pipeline.timezone,
+            )
             if notice.notice_id != notice_id:
                 raise ValueError(
                     f"detail response {notice.notice_id} does not match {notice_id}"
                 )
+            if notice.tsp_number != pipeline.tsp_number:
+                raise ValueError(
+                    f"detail response TSP {notice.tsp_number} does not identify "
+                    f"{pipeline.pipeline_id} ({pipeline.tsp_number})"
+                )
             connection = connect_database(database_path)
             initialize_database(connection)
             try:
-                version_result = store_notice_version(connection, artifact, notice)
-                impact_rows = parse_tgp_outage_impact_report(fetch.text)
-                store_outage_impact_observations(
+                version_result = store_notice_version(
                     connection,
                     artifact,
-                    notice.notice_id,
-                    impact_rows,
+                    notice,
+                    pipeline_id=pipeline.pipeline_id,
                 )
+                if pipeline.supports_outage_impact_report:
+                    impact_rows = parse_tgp_outage_impact_report(fetch.text)
+                    store_outage_impact_observations(
+                        connection,
+                        artifact,
+                        notice.notice_id,
+                        impact_rows,
+                        pipeline_id=pipeline.pipeline_id,
+                    )
                 finish_fetch_run(connection, run_id)
             finally:
                 connection.close()
@@ -1056,7 +1223,7 @@ def collect_tgp_notice_details(
                     revised_ids.append(notice_id)
                 else:
                     unchanged_ids.append(notice_id)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 - isolate each notice fetch
             connection = connect_database(database_path)
             initialize_database(connection)
             try:
@@ -1072,7 +1239,7 @@ def collect_tgp_notice_details(
             """
             SELECT count(*)
             FROM current_notice_index AS current
-            WHERE current.pipeline_id = 'TGP'
+            WHERE current.pipeline_id = ?
               AND (
                   ? IS NULL
                   OR upper(current.notice_type_primary) = upper(?)
@@ -1084,7 +1251,7 @@ def collect_tgp_notice_details(
                     AND version.notice_id = current.notice_id
               )
             """,
-            [notice_type, notice_type],
+            [pipeline.pipeline_id, notice_type, notice_type],
         ).fetchone()[0]
     finally:
         connection.close()
@@ -1100,6 +1267,30 @@ def collect_tgp_notice_details(
         unchanged_notice_ids=tuple(unchanged_ids),
         completed_notice_ids=tuple(completed_ids),
         failed_notice_ids=tuple(failed_ids),
+    )
+
+
+def collect_tgp_notice_details(
+    *,
+    database_path: str | Path,
+    raw_root: str | Path,
+    limit: int = 3,
+    revision_check_limit: int = 3,
+    notice_type: str | None = None,
+    minimum_interval_seconds: float = 2.0,
+    client: ReadOnlyHTTPClient | None = None,
+    sleep: Callable[[float], None] = time.sleep,
+) -> DetailCollectionSummary:
+    return collect_kinder_morgan_notice_details(
+        pipeline_id="TGP",
+        database_path=database_path,
+        raw_root=raw_root,
+        limit=limit,
+        revision_check_limit=revision_check_limit,
+        notice_type=notice_type,
+        minimum_interval_seconds=minimum_interval_seconds,
+        client=client,
+        sleep=sleep,
     )
 
 
@@ -1164,7 +1355,7 @@ def reprocess_tgp_notice_details(
                         impact_rows,
                     )
                 reprocessed += 1
-            except Exception:
+            except Exception:  # noqa: BLE001 - report bad legacy artifacts by ID
                 failed_artifact_ids.append(artifact.artifact_id)
     finally:
         connection.close()
@@ -1262,7 +1453,10 @@ def reprocess_tgp_critical_indexes(
                 else:
                     minimum = (page_metadata[0] - 1) * page_metadata[1] + 1
                     maximum = page_metadata[0] * page_metadata[1]
-                    if advertised_row is not None and minimum <= advertised_row <= maximum:
+                    if (
+                        advertised_row is not None
+                        and minimum <= advertised_row <= maximum
+                    ):
                         expected_count = advertised_row
                         expected_range = None
                     else:
@@ -1281,9 +1475,7 @@ def reprocess_tgp_critical_indexes(
                 )
                 normalized_row_count = len(export.rows)
             else:
-                page = parse_notice_index(
-                    raw_path.read_text(encoding="utf-8-sig")
-                )
+                page = parse_notice_index(raw_path.read_text(encoding="utf-8-sig"))
                 store_notice_index_page(connection, artifact, page)
                 normalized_row_count = len(page.rows)
             reprocessed += 1

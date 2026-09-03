@@ -16,6 +16,7 @@ from pipeline_pulse.scheduler import (
     ScheduledCollectionSummary,
     exclusive_collection_lock,
     refresh_insights_if_configured,
+    run_kinder_morgan_pipeline_collection,
     run_scheduled_collection,
 )
 from pipeline_pulse.web import RefreshManager
@@ -38,6 +39,27 @@ class SchedulerLockTests(unittest.TestCase):
             ["scheduled-collect", "--mode", "refresh"]
         )
         self.assertEqual(refresh_args.mode, "refresh")
+        ngpl_args = build_parser().parse_args(
+            [
+                "collect-km-pipeline",
+                "--pipeline",
+                "NGPL",
+                "--mode",
+                "bootstrap",
+            ]
+        )
+        self.assertEqual(ngpl_args.pipeline, "NGPL")
+        self.assertEqual(ngpl_args.bootstrap_detail_limit, 25)
+        ngpl_full_export_args = build_parser().parse_args(
+            [
+                "collect-km-pipeline",
+                "--pipeline",
+                "NGPL",
+                "--mode",
+                "full-export",
+            ]
+        )
+        self.assertEqual(ngpl_full_export_args.mode, "full-export")
 
     def test_rejects_overlapping_collection(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -200,6 +222,82 @@ class SchedulerLockTests(unittest.TestCase):
         self.assertEqual(completed["status"], "completed")
         self.assertEqual(completed["insights_status"], "not_configured")
         self.assertEqual(calls[0]["mode"], "refresh")
+
+    def test_ngpl_refresh_collects_raw_sources_without_tgp_market_model(self) -> None:
+        result = FakeCollectionResult()
+        patches = (
+            patch(
+                "pipeline_pulse.scheduler.collect_kinder_morgan_critical_index",
+                return_value=result,
+            ),
+            patch(
+                "pipeline_pulse.scheduler.collect_kinder_morgan_notice_details",
+                return_value=result,
+            ),
+            patch(
+                "pipeline_pulse.scheduler.collect_kinder_morgan_operational_capacity",
+                return_value=result,
+            ),
+        )
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            with ExitStack() as stack:
+                collectors = [stack.enter_context(context) for context in patches]
+                summary = run_kinder_morgan_pipeline_collection(
+                    pipeline_id="NGPL",
+                    mode="refresh",
+                    database_path=root / "pipeline.duckdb",
+                    raw_root=root / "raw",
+                    lock_path=root / "refresh.lock",
+                )
+
+        self.assertEqual(summary.status, "completed")
+        self.assertEqual(summary.pipeline_id, "NGPL")
+        self.assertEqual(summary.market_model_status, "raw_data_only")
+        self.assertEqual(
+            set(summary.collection or {}),
+            {
+                "critical_notice_index",
+                "notice_details",
+                "operational_capacity",
+            },
+        )
+        for collector in collectors:
+            collector.assert_called_once()
+            self.assertEqual(collector.call_args.kwargs["pipeline_id"], "NGPL")
+
+    def test_ngpl_full_export_reconciles_index_and_location_reference(self) -> None:
+        result = FakeCollectionResult()
+        patches = (
+            patch(
+                "pipeline_pulse.scheduler.collect_kinder_morgan_critical_export",
+                return_value=result,
+            ),
+            patch(
+                "pipeline_pulse.scheduler.collect_kinder_morgan_locations",
+                return_value=result,
+            ),
+        )
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            with ExitStack() as stack:
+                collectors = [stack.enter_context(context) for context in patches]
+                summary = run_kinder_morgan_pipeline_collection(
+                    pipeline_id="NGPL",
+                    mode="full-export",
+                    database_path=root / "pipeline.duckdb",
+                    raw_root=root / "raw",
+                    lock_path=root / "refresh.lock",
+                )
+
+        self.assertEqual(summary.status, "completed")
+        self.assertEqual(
+            set(summary.collection or {}),
+            {"critical_notice_export", "locations"},
+        )
+        for collector in collectors:
+            collector.assert_called_once()
+            self.assertEqual(collector.call_args.kwargs["pipeline_id"], "NGPL")
 
 
 if __name__ == "__main__":

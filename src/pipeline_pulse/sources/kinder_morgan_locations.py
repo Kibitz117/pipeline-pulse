@@ -10,7 +10,6 @@ import pendulum
 
 from .kinder_morgan import KinderMorganParseError
 
-
 _HEADERS = (
     "TSP",
     "TSP Name",
@@ -103,7 +102,7 @@ def _date(value: str) -> pendulum.Date | None:
         return pendulum.from_format(value, "YYYYMMDD", tz="America/Chicago").date()
     except (ValueError, pendulum.parsing.exceptions.ParserError) as exc:
         raise KinderMorganParseError(
-            f"unsupported TGP location date: {value!r}"
+            f"unsupported Kinder Morgan location date: {value!r}"
         ) from exc
 
 
@@ -118,7 +117,7 @@ def _timestamp(value: str) -> pendulum.DateTime | None:
         )
     except (ValueError, pendulum.parsing.exceptions.ParserError) as exc:
         raise KinderMorganParseError(
-            f"unsupported TGP location timestamp: {value!r}"
+            f"unsupported Kinder Morgan location timestamp: {value!r}"
         ) from exc
 
 
@@ -129,35 +128,54 @@ def _indicator(value: str) -> bool | None:
         return True
     if value == "N":
         return False
-    raise KinderMorganParseError(f"unsupported TGP location indicator: {value!r}")
+    raise KinderMorganParseError(
+        f"unsupported Kinder Morgan location indicator: {value!r}"
+    )
 
 
-def parse_tgp_location_export(body: bytes) -> TgpLocationExport:
+def parse_kinder_morgan_location_export(
+    body: bytes,
+    *,
+    expected_tsp_number: str,
+    expected_ferc_cid: str,
+    pipeline_label: str,
+) -> TgpLocationExport:
     try:
         text = body.decode("utf-8-sig")
     except UnicodeDecodeError as exc:
-        raise KinderMorganParseError("TGP location export is not UTF-8 CSV") from exc
+        raise KinderMorganParseError(
+            f"{pipeline_label} location export is not UTF-8 CSV"
+        ) from exc
     reader = csv.DictReader(StringIO(text))
     if reader.fieldnames is None:
-        raise KinderMorganParseError("TGP location export has no header")
+        raise KinderMorganParseError(f"{pipeline_label} location export has no header")
     missing = set(_HEADERS).difference(reader.fieldnames)
     if missing:
         raise KinderMorganParseError(
-            f"TGP location export is missing columns: {', '.join(sorted(missing))}"
+            f"{pipeline_label} location export is missing columns: "
+            f"{', '.join(sorted(missing))}"
         )
 
     raw_rows = list(reader)
     if not raw_rows:
-        raise KinderMorganParseError("TGP location export has no data rows")
+        raise KinderMorganParseError(
+            f"{pipeline_label} location export has no data rows"
+        )
     tsp_numbers = {_value(row, "TSP") for row in raw_rows}
     tsp_names = {_value(row, "TSP Name") for row in raw_rows}
     ferc_cids = {_value(row, "TSP FERC CID") for row in raw_rows}
     source_times = {_value(row, "Date/Time") for row in raw_rows}
     comments = {_value(row, "Comments") for row in raw_rows}
-    if any(len(values) != 1 for values in (tsp_numbers, tsp_names, ferc_cids, source_times)):
-        raise KinderMorganParseError("TGP location export metadata changes within the file")
-    if tsp_numbers != {"1939164"} or ferc_cids != {"C000020"}:
-        raise KinderMorganParseError("location export does not identify TGP")
+    if any(
+        len(values) != 1 for values in (tsp_numbers, tsp_names, ferc_cids, source_times)
+    ):
+        raise KinderMorganParseError(
+            f"{pipeline_label} location export metadata changes within the file"
+        )
+    if tsp_numbers != {expected_tsp_number} or ferc_cids != {expected_ferc_cid}:
+        raise KinderMorganParseError(
+            f"location export does not identify {pipeline_label}"
+        )
 
     rows: list[TgpLocation] = []
     seen_ids: set[str] = set()
@@ -165,11 +183,11 @@ def parse_tgp_location_export(body: bytes) -> TgpLocationExport:
         location_id = _value(row, "Loc")
         if not location_id:
             raise KinderMorganParseError(
-                f"TGP location row {position} has no operator location ID"
+                f"{pipeline_label} location row {position} has no operator location ID"
             )
         if location_id in seen_ids:
             raise KinderMorganParseError(
-                f"duplicate TGP operator location ID: {location_id}"
+                f"duplicate {pipeline_label} operator location ID: {location_id}"
             )
         seen_ids.add(location_id)
         location_name = _value(row, "Loc Name")
@@ -178,16 +196,16 @@ def parse_tgp_location_export(body: bytes) -> TgpLocationExport:
         state_abbreviation = _value(row, "Loc St Abbrev")
         if not location_name or not county_name:
             raise KinderMorganParseError(
-                f"TGP location row {position} is missing its name or county"
+                f"{pipeline_label} location row {position} is missing its name or county"
             )
         if flow_role not in {"R", "D", "B"}:
             raise KinderMorganParseError(
-                f"TGP location row {position} has unsupported flow role: "
+                f"{pipeline_label} location row {position} has unsupported flow role: "
                 f"{flow_role!r}"
             )
-        if re.fullmatch(r"[A-Z]{2}", state_abbreviation) is None:
+        if state_abbreviation and re.fullmatch(r"[A-Z]{2}", state_abbreviation) is None:
             raise KinderMorganParseError(
-                f"TGP location row {position} has invalid state: "
+                f"{pipeline_label} location row {position} has invalid state: "
                 f"{state_abbreviation!r}"
             )
         rows.append(
@@ -224,7 +242,9 @@ def parse_tgp_location_export(body: bytes) -> TgpLocationExport:
 
     source_as_of = _timestamp(next(iter(source_times)))
     if source_as_of is None:
-        raise KinderMorganParseError("TGP location export has no source timestamp")
+        raise KinderMorganParseError(
+            f"{pipeline_label} location export has no source timestamp"
+        )
     return TgpLocationExport(
         tsp_number=next(iter(tsp_numbers)),
         tsp_name=next(iter(tsp_names)),
@@ -236,4 +256,14 @@ def parse_tgp_location_export(body: bytes) -> TgpLocationExport:
             "\x1f".join(reader.fieldnames).encode("utf-8")
         ).hexdigest(),
         rows=tuple(rows),
+    )
+
+
+def parse_tgp_location_export(body: bytes) -> TgpLocationExport:
+    """Backward-compatible TGP parser over the shared Kinder Morgan schema."""
+    return parse_kinder_morgan_location_export(
+        body,
+        expected_tsp_number="1939164",
+        expected_ferc_cid="C000020",
+        pipeline_label="TGP",
     )

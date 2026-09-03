@@ -16,6 +16,13 @@ PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
 # Archive best-available delivery, receipt, and segment capacity each hour.
 7 * * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse scheduled-collect --mode capacity >> data/logs/collector.log 2>&1
 
+# Optional second pipeline. Run its bootstrap command from README.md once first.
+# The offset avoids colliding with the TGP job under the shared collection lock.
+# 3,18,33,48 * * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse collect-km-pipeline --pipeline NGPL --mode refresh >> data/logs/collector.log 2>&1
+
+# Reconcile NGPL's complete notice list and location reference once per day.
+# 43 2 * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse collect-km-pipeline --pipeline NGPL --mode full-export >> data/logs/collector.log 2>&1
+
 # Refresh NWS demand weather plus EIA storage and physical Henry Hub spot.
 # Six-hour polling captures forecast vintages; unchanged raw bodies deduplicate by hash.
 42 */6 * * * cd "$PIPELINE_PULSE_DIR" && ./.venv/bin/pipeline-pulse scheduled-collect --mode context >> data/logs/collector.log 2>&1

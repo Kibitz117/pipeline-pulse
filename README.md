@@ -1,8 +1,10 @@
 # Pipeline Pulse
 
-Pipeline Pulse turns Tennessee Gas Pipeline (TGP) maintenance disclosures into
-point-in-time transport scenarios, revision alerts, and an investor-facing
-market brief. It answers one narrow question:
+Pipeline Pulse turns public interstate-pipeline disclosures into point-in-time
+notices, capacity observations, and revision history. Tennessee Gas Pipeline
+(TGP) is the first system with a complete investor-facing transport model; the
+same normalized collection layer now also supports Natural Gas Pipeline Company
+of America (NGPL). The TGP terminal answers one narrow question:
 
 > What changed in TGP maintenance, where and when could transport tighten, and
 > what would need to confirm before that becomes a tradable gas-market view?
@@ -52,6 +54,43 @@ The UI leads with the aggregate 30-day TGP pressure calendar and then lets an
 analyst double-click into corridors, alerts, notice revisions, report vintages,
 source evidence, and market context. The guide explains the gas-market terms
 and the intentionally narrow TGP scope.
+
+## Pipeline coverage
+
+| Pipeline | Collection | Investor interpretation |
+| --- | --- | --- |
+| TGP | Notices and same-ID revisions, locations, point/segment capacity, Outage Impact Report | Full transport scenarios, alerts, market context, UI, and AI brief |
+| NGPL | Notices and same-ID revisions, locations, and point/segment capacity | Queryable raw and normalized evidence; pipeline-specific impact model is not yet enabled |
+
+NGPL is operated by Kinder Morgan but is a distinct interstate pipeline system.
+It broadens the geography to Chicago, Midcontinent, Texas, and Gulf Coast/LNG
+markets. Because both systems publish through the same Kinder Morgan platform,
+this first expansion validates the shared portal adapter and pipeline isolation.
+The next provider milestone is a separate portal family such as Williams
+Transco or Enbridge Texas Eastern.
+
+To add NGPL to the same local DuckDB file:
+
+```bash
+# First pull: complete current notice export, locations, sampled details, capacity
+uv run --locked pipeline-pulse collect-km-pipeline \
+  --pipeline NGPL --mode bootstrap --bootstrap-detail-limit 25
+
+# Later pulls: current notices, revision checks, missing details, capacity
+uv run --locked pipeline-pulse collect-km-pipeline \
+  --pipeline NGPL --mode refresh
+
+# Daily reconciliation: complete notice index and location reference
+uv run --locked pipeline-pulse collect-km-pipeline \
+  --pipeline NGPL --mode full-export
+```
+
+Increase `--bootstrap-detail-limit` to backfill more notice bodies. The immutable
+index export is complete even when the bounded detail backlog remains. NGPL data
+is intentionally excluded from TGP alerts, aggregate pressure calculations, and
+AI conclusions until its directions, bottleneck logic, and regional market
+channels are validated. `GET /api/pipelines` reports per-pipeline coverage and
+the current interpretation boundary.
 
 ## What is in the terminal
 
@@ -199,6 +238,7 @@ DuckDB relation, row count, JSON endpoint, and CSV download. Useful endpoints:
 
 ```text
 GET /api/market-state?days=30&as_of=<ISO-8601>
+GET /api/pipelines
 GET /api/alerts?scope=recent&as_of=<ISO-8601>
 GET /api/notices/<notice_id>/history?as_of=<ISO-8601>
 GET /api/reports
@@ -219,12 +259,15 @@ crontab config/crontab.local
 ```
 
 The example polls notices every 15 minutes, capacity hourly, public market
-context every six hours, and the full notice/location export daily. A shared
-file lock prevents overlapping jobs. Each successful pull rebuilds derived
-tables, curated CSVs, and `data/curated/tgp_dataset_status.json`; when
-`CODEX_API_KEY` is configured it also refreshes the AI memo if material evidence
-changed. The cron file calls the `.venv` that `uv sync` created directly, so cron
-does not need uv on its `PATH`. Nothing is installed into cron automatically.
+context every six hours, and the full TGP notice/location export daily. It also
+contains commented NGPL incremental and full-export entries; run the one-time
+NGPL bootstrap, then uncomment those two entries to opt in.
+A shared file lock prevents overlapping jobs. Each successful TGP pull rebuilds
+derived tables, curated CSVs, and `data/curated/tgp_dataset_status.json`; when
+`CODEX_API_KEY` is configured it also refreshes the TGP AI memo if material
+evidence changed. The cron file calls the `.venv` that `uv sync` created
+directly, so cron does not need uv on its `PATH`. Nothing is installed into cron
+automatically.
 
 ## Submission evidence
 
