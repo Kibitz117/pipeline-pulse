@@ -59,6 +59,15 @@ available around that source date, and compare them with the latest state.
 Backfilled reports are labeled reconstructions; only reports captured live can
 be used to measure alert latency or claim a live point-in-time signal.
 
+## Current provider coverage
+
+The storage model is pipeline-keyed. TGP has the complete product path below.
+NGPL uses the same Kinder Morgan portal adapter for notices, revisions,
+locations, and point/segment capacity, while its investor interpretation layer
+remains deliberately disabled pending pipeline-specific validation. A separate
+portal family such as Transco or Texas Eastern is the next provider-adapter
+milestone.
+
 ## Current TGP product promise
 
 For Tennessee Gas Pipeline, the system will:
@@ -87,7 +96,8 @@ For Tennessee Gas Pipeline, the system will:
 - Predicting an exact Henry Hub price move from a single pipeline notice.
 - Treating lost transport capacity as lost U.S. production.
 - Recreating paid regional basis, nomination, or flow datasets from inference.
-- Covering every Kinder Morgan pipeline before the TGP adapter is reliable.
+- Applying TGP's direction, bottleneck, alert, or trade assumptions to another
+  pipeline merely because its source tables share a schema.
 - Adding weather, precipitation, regional prices, or futures feeds without a
   tested decision use and clear point-in-time treatment.
 - Sending autonomous trades or operational instructions.

@@ -14,7 +14,6 @@ from pipeline_pulse.sources.kinder_morgan import (
     parse_notice_index_export,
 )
 
-
 FIXTURES = Path(__file__).parent / "fixtures" / "kinder_morgan"
 
 
@@ -61,6 +60,14 @@ class NoticeIndexParserTests(unittest.TestCase):
         with self.assertRaisesRegex(KinderMorganParseError, "pagination"):
             parse_notice_index("<html><body>not an index</body></html>")
 
+    def test_uses_notice_grid_when_page_embeds_multiple_footer_counts(self) -> None:
+        html = (FIXTURES / "critical_index_page_0.html").read_text(encoding="utf-8")
+        html = 'footTxt":"Row Count: 1"' + html
+
+        page = parse_notice_index(html)
+
+        self.assertEqual(page.total_row_count, 597)
+
     def test_builds_complete_export_form(self) -> None:
         html = """
         <form>
@@ -78,9 +85,7 @@ class NoticeIndexParserTests(unittest.TestCase):
         self.assertIn("__VIEWSTATE", fields)
         self.assertEqual(fields["ctl00$hdnIsDownload"], "true")
         self.assertEqual(
-            fields[
-                "ctl00$WebSplitter1$tmpl1$ContentPlaceHolder1$ddlDownloadType"
-            ],
+            fields["ctl00$WebSplitter1$tmpl1$ContentPlaceHolder1$ddlDownloadType"],
             "EXCEL-Summary (All)",
         )
 

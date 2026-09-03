@@ -20,49 +20,124 @@ from pipeline_pulse.database import (
     store_county_references,
     store_location_export,
 )
+from pipeline_pulse.quality import build_location_quality_report
 from pipeline_pulse.sources.census import (
     normalize_county_name,
     parse_county_gazetteer,
 )
 from pipeline_pulse.sources.kinder_morgan_locations import (
     EXPECTED_LOCATION_SCHEMA_SHA256,
+    parse_kinder_morgan_location_export,
     parse_tgp_location_export,
 )
-from pipeline_pulse.quality import build_location_quality_report
 from pipeline_pulse.web import TgpReadModel
 
-
 HEADERS = [
-    "TSP", "TSP Name", "TSP FERC CID", "Date/Time", "Comments", "Loc",
-    "Loc Name", "Dir Flo", "Loc Cnty", "Loc St Abbrev", "Loc Type Ind",
-    "Loc Zone (Rec)", "Loc Zone (Del)", "Seg Nbr", "Nom Ind",
-    "Loc Stat Ind", "Eff Date", "Inact Date", "Up/Dn Ind", "Up/Dn Name",
-    "Up/Dn ID", "Up/Dn ID Prop", "Up/Dn FERC CID Ind", "Up/Dn FERC CID",
-    "Up/Dn Loc", "Up/Dn Loc Name", "Up/Dn Loc 2", "Up/Dn Loc Name2",
+    "TSP",
+    "TSP Name",
+    "TSP FERC CID",
+    "Date/Time",
+    "Comments",
+    "Loc",
+    "Loc Name",
+    "Dir Flo",
+    "Loc Cnty",
+    "Loc St Abbrev",
+    "Loc Type Ind",
+    "Loc Zone (Rec)",
+    "Loc Zone (Del)",
+    "Seg Nbr",
+    "Nom Ind",
+    "Loc Stat Ind",
+    "Eff Date",
+    "Inact Date",
+    "Up/Dn Ind",
+    "Up/Dn Name",
+    "Up/Dn ID",
+    "Up/Dn ID Prop",
+    "Up/Dn FERC CID Ind",
+    "Up/Dn FERC CID",
+    "Up/Dn Loc",
+    "Up/Dn Loc Name",
+    "Up/Dn Loc 2",
+    "Up/Dn Loc Name2",
     "Update D/T",
 ]
 
 
-def location_csv() -> bytes:
+def location_csv(
+    *,
+    tsp_number: str = "1939164",
+    tsp_name: str = "TENNESSEE GAS PIPELINE",
+    ferc_cid: str = "C000020",
+) -> bytes:
     output = StringIO()
     writer = csv.writer(output)
     writer.writerow(HEADERS)
     writer.writerow(
         [
-            "1939164", "TENNESSEE GAS PIPELINE", "C000020", "20260828 11:16",
-            "Public location reference", "44423", "REX/TGP BIG MUSKIE GUERNSEY",
-            "R", "GUERNSEY", "OH", "INT", "Z4", "Z4", "204", "Y", "A",
-            "20151101", "", "Y", "ROCKIES EXPRESS PIPELINE LLC", "784256161",
-            "955", "Y", "C000594", "44423", "TGP/REX GUERNSEY", "", "",
+            tsp_number,
+            tsp_name,
+            ferc_cid,
+            "20260828 11:16",
+            "Public location reference",
+            "44423",
+            "REX/TGP BIG MUSKIE GUERNSEY",
+            "R",
+            "GUERNSEY",
+            "OH",
+            "INT",
+            "Z4",
+            "Z4",
+            "204",
+            "Y",
+            "A",
+            "20151101",
+            "",
+            "Y",
+            "ROCKIES EXPRESS PIPELINE LLC",
+            "784256161",
+            "955",
+            "Y",
+            "C000594",
+            "44423",
+            "TGP/REX GUERNSEY",
+            "",
+            "",
             "20160401 10:05",
         ]
     )
     writer.writerow(
         [
-            "1939164", "TENNESSEE GAS PIPELINE", "C000020", "20260828 11:16",
-            "Public location reference", "50000", "TEST ST MARY", "D", "ST MARY",
-            "LA", "LDC", "Z1", "Z1", "500", "Y", "A", "20200101", "",
-            "N", "", "", "", "", "", "", "", "", "", "20200102 09:00",
+            tsp_number,
+            tsp_name,
+            ferc_cid,
+            "20260828 11:16",
+            "Public location reference",
+            "50000",
+            "TEST ST MARY",
+            "D",
+            "ST MARY",
+            "LA",
+            "LDC",
+            "Z1",
+            "Z1",
+            "500",
+            "Y",
+            "A",
+            "20200101",
+            "",
+            "N",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "20200102 09:00",
         ]
     )
     return output.getvalue().encode("utf-8")
@@ -118,6 +193,37 @@ class LocationReferenceTests(unittest.TestCase):
         self.assertEqual(normalize_county_name("St. Mary Parish"), "STMARY")
         self.assertEqual(normalize_county_name("WORCHESTER"), "WORCESTER")
         self.assertEqual(normalize_county_name("VERMILLION"), "VERMILION")
+
+    def test_validates_ngpl_identity_on_shared_location_schema(self) -> None:
+        export = parse_kinder_morgan_location_export(
+            location_csv(
+                tsp_number="6931794",
+                tsp_name="NATURAL GAS PIPELINE CO.",
+                ferc_cid="C002096",
+            ),
+            expected_tsp_number="6931794",
+            expected_ferc_cid="C002096",
+            pipeline_label="NGPL",
+        )
+
+        self.assertEqual(export.tsp_number, "6931794")
+        self.assertEqual(export.tsp_ferc_cid, "C002096")
+
+    def test_preserves_blank_ngpl_state_as_unmapped(self) -> None:
+        body = location_csv(
+            tsp_number="6931794",
+            tsp_name="NATURAL GAS PIPELINE CO.",
+            ferc_cid="C002096",
+        ).replace(b",LA,LDC,", b",,LDC,")
+
+        export = parse_kinder_morgan_location_export(
+            body,
+            expected_tsp_number="6931794",
+            expected_ferc_cid="C002096",
+            pipeline_label="NGPL",
+        )
+
+        self.assertEqual(export.rows[1].state_abbreviation, "")
 
     def test_stores_and_geocodes_locations_at_county_precision(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:

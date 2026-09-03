@@ -22,21 +22,34 @@ from pipeline_pulse.sources.kinder_morgan import KinderMorganParseError
 from pipeline_pulse.sources.kinder_morgan_capacity import (
     EXPECTED_POINT_CAPACITY_SCHEMA_SHA256,
     build_capacity_export_form,
+    parse_kinder_morgan_capacity_export,
     parse_tgp_capacity_export,
 )
 from pipeline_pulse.web import TgpReadModel
 
-
 METADATA_HEADERS = [
-    "TSP", "TSP Name", "Eff Gas Day/Eff Time", "CycleDesc",
-    "Loc Purp Desc", "Meas Basis Desc", "Post Date/Post Time",
+    "TSP",
+    "TSP Name",
+    "Eff Gas Day/Eff Time",
+    "CycleDesc",
+    "Loc Purp Desc",
+    "Meas Basis Desc",
+    "Post Date/Post Time",
     "Loc/QTI Desc",
 ]
 POINT_HEADERS = [
-    "Loc", "Loc Name", "Loc Zn", "Loc (Segment)", "Design Capacity",
-    "Operating Capacity", "Total Scheduled Quantity",
-    "Operationally Available Capacity", "IT", "Flow Ind",
-    "All Qty Avail", "Qty Reason",
+    "Loc",
+    "Loc Name",
+    "Loc Zn",
+    "Loc (Segment)",
+    "Design Capacity",
+    "Operating Capacity",
+    "Total Scheduled Quantity",
+    "Operationally Available Capacity",
+    "IT",
+    "Flow Ind",
+    "All Qty Avail",
+    "Qty Reason",
 ]
 
 
@@ -58,9 +71,7 @@ def xlsx_rows(rows: list[list[str]]) -> bytes:
             while remaining:
                 remaining, remainder = divmod(remaining - 1, 26)
                 column = chr(ord("A") + remainder) + column
-            cells.append(
-                f'<c r="{column}{row_number}" t="s"><v>{value_index}</v></c>'
-            )
+            cells.append(f'<c r="{column}{row_number}" t="s"><v>{value_index}</v></c>')
             value_index += 1
         sheet_rows.append(f'<row r="{row_number}">{"".join(cells)}</row>')
     sheet = (
@@ -77,20 +88,39 @@ def xlsx_rows(rows: list[list[str]]) -> bytes:
     return output.getvalue()
 
 
-def point_capacity_xlsx(*, footer_count: int = 1) -> bytes:
+def point_capacity_xlsx(
+    *,
+    footer_count: int = 1,
+    tsp_number: str = "1939164",
+    tsp_name: str = "TENNESSEE GAS PIPELINE",
+) -> bytes:
     return xlsx_rows(
         [
             METADATA_HEADERS,
             [
-                "1939164", "TENNESSEE GAS PIPELINE",
-                "8/28/2026 02:00 PM CCT", "INTRADAY 1",
-                "Delivery Location", "Dth", "08/28/2026 12:47 PM CCT",
+                tsp_number,
+                tsp_name,
+                "8/28/2026 02:00 PM CCT",
+                "INTRADAY 1",
+                "Delivery Location",
+                "Dth",
+                "08/28/2026 12:47 PM CCT",
                 "Best Available",
             ],
             POINT_HEADERS,
             [
-                "100", "TEST DELIVERY", "Zone 4", "204", "120", "90",
-                "92", "0", "N", "D", "Y", "Scheduled exceeds operating",
+                "100",
+                "TEST DELIVERY",
+                "Zone 4",
+                "204",
+                "120",
+                "90",
+                "92",
+                "0",
+                "N",
+                "D",
+                "Y",
+                "Scheduled exceeds operating",
             ],
             [f"Row Count: {footer_count}"],
             ["Comments:"],
@@ -109,9 +139,7 @@ def stored_artifact(root: Path, body: bytes) -> StoredArtifact:
         source_code="km_tgp_point_delivery_capacity",
         canonical_url="https://example.test/capacity",
         content_sha256=digest,
-        mime_type=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
+        mime_type=("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
         http_status=200,
         requested_at=received_at.subtract(seconds=2),
         received_at=received_at,
@@ -173,6 +201,20 @@ class CapacityParserTests(unittest.TestCase):
                 point_capacity_xlsx(footer_count=2),
                 capacity_kind="point",
             )
+
+    def test_validates_ngpl_identity_on_shared_capacity_schema(self) -> None:
+        export = parse_kinder_morgan_capacity_export(
+            point_capacity_xlsx(
+                tsp_number="6931794",
+                tsp_name="NATURAL GAS PIPELINE CO.",
+            ),
+            capacity_kind="point",
+            expected_tsp_number="6931794",
+            pipeline_label="NGPL",
+        )
+
+        self.assertEqual(export.tsp_number, "6931794")
+        self.assertEqual(export.tsp_name, "NATURAL GAS PIPELINE CO.")
 
     def test_stores_native_ids_and_only_links_known_references(self) -> None:
         body = point_capacity_xlsx()

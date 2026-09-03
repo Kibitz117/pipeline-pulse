@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 import re
-from io import BytesIO
 from dataclasses import dataclass
 from html.parser import HTMLParser
+from io import BytesIO
 from xml.etree import ElementTree
 from zipfile import BadZipFile, ZipFile
 
 import pendulum
-
 
 _FIELD_IDS = {
     "lblTSP",
@@ -88,9 +87,7 @@ class _FieldSpanParser(HTMLParser):
         self._nested_span_depth = 0
         self._parts: list[str] = []
 
-    def handle_starttag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attributes = dict(attrs)
         element_id = attributes.get("id", "")
         suffix = element_id.rsplit("_", 1)[-1]
@@ -133,9 +130,7 @@ class _NoticeIndexTableParser(HTMLParser):
         self._cells: list[str] = []
         self._cell_parts: list[str] | None = None
 
-    def handle_starttag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attributes = dict(attrs)
         if tag == "tr":
             if self._notice_id is None:
@@ -185,9 +180,7 @@ class _FormFieldsParser(HTMLParser):
         self._select_name: str | None = None
         self._options: list[tuple[str, bool]] = []
 
-    def handle_starttag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attributes = dict(attrs)
         if tag == "input" and attributes.get("name"):
             input_type = (attributes.get("type") or "text").lower()
@@ -243,7 +236,9 @@ def _timestamp(value: str, timezone_name: str) -> pendulum.DateTime | None:
 def _required(fields: dict[str, str], field_id: str) -> str:
     value = _one_line(fields.get(field_id, ""))
     if not value:
-        raise KinderMorganParseError(f"missing required Kinder Morgan field: {field_id}")
+        raise KinderMorganParseError(
+            f"missing required Kinder Morgan field: {field_id}"
+        )
     return value
 
 
@@ -295,8 +290,10 @@ def parse_notice_index(
     parser.close()
 
     page_match = re.search(r'"pi":(\d+),"ps":(\d+),"pc":(\d+)', html)
-    total_match = re.search(r'footTxt":"Row Count:\s*(\d+)"', html)
-    if page_match is None or total_match is None:
+    total_matches = tuple(
+        int(value) for value in re.findall(r'footTxt":"Row Count:\s*(\d+)"', html)
+    )
+    if page_match is None or not total_matches:
         raise KinderMorganParseError("notice index pagination metadata is missing")
 
     rows: list[KinderMorganNoticeIndexRow] = []
@@ -333,7 +330,9 @@ def parse_notice_index(
         page_index=int(page_match.group(1)),
         page_size=int(page_match.group(2)),
         page_count=int(page_match.group(3)),
-        total_row_count=int(total_match.group(1)),
+        # A page can embed footer metadata for more than one grid. The notice
+        # grid is the largest; using the first footer misread NGPL as one row.
+        total_row_count=max(total_matches),
         rows=tuple(rows),
     )
 
@@ -376,9 +375,7 @@ def build_location_export_form(html: str) -> list[tuple[str, str]]:
         f"{prefix}DownloadDDL",
     }
     fields = [
-        (key, value)
-        for key, value in parser.fields
-        if key not in overridden_names
+        (key, value) for key, value in parser.fields if key not in overridden_names
     ]
     fields.extend(overrides.items())
     required = {"__VIEWSTATE", "__EVENTVALIDATION", *overrides}
@@ -406,9 +403,7 @@ def _spreadsheet_rows(body: bytes) -> list[list[str]]:
     namespace = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
     try:
         with ZipFile(BytesIO(body)) as archive:
-            shared_root = ElementTree.fromstring(
-                archive.read("xl/sharedStrings.xml")
-            )
+            shared_root = ElementTree.fromstring(archive.read("xl/sharedStrings.xml"))
             shared_strings = [
                 "".join(node.text or "" for node in item.iter(namespace + "t"))
                 for item in shared_root
@@ -478,9 +473,7 @@ def parse_notice_index_export(
         raise KinderMorganParseError("notice export row count is missing")
 
     rows: list[KinderMorganNoticeIndexRow] = []
-    for position, cells in enumerate(
-        spreadsheet_rows[header_index + 1 : footer_index]
-    ):
+    for position, cells in enumerate(spreadsheet_rows[header_index + 1 : footer_index]):
         cells = cells + [""] * (6 - len(cells))
         notice_id = _one_line(cells[5])
         posted_at = _timestamp(cells[2], timezone_name)
@@ -508,8 +501,7 @@ def parse_notice_index_export(
         minimum, maximum = expected_row_count_range
         if not minimum <= len(rows) <= maximum:
             raise KinderMorganParseError(
-                f"notice export parsed {len(rows)} rows; "
-                f"expected {minimum}..{maximum}"
+                f"notice export parsed {len(rows)} rows; expected {minimum}..{maximum}"
             )
     if (
         expected_row_count is None

@@ -12,7 +12,6 @@ from .kinder_morgan import (
     _spreadsheet_rows,
 )
 
-
 _METADATA_HEADERS = (
     "TSP",
     "TSP Name",
@@ -118,11 +117,7 @@ def build_capacity_export_form(
         overrides[location_name] = (
             "rbDelivery" if point_role == "delivery" else "rbReceipt"
         )
-    fields = [
-        (key, value)
-        for key, value in parser.fields
-        if key not in overrides
-    ]
+    fields = [(key, value) for key, value in parser.fields if key not in overrides]
     fields.extend(overrides.items())
     required = {"__VIEWSTATE", "__EVENTVALIDATION", *overrides}
     missing = required.difference(key for key, _ in fields)
@@ -177,10 +172,12 @@ def _indicator(value: str, *, row_position: int, label: str) -> bool:
     )
 
 
-def parse_tgp_capacity_export(
+def parse_kinder_morgan_capacity_export(
     body: bytes,
     *,
     capacity_kind: str,
+    expected_tsp_number: str,
+    pipeline_label: str,
 ) -> TgpCapacityExport:
     if capacity_kind not in {"point", "segment"}:
         raise ValueError("capacity_kind must be point or segment")
@@ -191,8 +188,10 @@ def parse_tgp_capacity_export(
     if metadata_headers != _METADATA_HEADERS:
         raise KinderMorganParseError("capacity export metadata header changed")
     metadata = spreadsheet_rows[1] + [""] * len(_METADATA_HEADERS)
-    if metadata[0].strip() != "1939164":
-        raise KinderMorganParseError("capacity export does not identify TGP")
+    if metadata[0].strip() != expected_tsp_number:
+        raise KinderMorganParseError(
+            f"capacity export does not identify {pipeline_label}"
+        )
     expected_headers = _POINT_HEADERS if capacity_kind == "point" else _SEGMENT_HEADERS
     source_headers = tuple(spreadsheet_rows[2][: len(expected_headers)])
     if source_headers != expected_headers:
@@ -279,9 +278,7 @@ def parse_tgp_capacity_export(
                     label="all-quantity-available indicator",
                 ),
                 quantity_reason=(cells[capacity_offset + 7].strip() or None),
-                available_reconciles=(
-                    available == max(operating - scheduled, 0)
-                ),
+                available_reconciles=(available == max(operating - scheduled, 0)),
             )
         )
 
@@ -318,4 +315,18 @@ def parse_tgp_capacity_export(
         ).hexdigest(),
         comments=comments,
         rows=tuple(rows),
+    )
+
+
+def parse_tgp_capacity_export(
+    body: bytes,
+    *,
+    capacity_kind: str,
+) -> TgpCapacityExport:
+    """Backward-compatible TGP parser over the shared Kinder Morgan schema."""
+    return parse_kinder_morgan_capacity_export(
+        body,
+        capacity_kind=capacity_kind,
+        expected_tsp_number="1939164",
+        pipeline_label="TGP",
     )

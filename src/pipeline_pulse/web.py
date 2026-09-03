@@ -16,6 +16,7 @@ import pendulum
 from .alerts import normalize_alert_semantics
 from .insights import build_tgp_research_packet, latest_tgp_research_memo
 from .market_state import build_tgp_daily_market_state
+from .pipelines import KINDER_MORGAN_PIPELINES
 from .scheduler import ScheduledCollectionSummary, run_scheduled_collection
 
 UI_ROOT = Path(__file__).parents[2] / "ui"
@@ -178,6 +179,110 @@ class TgpReadModel:
             "arbitrary_sql_over_http": False,
         }
 
+    def pipeline_catalog(self) -> dict[str, object]:
+        rows = self._query(
+            """
+            WITH notice_counts AS (
+                SELECT pipeline_id, count(DISTINCT notice_id) AS notice_count
+                FROM current_notice_index
+                GROUP BY pipeline_id
+            ),
+            detail_counts AS (
+                SELECT pipeline_id, count(DISTINCT notice_id) AS detailed_notice_count
+                FROM notice_versions
+                GROUP BY pipeline_id
+            ),
+            latest_location_exports AS (
+                SELECT pipeline_id, artifact_id
+                FROM location_exports
+                QUALIFY row_number() OVER (
+                    PARTITION BY pipeline_id
+                    ORDER BY source_as_of DESC, observed_at DESC, artifact_id DESC
+                ) = 1
+            ),
+            location_counts AS (
+                SELECT observation.pipeline_id, count(*) AS location_count
+                FROM location_observations AS observation
+                JOIN latest_location_exports AS latest
+                  ON latest.pipeline_id = observation.pipeline_id
+                 AND latest.artifact_id = observation.artifact_id
+                GROUP BY observation.pipeline_id
+            ),
+            latest_capacity_exports AS (
+                SELECT pipeline_id, artifact_id
+                FROM capacity_exports
+                QUALIFY row_number() OVER (
+                    PARTITION BY pipeline_id, capacity_kind, coalesce(point_role, '')
+                    ORDER BY effective_at DESC, source_posted_at DESC,
+                             observed_at DESC, artifact_id DESC
+                ) = 1
+            ),
+            capacity_counts AS (
+                SELECT observation.pipeline_id, count(*) AS capacity_row_count
+                FROM capacity_observations AS observation
+                JOIN latest_capacity_exports AS latest
+                  ON latest.pipeline_id = observation.pipeline_id
+                 AND latest.artifact_id = observation.artifact_id
+                GROUP BY observation.pipeline_id
+            ),
+            activity AS (
+                SELECT pipeline_id, max(observed_at) AS latest_observed_at
+                FROM (
+                    SELECT pipeline_id, observed_at FROM notice_index_pages
+                    UNION ALL
+                    SELECT pipeline_id, observed_at FROM notice_index_exports
+                    UNION ALL
+                    SELECT pipeline_id, observed_at FROM location_exports
+                    UNION ALL
+                    SELECT pipeline_id, observed_at FROM capacity_exports
+                    UNION ALL
+                    SELECT pipeline_id, first_seen_at FROM notice_versions
+                )
+                GROUP BY pipeline_id
+            )
+            SELECT
+                pipeline.pipeline_id,
+                pipeline.pipeline_name,
+                operator.operator_name,
+                operator.parent_company,
+                operator.ticker,
+                pipeline.tsp_number,
+                pipeline.ferc_cid,
+                pipeline.timezone,
+                coalesce(notice.notice_count, 0) AS notice_count,
+                coalesce(detail.detailed_notice_count, 0)
+                    AS detailed_notice_count,
+                coalesce(location.location_count, 0) AS location_count,
+                coalesce(capacity.capacity_row_count, 0) AS capacity_row_count,
+                strftime(
+                    activity.latest_observed_at AT TIME ZONE 'UTC',
+                    '%Y-%m-%dT%H:%M:%S.%fZ'
+                ) AS latest_observed_at_utc
+            FROM pipeline_systems AS pipeline
+            JOIN operators AS operator USING (operator_id)
+            LEFT JOIN notice_counts AS notice USING (pipeline_id)
+            LEFT JOIN detail_counts AS detail USING (pipeline_id)
+            LEFT JOIN location_counts AS location USING (pipeline_id)
+            LEFT JOIN capacity_counts AS capacity USING (pipeline_id)
+            LEFT JOIN activity USING (pipeline_id)
+            ORDER BY pipeline.pipeline_id
+            """
+        )
+        for row in rows:
+            config = KINDER_MORGAN_PIPELINES.get(str(row["pipeline_id"]))
+            if config is not None:
+                row["source_portal_url"] = config.portal_url
+                row["market_model_status"] = (
+                    "available" if config.pipeline_id == "TGP" else "raw_data_only"
+                )
+        return {
+            "pipelines": rows,
+            "boundary": (
+                "Collection coverage is pipeline-specific. Only TGP currently "
+                "has a validated maintenance-to-market impact model."
+            ),
+        }
+
     def overview(self) -> dict[str, object]:
         rows = self._query(
             """
@@ -198,7 +303,8 @@ class TgpReadModel:
                 latest.reduction_mismatch_count AS latest_reduction_mismatch_count,
                 (SELECT count(*) FROM tgp_maintenance_notices) AS maintenance_notice_count,
                 (SELECT count(*) FROM current_notice_index
-                 WHERE notice_type_primary = 'MAINTENANCE')
+                 WHERE pipeline_id = 'TGP'
+                   AND notice_type_primary = 'MAINTENANCE')
                     AS maintenance_index_count,
                 (SELECT count(*) FROM tgp_outage_report_summary) AS report_vintage_count,
                 (SELECT count(*) FROM outage_impact_observations) AS historical_capacity_rows,
@@ -1991,6 +2097,8 @@ class PipelinePulseHandler(BaseHTTPRequestHandler):
             report_notice_id = parameters.get("report", [None])[0]
             if request.path == "/api/catalog":
                 self._send_json(self.read_model.data_catalog())
+            elif request.path == "/api/pipelines":
+                self._send_json(self.read_model.pipeline_catalog())
             elif request.path == "/api/refresh":
                 self._send_json(self.refresh_manager.status())
             elif request.path.startswith("/api/download/") and request.path.endswith(

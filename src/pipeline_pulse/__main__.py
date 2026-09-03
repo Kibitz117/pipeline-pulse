@@ -19,8 +19,12 @@ from .collector import (
 from .curated import export_curated_notice_index, export_tgp_mvp_tables
 from .impacts import build_tgp_transport_impacts
 from .insights import DEFAULT_INSIGHT_MODEL, generate_tgp_research_memo
+from .pipelines import KINDER_MORGAN_PIPELINES
 from .quality import build_tgp_quality_report
-from .scheduler import run_scheduled_collection
+from .scheduler import (
+    run_kinder_morgan_pipeline_collection,
+    run_scheduled_collection,
+)
 from .web import serve
 
 
@@ -85,6 +89,29 @@ def build_parser() -> argparse.ArgumentParser:
         default=100,
         help="Maximum maintenance details fetched by a first-run bootstrap.",
     )
+    pipeline_collect = subparsers.add_parser(
+        "collect-km-pipeline",
+        description=(
+            "Bootstrap or refresh one configured Kinder Morgan pipeline "
+            "without applying TGP-specific market assumptions."
+        ),
+    )
+    pipeline_collect.add_argument(
+        "--pipeline",
+        choices=tuple(sorted(KINDER_MORGAN_PIPELINES)),
+        required=True,
+    )
+    pipeline_collect.add_argument(
+        "--mode",
+        choices=("bootstrap", "refresh", "full-export"),
+        required=True,
+    )
+    pipeline_collect.add_argument("--db", default="data/pipeline_pulse.duckdb")
+    pipeline_collect.add_argument("--raw-dir", default="data/raw")
+    pipeline_collect.add_argument("--lock-file", default="data/pipeline-pulse.lock")
+    pipeline_collect.add_argument("--detail-limit", type=int, default=5)
+    pipeline_collect.add_argument("--revision-check-limit", type=int, default=3)
+    pipeline_collect.add_argument("--bootstrap-detail-limit", type=int, default=25)
     curated = subparsers.add_parser(
         "export-curated",
         description="Refresh the reconciled current-notice CSV from DuckDB.",
@@ -239,6 +266,19 @@ def main(argv: list[str] | None = None) -> None:
                 raw_root=args.raw_dir,
                 lock_path=args.lock_file,
                 curated_output_path=args.curated_output,
+                detail_limit=args.detail_limit,
+                revision_check_limit=args.revision_check_limit,
+                bootstrap_detail_limit=args.bootstrap_detail_limit,
+            ).to_json()
+        )
+    elif args.command == "collect-km-pipeline":
+        print(
+            run_kinder_morgan_pipeline_collection(
+                pipeline_id=args.pipeline,
+                mode=args.mode,
+                database_path=args.db,
+                raw_root=args.raw_dir,
+                lock_path=args.lock_file,
                 detail_limit=args.detail_limit,
                 revision_check_limit=args.revision_check_limit,
                 bootstrap_detail_limit=args.bootstrap_detail_limit,

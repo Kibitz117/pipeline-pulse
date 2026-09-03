@@ -1,6 +1,6 @@
 # Source inventory
 
-This inventory is the version-one collection contract. Public operator data is
+This inventory is the collection contract. Public operator data is
 archived exactly as received before any parser or agent operates on it.
 
 ## Kinder Morgan / Tennessee Gas Pipeline
@@ -98,6 +98,33 @@ are archived but excluded from investor alerts by default.
   before display.
 - Static operator system and zone maps remain supporting evidence; the UI does
   not trace a route from a PDF or interpolate a fictitious pipeline line.
+
+## Kinder Morgan / Natural Gas Pipeline Company of America
+
+- Critical notices:
+  `https://pipeline2.kindermorgan.com/Notices/Notices.aspx?code=NGPL&type=C`
+- Point capacity:
+  `https://pipeline2.kindermorgan.com/Capacity/OpAvailPoint.aspx?code=NGPL`
+- Segment capacity:
+  `https://pipeline2.kindermorgan.com/Capacity/OpAvailSegment.aspx?code=NGPL`
+- Locations:
+  `https://pipeline2.kindermorgan.com/LocationDataDownload/LocDataDwnld.aspx?code=NGPL`
+- Identity contract: TSP `6931794`, FERC CID `C002096`, operator clock
+  `America/Chicago`.
+- Current status: complete notice-index export, bounded detail backfill and
+  same-ID revision checks, location reference, and delivery/receipt/segment
+  capacity are enabled through the shared Kinder Morgan adapter.
+- Geography: blank state fields are preserved as unmapped source values; they
+  are not rejected or assigned a guessed coordinate.
+- Capacity caveat: NGPL states that Operationally Available Capacity is shown
+  for Central Delivery Points rather than their physical member points. The
+  source's `All Qty Avail` flag, numeric OAC, and explanatory comments therefore
+  remain separate fields. A simple `operating - scheduled` difference is a
+  diagnostic, not evidence that the source is wrong.
+- Interpretation boundary: no NGPL-specific outage table, direction mapping,
+  bottleneck rollup, regional price mapping, alert threshold, or AI conclusion
+  is enabled yet. Successful normalized collection is not treated as a
+  validated market-impact model.
 
 ## Market context
 
